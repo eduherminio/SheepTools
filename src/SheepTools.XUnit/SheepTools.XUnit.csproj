@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>SheepTools.XUnit</Title>
+    <PackageId>SheepTools.XUnit</PackageId>
+    <Version>0.1.0-alpha</Version>
+    <PackageTags>Tools, Productivity, Extensions</PackageTags>
+    <Tags>$(PackageTags)</Tags>
+    <Authors>Eduardo Cáceres</Authors>
+    <Description>
+      Useful toolbox with XUnit-related extension methods
+    </Description>
+    <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eduherminio/SheepTools</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="Dev dependencies">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
