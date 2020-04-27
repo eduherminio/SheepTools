@@ -27,12 +27,21 @@ namespace SheepTools.Test.Model
         }
 
         [Fact]
+        public void ToStringTest()
+        {
+            var p = new Point3D("Id", 0, 0, 0);
+
+            Assert.Equal($"[{p.X}, {p.Y}, {p.Z}]", p.ToString());
+            Assert.Equal("Id", p.Id);
+        }
+
+        [Fact]
         public void DistanceTo()
         {
-            Point3D a = new Point3D(0, 0, 0);
-            Point3D b = new Point3D(0, 0, 1);
-            Point3D c = new Point3D(0, 1, 1);
-            Point3D d = new Point3D(1, 1, 1);
+            var a = new Point3D(0, 0, 0);
+            var b = new Point3D(0, 0, 1);
+            var c = new Point3D(0, 1, 1);
+            var d = new Point3D(1, 1, 1);
 
             var distanceAB = a.DistanceTo(b);
             Assert.True(distanceAB.DoubleEquals(1));

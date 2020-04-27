@@ -37,11 +37,6 @@ namespace SheepTools.Model
             return Id.GetType() == typeof(TKey) && Id.Equals(other.Id);
         }
 
-        public bool Equals(TKey x, TKey y)
-        {
-            return x != null && x.Equals(y);
-        }
-
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -55,11 +50,6 @@ namespace SheepTools.Model
             }
 
             return Equals((GenericNode<TKey>)obj);
-        }
-
-        public int GetHashCode(TKey obj)
-        {
-            return obj.GetHashCode();
         }
 
         public override int GetHashCode()

@@ -68,6 +68,23 @@ namespace SheepTools.Model
             return X == other.X && Y == other.Y && Z == other.Z;
         }
 
+        public override int GetHashCode()
+        {
+#if !NETSTANDARD2_0
+            return HashCode.Combine(X, Y, Z, Id);
+#else
+            unchecked
+            {
+                var hashCode = -1895077416;
+                hashCode = hashCode * -1521134295 + X.GetHashCode();
+                hashCode = hashCode * -1521134295 + Y.GetHashCode();
+                hashCode = hashCode * -1521134295 + Z.GetHashCode();
+                hashCode = hashCode * -1521134295 + Id.GetHashCode();
+                return hashCode;
+            }
+#endif
+        }
+
         public static bool operator ==(Point3D Point3D1, Point3D Point3D2)
         {
             if (Point3D1 is null)
@@ -86,23 +103,6 @@ namespace SheepTools.Model
             }
 
             return !Point3D1.Equals(Point3D2);
-        }
-
-        public override int GetHashCode()
-        {
-#if !NETSTANDARD2_0
-            return HashCode.Combine(X, Y, Z, Id);
-#else
-            unchecked
-            {
-                var hashCode = -1895077416;
-                hashCode = hashCode * -1521134295 + X.GetHashCode();
-                hashCode = hashCode * -1521134295 + Y.GetHashCode();
-                hashCode = hashCode * -1521134295 + Z.GetHashCode();
-                hashCode = hashCode * -1521134295 + Id.GetHashCode();
-                return hashCode;
-            }
-#endif
         }
 
         #endregion

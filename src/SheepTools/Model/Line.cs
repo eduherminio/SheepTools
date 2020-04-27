@@ -23,6 +23,11 @@ namespace SheepTools.Model
             Y0 = a.Y;
         }
 
+        public Line(string id, Point a, Point b) : this(a, b)
+        {
+            Id = id;
+        }
+
         public double CalculateY(double x)
         {
             return Y0 + (M * (x - X0));
@@ -34,22 +39,6 @@ namespace SheepTools.Model
         }
 
         #region Equals override
-
-        public override int GetHashCode()
-        {
-#if !NETSTANDARD2_0
-            return HashCode.Combine(M, X0, Y0, Id);
-#else
-            unchecked
-            {
-                var hashCode = M.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y0.GetHashCode();
-                hashCode = (hashCode * 397) ^ X0.GetHashCode();
-                hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                return hashCode;
-            }
-#endif
-        }
 
         public override bool Equals(object obj)
         {
@@ -83,6 +72,22 @@ namespace SheepTools.Model
                     && X0.DoubleEquals(other.X0)
                 : M.DoubleEquals(other.M)
                     && Y0.DoubleEquals(other.CalculateY(X0));
+        }
+
+        public override int GetHashCode()
+        {
+#if !NETSTANDARD2_0
+            return HashCode.Combine(M, X0, Y0, Id);
+#else
+            unchecked
+            {
+                var hashCode = M.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y0.GetHashCode();
+                hashCode = (hashCode * 397) ^ X0.GetHashCode();
+                hashCode = (hashCode * 397) ^ Id.GetHashCode();
+                return hashCode;
+            }
+#endif
         }
 
         public static bool operator ==(Line line1, Line line2)

@@ -12,9 +12,9 @@ namespace SheepTools.Test.Model
         [Fact]
         public void Equal()
         {
-            Point a = new Point(0, 0);
-            Point b = new Point(0, 0);
-            Point c = new Point(0, 1);
+            var a = new Point(0, 0);
+            var b = new Point(0, 0);
+            var c = new Point(0, 1);
 
             Assert.Equal(a, b);
             Assert.NotEqual(a, c);
@@ -30,7 +30,7 @@ namespace SheepTools.Test.Model
         [Fact]
         public void ToStringTest()
         {
-            Point p = new Point("Id", 0, 0);
+            var p = new Point("Id", 0, 0);
 
             Assert.Equal($"[{p.X}, {p.Y}]", p.ToString());
             Assert.Equal("Id", p.Id);
@@ -39,8 +39,8 @@ namespace SheepTools.Test.Model
         [Fact]
         public void DistanceTo()
         {
-            Point a = new Point(0, 0);
-            Point b = new Point(1, 1);
+            var a = new Point(0, 0);
+            var b = new Point(1, 1);
 
             var distance = a.DistanceTo(b);
 
@@ -50,9 +50,9 @@ namespace SheepTools.Test.Model
         [Fact]
         public void ManhattanDistance()
         {
-            Point a = new Point(0, 0);
-            Point b = new Point(0, 1);
-            Point c = new Point(1, 1);
+            var a = new Point(0, 0);
+            var b = new Point(0, 1);
+            var c = new Point(1, 1);
 
             var distanceAB = a.ManhattanDistance(b);
             Assert.Equal(1, distanceAB);
@@ -64,11 +64,11 @@ namespace SheepTools.Test.Model
         [Fact]
         public void CalculateClosestManhattanPoint()
         {
-            Point a = new Point(0, 0);
-            Point b = new Point(-1, -1);
-            Point c = new Point(2, 2);
-            Point d = new Point(1, 2);
-            Point e = new Point(-2, 1);
+            var a = new Point(0, 0);
+            var b = new Point(-1, -1);
+            var c = new Point(2, 2);
+            var d = new Point(1, 2);
+            var e = new Point(-2, 1);
 
             var result = a.CalculateClosestManhattanPoint(new[] { b, c, d, e });
 
@@ -78,12 +78,12 @@ namespace SheepTools.Test.Model
         [Fact]
         public void CalculateClosestManhattanPointNotTied()
         {
-            Point a = new Point(0, 0);
-            Point b = new Point(-1, -1);
-            Point c = new Point(2, 2);
-            Point d = new Point(1, 2);
-            Point e = new Point(-2, 1);
-            Point f = new Point(1, 1);
+            var a = new Point(0, 0);
+            var b = new Point(-1, -1);
+            var c = new Point(2, 2);
+            var d = new Point(1, 2);
+            var e = new Point(-2, 1);
+            var f = new Point(1, 1);
 
             var result = a.CalculateClosestManhattanPointNotTied(new[] { b, c, d, e, f });
 
