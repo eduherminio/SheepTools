@@ -54,7 +54,7 @@ namespace SheepTools.Model
         }
 
         /// <summary>
-        /// Returns null of there are multiple points at min Manhattan distance
+        /// Returns null if there are multiple points at min Manhattan distance
         /// </summary>
         /// <param name="candidatePoints"></param>
         /// <returns></returns>
@@ -85,6 +85,11 @@ namespace SheepTools.Model
             }
         }
 
+        static public IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        {
+            return GeneratePointRangeIteratingOverYFirst(xRange.Select(x => (double)x), yRange.Select(y => (double)y));
+        }
+
         static public IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<double> xRange, IEnumerable<double> yRange)
         {
             foreach (double y in yRange)
@@ -94,6 +99,11 @@ namespace SheepTools.Model
                     yield return new Point(x, y);
                 }
             }
+        }
+
+        static public IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        {
+            return GeneratePointRangeIteratingOverXFirst(xRange.Select(x => (double)x), yRange.Select(y => (double)y));
         }
 
         public override string ToString()

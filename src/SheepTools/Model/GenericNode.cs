@@ -11,13 +11,36 @@ namespace SheepTools.Model
     {
         public TKey Id { get; set; }
 
+        /// <summary>
+        /// Identifier cannot be null or default
+        /// </summary>
+        /// <param name="id"></param>
         public GenericNode(TKey id)
         {
+            if (id == null || id.Equals(default(TKey)))
+            {
+                throw new ArgumentException($"Id cannot be {(id == null ? "null" : id.ToString())}");
+            }
+
             Id = id;
         }
 
         #region Equals override
-        // https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1815-override-equals-and-operator-equals-on-value-types?view=vs-2017
+
+        public bool Equals(GenericNode<TKey> other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Id.GetType() == typeof(TKey) && Id.Equals(other.Id);
+        }
+
+        public bool Equals(TKey x, TKey y)
+        {
+            return x != null && x.Equals(y);
+        }
 
         public override bool Equals(object obj)
         {
@@ -34,36 +57,18 @@ namespace SheepTools.Model
             return Equals((GenericNode<TKey>)obj);
         }
 
-        public bool Equals(GenericNode<TKey> other)
+        public int GetHashCode(TKey obj)
         {
-            if (other == null)
-            {
-                return false;
-            }
-
-            if (Id.GetType() == typeof(TKey))
-            {
-                return Id.Equals(other.Id);
-            }
-            else
-            {
-                throw new SheepToolsException("Wrong TKey in Node<TKey>");
-            }
+            return obj.GetHashCode();
         }
 
         public override int GetHashCode()
         {
+#if !NETSTANDARD2_0
+            return HashCode.Combine(Id);
+#else
             return Id.GetHashCode();
-        }
-
-        public bool Equals(TKey x, TKey y)
-        {
-            return x != null && x.Equals(y);
-        }
-
-        public int GetHashCode(TKey obj)
-        {
-            return obj.GetHashCode();
+#endif
         }
 
         public static bool operator ==(GenericNode<TKey> node1, GenericNode<TKey> node2)

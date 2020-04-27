@@ -34,7 +34,6 @@ namespace SheepTools.Model
         }
 
         #region Equals override
-        // https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1815-override-equals-and-operator-equals-on-value-types?view=vs-2017
 
         public override int GetHashCode()
         {

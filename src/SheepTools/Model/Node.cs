@@ -6,10 +6,12 @@
     /// </summary>
     public class Node : TreeNode<string>
     {
+        /// <inheritdoc/>
         public Node(string id) : base(id)
         {
         }
 
+        /// <inheritdoc/>
         public Node(string id, Node child) : base(id, child)
         {
         }

@@ -16,7 +16,10 @@ namespace SheepTools.Test.Model
             Point3D c = new Point3D(0, 1, 0);
 
             Assert.Equal(a, b);
+            Assert.True(a.Equals(b));
             Assert.NotEqual(a, c);
+            Assert.True(a == b);
+            Assert.True(a != c);
 
             HashSet<Point3D> set = new HashSet<Point3D>() { a };
             Assert.False(set.Add(b));

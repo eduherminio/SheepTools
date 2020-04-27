@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SheepTools
 {
@@ -127,6 +128,22 @@ namespace SheepTools
         }
 
         /// <summary>
+        /// Checks that none of the arguments is null.
+        /// </summary>
+        /// <param name="objects"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void NotNull(params object[] objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (obj == null)
+                {
+                    throw new ArgumentNullException(nameof(objects), "At least one of the arguments is null");
+                }
+            }
+        }
+
+        /// <summary>
         /// Checks that str is empty, and throws an exception otherwise.
         /// </summary>
         /// <param name="str"></param>
@@ -135,6 +152,21 @@ namespace SheepTools
         public static void Empty(string str, string message = DefaultMessage)
         {
             if (!str.IsEmpty())
+            {
+                throw new ValidationException(message);
+            }
+        }
+
+        /// <summary>
+        /// Checks that an enumerable is empty, and throws an exception otherwise.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="message"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static void Empty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        {
+            if (enumerable == null || enumerable?.Any() == true)
             {
                 throw new ValidationException(message);
             }
@@ -155,6 +187,21 @@ namespace SheepTools
         }
 
         /// <summary>
+        /// Checks that an enumerable is not empty, and throws an exception otherwise.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="message"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static void NotEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        {
+            if (enumerable == null || enumerable?.Any() == false)
+            {
+                throw new ValidationException(message);
+            }
+        }
+
+        /// <summary>
         /// Checks that str is null or empty, and throws an exception otherwise.
         /// </summary>
         /// <param name="str"></param>
@@ -162,6 +209,21 @@ namespace SheepTools
         public static void NullOrEmpty(string str, string message = DefaultMessage)
         {
             if (!str.IsNullOrEmpty())
+            {
+                throw new ValidationException(message);
+            }
+        }
+
+        /// <summary>
+        /// Checks that an enumerable is null or empty, and throws an exception otherwise.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="message"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static void NullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        {
+            if (enumerable?.Any() == true)
             {
                 throw new ValidationException(message);
             }
@@ -176,6 +238,21 @@ namespace SheepTools
         public static void NotNullOrEmpty(string str, string message = DefaultMessage)
         {
             if (str.IsNullOrEmpty())
+            {
+                throw new ValidationException(message);
+            }
+        }
+
+        /// <summary>
+        /// Checks that an enumerable is not null or empty, and throws an exception otherwise.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="message"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static void NotNullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        {
+            if (enumerable?.Any() == false)
             {
                 throw new ValidationException(message);
             }
@@ -204,66 +281,6 @@ namespace SheepTools
         public static void NotNullOrWhiteSpace(string str, string message = DefaultMessage)
         {
             if (string.IsNullOrWhiteSpace(str))
-            {
-                throw new ValidationException(message);
-            }
-        }
-
-        /// <summary>
-        /// Checks that an enumerable is empty, and throws an exception otherwise.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <param name="message"></param>
-        /// <exception cref="ValidationException"></exception>
-        public static void Empty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
-        {
-            if (enumerable == null || enumerable?.Any() == true)
-            {
-                throw new ValidationException(message);
-            }
-        }
-
-        /// <summary>
-        /// Checks that an enumerable is not empty, and throws an exception otherwise.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <param name="message"></param>
-        /// <exception cref="ValidationException"></exception>
-        public static void NotEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
-        {
-            if (enumerable == null || enumerable?.Any() == false)
-            {
-                throw new ValidationException(message);
-            }
-        }
-
-        /// <summary>
-        /// Checks that an enumerable is null or empty, and throws an exception otherwise.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <param name="message"></param>
-        /// <exception cref="ValidationException"></exception>
-        public static void NullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
-        {
-            if (enumerable?.Any() == true)
-            {
-                throw new ValidationException(message);
-            }
-        }
-
-        /// <summary>
-        /// Checks that an enumerable is not null or empty, and throws an exception otherwise.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <param name="message"></param>
-        /// <exception cref="ValidationException"></exception>
-        public static void NotNullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
-        {
-            if (enumerable?.Any() == false)
             {
                 throw new ValidationException(message);
             }

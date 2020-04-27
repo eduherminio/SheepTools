@@ -19,6 +19,19 @@ namespace SheepTools.Test
         }
 
         [Fact]
+        public void InterpolateVertical()
+        {
+            const double x0 = 5, x1 = 5;
+            const double y0 = 0, y1 = 10;
+
+            const double x = 20;
+
+            var y = LinearInterpolation.InterpolateLinearly(x, x0, x1, y0, y1);
+
+            Assert.Equal(0.5 * (y0 + y1), y);
+        }
+
+        [Fact]
         public void InterpolatePoint()
         {
             var p1 = new Point(1, 0);

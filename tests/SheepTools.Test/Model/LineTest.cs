@@ -24,9 +24,21 @@ namespace SheepTools.Test.Model
             Assert.Equal(line1, line3);
             Assert.Equal(line2, line3);
 
+            Assert.True(line1.Equals(line2));
+            Assert.True(line1.Equals(line3));
+            Assert.True(line2.Equals(line3));
+
+            Assert.True(line1 == line2);
+            Assert.True(line1 == line3);
+            Assert.True(line2 == line3);
+
             Assert.NotEqual(line1, line4);
             Assert.NotEqual(line2, line4);
             Assert.NotEqual(line3, line4);
+
+            Assert.True(line1 != line4);
+            Assert.True(line2 != line4);
+            Assert.True(line3 != line4);
 
             HashSet<Line> set = new HashSet<Line>() { line1 };
             Assert.False(set.Add(line2));

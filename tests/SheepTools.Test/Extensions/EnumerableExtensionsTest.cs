@@ -12,14 +12,33 @@ namespace SheepTools.Test.Extensions
         protected virtual void Foo() => throw new NotSupportedException();
 
         [Fact]
-        public void ForEach()
+        public void ForEachList()
         {
+            // Arrange
             var mock = new Mock<EnumerableExtensionsTest>();
-            var enumerable = new List<EnumerableExtensionsTest> { mock.Object, mock.Object, mock.Object };
+            IEnumerable<EnumerableExtensionsTest> list = new List<EnumerableExtensionsTest> { mock.Object, mock.Object, mock.Object };
 
+            // Act
+            list.ForEach(str => str.Foo());
+
+            // Assert
+            mock.Verify(m => m.Foo(), Times.Exactly(list.Count()));
+            Assert.Throws<ArgumentNullException>(() => list.ForEach(null));
+        }
+
+        [Fact]
+        public void ForEachEnumerable()
+        {
+            // Arrange
+            var mock = new Mock<EnumerableExtensionsTest>();
+            var enumerable = new HashSet<EnumerableExtensionsTest> { mock.Object, mock.Object, mock.Object };
+
+            // Act
             enumerable.ForEach(str => str.Foo());
 
+            // Assert
             mock.Verify(m => m.Foo(), Times.Exactly(enumerable.Count));
+            Assert.Throws<ArgumentNullException>(() => enumerable.ForEach(null));
         }
 
         [Fact]

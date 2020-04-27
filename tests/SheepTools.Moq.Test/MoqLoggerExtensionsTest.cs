@@ -66,6 +66,8 @@ namespace SheepTools.Moq.Test
 
                 _logger.VerifyLog(entry.Value.Item2, Times.Once);
                 _logger.VerifyLog(entry.Value.Item2, Times.Once());
+                _logger.VerifyLog(entry.Value.Item2, entry.Key, Times.Once);
+                _logger.VerifyLog(entry.Value.Item2, entry.Key, Times.Once());
                 _logger.VerifyLog(entry.Value.Item1, entry.Value.Item2, Times.Once);
                 _logger.VerifyLog(entry.Value.Item1, entry.Value.Item2, Times.Once());
                 _logger.VerifyLog(entry.Value.Item1, entry.Value.Item2, entry.Key, Times.Once);
@@ -82,6 +84,7 @@ namespace SheepTools.Moq.Test
                 _service.LogException(entry.Value.Item1, entry.Value.Item2, entry.Key);
 
                 _logger.VerifyLog(entry.Value.Item2, Times.Exactly(2));
+                _logger.VerifyLog(entry.Value.Item2, entry.Key, Times.Exactly(2));
                 _logger.VerifyLog(entry.Value.Item1, entry.Value.Item2, Times.Exactly(2));
                 _logger.VerifyLog(entry.Value.Item1, entry.Value.Item2, entry.Key, Times.Exactly(2));
                 _logger.VerifyLog<StackOverflowException>(entry.Value.Item1);

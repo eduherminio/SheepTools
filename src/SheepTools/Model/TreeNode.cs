@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SheepTools.Model
@@ -14,10 +15,16 @@ namespace SheepTools.Model
         public TKey ParentId { get; set; }
 
         /// <summary>
+        /// Parent
+        /// </summary>
+        public TreeNode<TKey> Parent { get; set; }
+
+        /// <summary>
         /// Direct descendants
         /// </summary>
         public ICollection<TreeNode<TKey>> Children { get; set; } = new HashSet<TreeNode<TKey>>();
 
+        /// <inheritdoc/>
         public TreeNode(TKey id) : base(id)
         {
         }
@@ -29,6 +36,11 @@ namespace SheepTools.Model
         /// <param name="child">One of their descendants</param>
         public TreeNode(TKey id, TreeNode<TKey> child) : base(id)
         {
+            if (Equals(child))
+            {
+                throw new ArgumentException("A node cannot be its own child");
+            }
+
             Children.Add(child);
         }
 

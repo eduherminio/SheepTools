@@ -26,7 +26,7 @@ namespace SheepTools.Extensions
         /// <returns></returns>
         public static IEnumerable<Type> GetTypes<TAttribute>(this Assembly assembly)
         {
-            foreach (Type type in assembly.GetTypes())
+            foreach (Type type in assembly?.GetTypes())
             {
                 if (type.IsDefined(typeof(TAttribute), true))
                 {
@@ -55,7 +55,7 @@ namespace SheepTools.Extensions
         public static IEnumerable<Tuple<Type, TAttribute>> GetTypesAndAttributes<TAttribute>(this Assembly assembly)
             where TAttribute : Attribute
         {
-            foreach (Type type in assembly.GetTypes())
+            foreach (Type type in assembly?.GetTypes())
             {
                 if (type.IsDefined(typeof(TAttribute), true))
                 {

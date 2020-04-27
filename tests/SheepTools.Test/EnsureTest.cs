@@ -83,6 +83,18 @@ namespace SheepTools.Test
         }
 
         [Fact]
+        public void NotNullParams()
+        {
+            Point nullPoint = null;
+            const string nullString = null;
+
+            Asssert.DoesNotThrow(() => Ensure.NotNull(new Point(1, 2), 3));
+            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(nullPoint, 3));
+            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(new Point(1, 2), 1, null));
+            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(new Point(1, 2), "", nullString));
+        }
+
+        [Fact]
         public void Empty()
         {
             Asssert.DoesNotThrow(() => Ensure.Empty(string.Empty));

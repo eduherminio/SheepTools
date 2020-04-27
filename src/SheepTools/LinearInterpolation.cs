@@ -2,9 +2,6 @@
 
 namespace SheepTools
 {
-    /// <summary>
-    /// Simple straight line class, with equality operators overriden
-    /// </summary>
     public static class LinearInterpolation
     {
         public static double InterpolateLinearly(double x, double x0, double x1, double y0, double y1)
