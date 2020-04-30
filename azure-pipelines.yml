@@ -4,9 +4,6 @@ trigger:
   branches:
     include:
     - master
-    # TODO REMOVE
-    - initial-development
-    # END TODO
 
 stages:
 - stage: CI
@@ -95,8 +92,8 @@ stages:
 - stage: CD
   displayName: 'Pack & push'
   dependsOn: 'CI'
-  # condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['PackageVersion'], ''))
-  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/initial-development'), ne(variables['PackageVersion'], ''))
+  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['PackageVersion'], ''))
+  # It makes sense to allow other branches only of version replacement works with pre-release labels (-alpha-1, etc.)
   jobs:
   - job: cd
     displayName: 'Pack & push linux'
@@ -130,14 +127,14 @@ stages:
             dotnet new tool-manifest
             dotnet tool install dotnet-version-cli --version 1.1.2
 
-    - task: CmdLine@2
-      displayName: 'Modify SheepTools version'
-      inputs:
-        failOnStderr: true
-        script: |
-            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    #- task: CmdLine@2
+    #  displayName: 'Modify SheepTools version'
+    #  inputs:
+    #    failOnStderr: true
+    #    script: |
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
 
     - task: DotNetCoreCLI@2
       displayName: 'Build'
@@ -148,7 +145,6 @@ stages:
 
     - task: DotNetCoreCLI@2
       displayName: 'Generate SheepTools NuGet package'
-      condition: ne(variables['PackageVersion'], '')
       inputs:
         command: 'pack'
         arguments: '--configuration Release'
@@ -163,34 +159,34 @@ stages:
         pathtoPublish: '$(Build.SourcesDirectory)/SheepTools/Artifacts/'
         artifactName: 'SheepTools'
 
-    # - task: NuGetCommand@2
-    #   displayName: 'Push NuGet package'
-    #   inputs:
-    #     command: 'push'
-    #     packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-    #     nuGetFeedType: 'external'
-    #     publishFeedCredentials: 'SheepTools_NuGet'
-    #     verbosityPush: 'Detailed'
+    - task: NuGetCommand@2
+      displayName: 'Push NuGet package'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_NuGet'
+        verbosityPush: 'Detailed'
 
-    # - task: NuGetCommand@2
-    #   displayName: 'Push GitHub package'
-    #   inputs:
-    #     command: 'push'
-    #     packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-    #     nuGetFeedType: 'external'
-    #     publishFeedCredentials: 'SheepTools_GitHub'
-    #     verbosityPush: 'Detailed'
+    - task: NuGetCommand@2
+      displayName: 'Push GitHub package'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_GitHub'
+        verbosityPush: 'Detailed'
 
-    # - task: CmdLine@2
-    #   displayName: 'Commit and push version increment'
-    #   inputs:
-    #     failOnStderr: true
-    #     workingDirectory: $(Build.SourcesDirectory)/SheepTools
-    #     script: |
-    #       git checkout master
-    #       git status
-    #       git add -A
-    #       git commit -m "Release v$(PackageVersion)"
-    #       git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
-    #       git push
-    #       git push --tags
+    - task: CmdLine@2
+      displayName: 'Commit and push version increment'
+      inputs:
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
+        script: |
+          git checkout master
+          git status
+          git add -A
+          git commit -m "Release v$(PackageVersion)"
+          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
+          git push
+          git push --tags

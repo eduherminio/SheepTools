@@ -10,12 +10,12 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>SheepTools.Moq</Title>
     <PackageId>SheepTools.Moq</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-alpha</Version>
     <PackageTags>Tools, Productivity, Extensions</PackageTags>
     <Tags>$(PackageTags)</Tags>
     <Authors>Eduardo Cáceres</Authors>
     <Description>
-      Useful toolbox with Moq-related extension methods
+      Handy toolbox with Moq-related extension methods.
     </Description>
     <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
-    <PackageReference Include="Moq" Version="4.14.0" />
+    <PackageReference Include="Moq" Version="4.14.1" />
   </ItemGroup>
 
   <PropertyGroup>

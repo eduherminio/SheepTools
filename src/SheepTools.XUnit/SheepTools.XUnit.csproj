@@ -12,12 +12,12 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>SheepTools.XUnit</Title>
     <PackageId>SheepTools.XUnit</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-alpha</Version>
     <PackageTags>Tools, Productivity, Extensions</PackageTags>
     <Tags>$(PackageTags)</Tags>
     <Authors>Eduardo Cáceres</Authors>
     <Description>
-      Useful toolbox with XUnit-related extension methods
+      Handy toolbox with XUnit-related extension methods.
     </Description>
     <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
