@@ -50,7 +50,7 @@ namespace SheepTools.Test.Extensions
 
             foreach (var pair in testCases)
             {
-                Assert.Equal(pair.Value, pair.Key.Factorial());
+                Assert.Equal(pair.Value, pair.Key.Clamp(minValue, maxValue));
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using SheepTools.Model;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -103,22 +104,9 @@ namespace SheepTools.Test.Model
         [Fact]
         public void RelationshipsCount()
         {
-            var l = new Node("L");
-            var i = new Node("I");
-            var h = new Node("H");
-            var f = new Node("F");
-            var k = new Node("K", l);
-            var j = new Node("J", k);
-            var g = new Node("G", h);
-            var e = new Node("E", f);
-            var d = new Node("D", e);
-            var c = new Node("C", d);
-            var b = new Node("B", c);
-            var com = new Node("COM", b);
-            b.Children.Add(g);
-            e.Children.Add(j);
-            d.Children.Add(i);
+            var nodes = GenerateTestGraphWithChildren();
 
+            var com = nodes.Single(n => n.Id == "COM");
             var result = com.RelationshipsCount();
 
             Assert.Equal(42, result);
@@ -130,15 +118,11 @@ namespace SheepTools.Test.Model
         [Fact]
         public void DistanceTo()
         {
-            var f = new Node("F");
-            var i = new Node("I");
-            var l = new Node("L");
-            var e = new Node("E", f);
-            var d = new Node("D", e);
-            var k = new Node("K", l);
-            var j = new Node("J", k);
-            e.Children.Add(j);
-            d.Children.Add(i);
+            var nodes = GenerateTestGraphWithChildren();
+
+            var k = nodes.Single(n => n.Id == "K");
+            var d = nodes.Single(n => n.Id == "D");
+            var i = nodes.Single(n => n.Id == "I");
 
             var result = d.DistanceTo(k, 0) + d.DistanceTo(i, 0);
 
@@ -149,6 +133,78 @@ namespace SheepTools.Test.Model
             Assert.Equal(int.MaxValue, i.DistanceTo(d, 0));
             Assert.Equal(int.MaxValue, k.DistanceTo(i, 0));
             Assert.Equal(int.MaxValue, i.DistanceTo(k, 0));
+        }
+
+        [Fact]
+        public void GetCommonAncestor()
+        {
+            var nodes = GenerateTestGraphWithParent();
+
+            var d = nodes.Single(n => n.Id == "D");
+            var e = nodes.Single(n => n.Id == "E");
+            var f = nodes.Single(n => n.Id == "F");
+            var l = nodes.Single(n => n.Id == "L");
+
+            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, d).Id);
+            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, e).Id);
+            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, f).Id);
+            Assert.Equal(e.Id, f.GetCommonAncestor(nodes, l).Id);
+            Assert.Equal(e.Id, l.GetCommonAncestor(nodes, f).Id);
+        }
+
+        /// <summary>
+        /// https://adventofcode.com/2019/day/6
+        /// </summary>
+        /// <returns></returns>
+        private static ICollection<Node> GenerateTestGraphWithChildren()
+        {
+            var nodeList = new List<Node>();
+
+            var l = new Node("L");
+            var i = new Node("I");
+            var h = new Node("H");
+            var f = new Node("F");
+            var k = new Node("K", l);
+            var j = new Node("J", k);
+            var g = new Node("G", h);
+            var e = new Node("E", new[] { f, j });
+            var d = new Node("D", new[] { e, i });
+            var c = new Node("C", d);
+            var b = new Node("B", new[] { c, g });
+            var com = new Node("COM", b);
+            b.Children.Add(g);
+            e.Children.Add(j);
+            d.Children.Add(i);
+
+            nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+
+            return nodeList;
+        }
+
+        /// <summary>
+        /// https://adventofcode.com/2019/day/6
+        /// </summary>
+        /// <returns></returns>
+        private static ICollection<Node> GenerateTestGraphWithParent()
+        {
+            var nodeList = new List<Node>();
+
+            var com = new Node("COM");
+            var b = new Node(com, "B");
+            var c = new Node(b, "C");
+            var d = new Node(c, "D");
+            var e = new Node(d, "E");
+            var f = new Node(e, "F");
+            var g = new Node(b, "G");
+            var h = new Node(g, "H");
+            var i = new Node(d, "I");
+            var j = new Node(e, "J");
+            var k = new Node(j, "K");
+            var l = new Node(k, "L");
+
+            nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+
+            return nodeList;
         }
     }
 }

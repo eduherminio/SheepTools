@@ -22,11 +22,12 @@ namespace SheepTools.Model
         /// <summary>
         /// Direct descendants
         /// </summary>
-        public ICollection<TreeNode<TKey>> Children { get; set; } = new HashSet<TreeNode<TKey>>();
+        public ICollection<TreeNode<TKey>> Children { get; set; }
 
         /// <inheritdoc/>
         public TreeNode(TKey id) : base(id)
         {
+            Children = new HashSet<TreeNode<TKey>>();
         }
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace SheepTools.Model
         /// </summary>
         /// <param name="id"></param>
         /// <param name="child">One of their descendants</param>
+        /// <exception cref="ArgumentException">When provided child's key is the same as TreeNode key</exception>
         public TreeNode(TKey id, TreeNode<TKey> child) : base(id)
         {
             if (Equals(child))
@@ -41,11 +43,46 @@ namespace SheepTools.Model
                 throw new ArgumentException("A node cannot be its own child");
             }
 
-            Children.Add(child);
+            Children = new HashSet<TreeNode<TKey>> { child };
         }
 
         /// <summary>
-        /// Number of descendants
+        /// Initialize with a number of its descendants
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="children">Multiple descendants</param>
+        /// <exception cref="ArgumentException">When provided child's key is the same as TreeNode key</exception>
+        public TreeNode(TKey id, IEnumerable<TreeNode<TKey>> children) : base(id)
+        {
+            if (children.Select(c => c.Id).Contains(id))
+            {
+                throw new ArgumentException("A node cannot be its own child");
+            }
+
+            Children = new HashSet<TreeNode<TKey>>(children);
+        }
+
+        /// <summary>
+        /// Initialize with its parent
+        /// </summary>
+        /// <param name="parent">Node parent</param>
+        /// <param name="id"></param>
+        /// <exception cref="ArgumentException">When provided child's key is the same as TreeNode key</exception>
+        public TreeNode(TreeNode<TKey> parent, TKey id) : base(id)
+        {
+            if (parent.Id.Equals(id))
+            {
+                throw new ArgumentException("A node cannot be its own parent");
+            }
+
+            Parent = parent;
+            ParentId = parent.Id;
+            Children = new HashSet<TreeNode<TKey>>();
+        }
+
+        /// <summary>
+        /// Number of descendants.
+        /// Requires nodes children to be populated
         /// </summary>
         /// <returns></returns>
         public int DescendantsCount()
@@ -55,7 +92,8 @@ namespace SheepTools.Model
         }
 
         /// <summary>
-        /// Number of children of the children of (the children of) my children
+        /// Number of children of the children of (the children of) my children.
+        /// Requires nodes children to be populated
         /// Equals to <see cref="DescendantsCount()"/>
         /// </summary>
         /// <returns></returns>
@@ -74,6 +112,7 @@ namespace SheepTools.Model
 
         /// <summary>
         /// Distance to childNode.
+        /// Requires nodes children to be populated.
         /// int.MaxValue if childNode is not among this node descendants
         /// </summary>
         /// <param name="childNode"></param>
@@ -96,6 +135,45 @@ namespace SheepTools.Model
                     ? int.MaxValue
                     : ++existingDistance;
             }
+        }
+
+        /// <summary>
+        /// Common ancestor of two nodes.
+        /// Requires node parents to be populated
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="otherNode"></param>
+        /// <exception cref="NotFoundException"></exception>
+        /// <returns></returns>
+        public TreeNode<TKey> GetCommonAncestor(IEnumerable<TreeNode<TKey>> nodes, TreeNode<TKey> otherNode)
+        {
+            var identifiers = new HashSet<TKey>();
+
+            TreeNode<TKey> commonAncestor = null;
+
+            void transverseBackwards(IEnumerable<TreeNode<TKey>> nodes, ref HashSet<TKey> identifiers, TreeNode<TKey> currentNode)
+            {
+                while (currentNode.ParentId != null && !currentNode.ParentId.Equals(default(TKey)))
+                {
+                    if (!identifiers.Add(currentNode.Id))
+                    {
+                        commonAncestor = currentNode;
+                        break;
+                    }
+
+                    currentNode = nodes.Single(node => node.Id.Equals(currentNode.ParentId));
+                }
+            }
+
+            transverseBackwards(nodes, ref identifiers, this);
+            transverseBackwards(nodes, ref identifiers, otherNode);
+
+            if (commonAncestor == null)
+            {
+                throw new NotFoundException($"We couldn't find any common ancestors between nodes {Id} and {otherNode.Id}");
+            }
+
+            return commonAncestor;
         }
     }
 }

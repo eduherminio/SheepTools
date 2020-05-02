@@ -74,7 +74,7 @@ namespace SheepTools.Model
                 : null;
         }
 
-        static public IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<double> xRange, IEnumerable<double> yRange)
+        public static IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<double> xRange, IEnumerable<double> yRange)
         {
             foreach (double x in xRange)
             {
@@ -85,12 +85,12 @@ namespace SheepTools.Model
             }
         }
 
-        static public IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        public static IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
         {
             return GeneratePointRangeIteratingOverYFirst(xRange.Select(x => (double)x), yRange.Select(y => (double)y));
         }
 
-        static public IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<double> xRange, IEnumerable<double> yRange)
+        public static IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<double> xRange, IEnumerable<double> yRange)
         {
             foreach (double y in yRange)
             {
@@ -101,7 +101,7 @@ namespace SheepTools.Model
             }
         }
 
-        static public IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        public static IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
         {
             return GeneratePointRangeIteratingOverXFirst(xRange.Select(x => (double)x), yRange.Select(y => (double)y));
         }
