@@ -19,12 +19,17 @@
     <Description>
       Handy toolbox with XUnit-related extension methods.
     </Description>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/eduherminio/SheepTools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
@@ -36,10 +41,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Dev dependencies">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>
