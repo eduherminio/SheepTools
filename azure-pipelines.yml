@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
     - master
+    - fix-coverage
 
 stages:
 - stage: CI
@@ -53,7 +54,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=false'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
