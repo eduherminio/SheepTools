@@ -14,8 +14,12 @@ namespace SheepTools.Test
             const double x = 5;
 
             var y = LinearInterpolation.InterpolateLinearly(x, x0, x1, y0, y1);
+            var anotherY0 = LinearInterpolation.InterpolateLinearly(x0, x0, x1, y0, y1);
+            var anotherY1 = LinearInterpolation.InterpolateLinearly(x1, x0, x1, y0, y1);
 
             Assert.Equal(x, y);
+            Assert.Equal(y0, anotherY0);
+            Assert.Equal(y1, anotherY1);
         }
 
         [Fact]
@@ -39,10 +43,12 @@ namespace SheepTools.Test
 
             const double x = 8;
 
-            var p3 = LinearInterpolation.InterpolateLinearly(x, p1, p2);
+            var p3 = LinearInterpolation.InterpolateYLinearly(x, p1, p2);
+            var p4 = LinearInterpolation.InterpolateXLinearly(p3.Y, p1, p2);
 
             Assert.Equal(x, p3.X);
             Assert.Equal(x - 1, p3.Y);
+            Assert.Equal(p3, p4);
         }
     }
 }

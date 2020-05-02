@@ -68,12 +68,12 @@ namespace SheepTools.Extensions
         }
 
         /// <summary>
-        /// Returns list of assembly names containing type/types implementing T
+        /// Returns list of assembly names containing type/types implementing TInterface
         /// Method searches in Entry assembly and all its referenced ones
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
         /// <returns>string Collection</returns>
-        public static IEnumerable<string> GetAssemblies<T>()
+        public static IEnumerable<string> GetAssemblies<TInterface>()
         {
             IList<string> validAssemblies = new List<string>();
             IList<AssemblyName> assemblies = new List<AssemblyName>();
@@ -84,7 +84,7 @@ namespace SheepTools.Extensions
                 var candidate = Assembly.Load(assemblyName);
                 foreach (var ti in candidate.DefinedTypes)
                 {
-                    if (ti.ImplementedInterfaces.Contains(typeof(T)))
+                    if (ti.ImplementedInterfaces.Contains(typeof(TInterface)))
                     {
                         validAssemblies.Add(candidate.GetName().Name);
                     }
