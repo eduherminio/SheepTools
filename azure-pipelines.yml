@@ -53,7 +53,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration --no-restore Release /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
