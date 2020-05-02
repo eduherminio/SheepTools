@@ -354,3 +354,6 @@ TestResults/
 CodeCoverage/
 *.opencover.xml
 *.cobertura.xml
+
+# https://github.com/dotnet/sourcelink/issues/572
+*.AssemblyAttributes
