@@ -1,0 +1,206 @@
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: CI
+  displayName: 'Build & test'
+  jobs:
+  - job: ci
+    displayName: 'Build & test'
+    strategy:
+      maxParallel: 3
+      matrix:
+        linux:
+          imageName: 'ubuntu-latest'
+        mac:
+          imageName: 'macOS-latest'
+        windows:
+          imageName: 'windows-latest'
+    pool:
+      vmImage: $(imageName)
+    variables:
+      disable.coverage.autogenerate: 'true'
+      EscapedComma: '%2c'
+      TestResults: '$(Agent.TempDirectory)'
+      CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
+    steps:
+
+    - task: SonarCloudPrepare@1
+      displayName: 'Prepare SonarCloud analysis'
+      condition: eq(variables['imageName'], 'windows-latest')
+      inputs:
+        SonarCloud: 'SheepTools_SonarCloud'
+        organization: 'eduherminio-github'
+        scannerMode: 'MSBuild'
+        projectKey: 'SheepTools'
+        projectName: 'SheepTools'
+        extraProperties: |
+            sonar.cs.opencover.reportsPaths="$(Build.SourcesDirectory)/**/coverage.opencover.xml"
+            sonar.cs.vstest.reportsPaths="$(TestResults)/**/*.trx"
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: restore
+        arguments: '--configuration Release'
+        projects: 'SheepToolsSolution.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build'
+      inputs:
+        command: build
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        projects: 'SheepToolsSolution.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run tests'
+      inputs:
+        command: test
+        arguments: >-
+            --configuration Release --no-build
+            /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura$(EscapedComma)opencover"
+            /p:CoverletOutput=./CoverageResults/ /p:ExcludeByFile="**/*Exceptions.cs$(EscapedComma)**/*Test.cs"
+        nobuild: true
+        projects: '**/*.Test.csproj'
+        publishTestResults: true
+
+    - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+      displayName: 'Generate tests report'
+      condition: eq(variables['imageName'], 'ubuntu-latest')
+      inputs:
+        reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+        targetdir: '$(CoverageResults)'
+        reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+        assemblyfilters: '-xunit*'
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      condition: eq(variables['imageName'], 'ubuntu-latest')
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(CoverageResults)/Cobertura.xml'
+        reportDirectory: '$(CoverageResults)'
+        pathToSources: '$(Build.SourcesDirectory)'
+
+    - task: SonarCloudAnalyze@1
+      displayName: 'Perform SonarCloud analysis'
+      condition: eq(variables['imageName'], 'windows-latest')
+
+    - task: SonarCloudPublish@1
+      displayName: 'Publish SonarCloud analysis'
+      condition: eq(variables['imageName'], 'windows-latest')
+      inputs:
+        pollingTimeoutSec: '300'
+
+- stage: CD
+  displayName: 'Pack & push'
+  dependsOn: 'CI'
+  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['PackageVersion'], ''))
+  # It makes sense to allow other branches only of version replacement works with pre-release labels (-alpha-1, etc.)
+  jobs:
+  - job: cd
+    displayName: 'Pack & push linux'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Setup NuGet'
+      inputs:
+        versionSpec: '5.5.0'
+        checkLatest: true
+
+    - task: CmdLine@2
+      displayName: 'Setup Git'
+      inputs:
+        failOnStderr: true
+        script: |
+            git config --replace-all user.email "azure@devops.com"
+            git config --replace-all user.name "Azure DevOps"
+
+    - task: CmdLine@2
+      displayName: 'Setup dotnet-version-cli'
+      inputs:
+        failOnStderr: true
+        script: |
+            dotnet new tool-manifest
+            dotnet tool install dotnet-version-cli --version 1.1.2
+
+    #- task: CmdLine@2
+    #  displayName: 'Modify SheepTools version'
+    #  inputs:
+    #    failOnStderr: true
+    #    script: |
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: restore
+        arguments: '--configuration Release'
+        projects: 'SheepToolsSolution.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build'
+      inputs:
+        command: build
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        projects: 'SheepToolsSolution.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Generate SheepTools NuGet package'
+      inputs:
+        command: 'pack'
+        arguments: '--configuration Release'
+        configuration: 'Release'
+        packagesToPack: 'src/**/*.csproj'
+        nobuild: true
+        packDirectory: '$(Build.SourcesDirectory)/SheepTools/Artifacts'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish artifact with NuGet package and its symbols'
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/SheepTools/Artifacts/'
+        artifactName: 'SheepTools'
+
+    - task: NuGetCommand@2
+      displayName: 'Push NuGet package'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_NuGet'
+        verbosityPush: 'Detailed'
+
+    - task: NuGetCommand@2
+      displayName: 'Push GitHub package'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_GitHub'
+        verbosityPush: 'Detailed'
+
+    - task: CmdLine@2
+      displayName: 'Commit and push version increment'
+      inputs:
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
+        script: |
+          git checkout master
+          git status
+          git add -A
+          git commit -m "Release v$(PackageVersion)"
+          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
+          git push
+          git push --tags

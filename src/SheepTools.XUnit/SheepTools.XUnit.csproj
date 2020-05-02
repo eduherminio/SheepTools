@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <IsPackable>true</IsPackable>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Title>SheepTools.XUnit</Title>
+    <PackageId>SheepTools.XUnit</PackageId>
+    <Version>0.1.0-alpha</Version>
+    <PackageTags>Tools, Productivity, Extensions</PackageTags>
+    <Tags>$(PackageTags)</Tags>
+    <Authors>Eduardo Cáceres</Authors>
+    <Description>
+      Handy toolbox with XUnit-related extension methods.
+    </Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eduherminio/SheepTools</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Workaround for https://github.com/dotnet/sourcelink/issues/572">
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+  </PropertyGroup>
+
+  <ItemGroup Label="Workaround for https://github.com/dotnet/sourcelink/issues/572">
+    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+</Project>
