@@ -355,5 +355,8 @@ CodeCoverage/
 *.opencover.xml
 *.cobertura.xml
 
+# dotnet tools
+.config/
+
 # https://github.com/dotnet/sourcelink/issues/572
 *.AssemblyAttributes
