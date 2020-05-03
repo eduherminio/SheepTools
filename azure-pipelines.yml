@@ -199,16 +199,17 @@ stages:
         publishFeedCredentials: 'SheepTools_GitHub'
         verbosityPush: 'Detailed'
 
-    #- task: CmdLine@2
-    #  displayName: 'Commit and push version increment'
-    #  inputs:
-    #    failOnStderr: true
-    #    workingDirectory: $(Build.SourcesDirectory)/SheepTools
-    #    script: |
-    #      git checkout master
-    #      git status
-    #      git add -A
-    #      git commit -m "Release v$(PackageVersion)"
-    #      git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
-    #      git push
-    #      git push --tags
+    - task: CmdLine@2
+      displayName: 'Commit and push version increment'
+      condition: eq(variables['NoCommit'], '')
+      inputs:
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
+        script: |
+          git checkout master
+          git status
+          git add -A
+          git commit -m "Release v$(PackageVersion)"
+          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
+          git push
+          git push --tags
