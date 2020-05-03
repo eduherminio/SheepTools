@@ -5,6 +5,14 @@ trigger:
     include:
     - master
 
+schedules:
+- cron: "1 0 * * 1"
+  displayName: 'Weekly midnight build'
+  always: true
+  branches:
+    include:
+    - master
+
 stages:
 - stage: CI
   displayName: 'Build & test'
@@ -53,7 +61,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=false'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
