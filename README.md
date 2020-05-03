@@ -3,8 +3,8 @@
 [![Azure DevOps][azuredevopslogo]][azuredevopslink]
 [![GitHub Actions][githubactionslogo]][githubactionslink]
 
+[![Code coverage][coveragelogo]][coveragelink]
 [![Sonar Quality][sonarqualitylogo]][sonarqubelink]
-[![Code coverage][sonarcoveragelogo]][sonarqubelink]
 [![Sonar vulnerabilities][sonarvulnerabilitieslogo]][sonarqubelink]
 [![Sonar bugs][sonarbugslogo]][sonarqubelink]
 [![Sonar code smells][sonarcodesmellslogo]][sonarqubelink]
@@ -235,9 +235,10 @@ Depends on [XUnit](https://xunit.net/).
 [nugetlink-moq]: https://www.nuget.org/packages/SheepTools.Moq
 [nugetlogo-xunit]: https://img.shields.io/nuget/v/SheepTools.XUnit.svg?style=flat-square&label=nuget
 [nugetlink-xunit]: https://www.nuget.org/packages/SheepTools.XUnit
+[coveragelogo]: https://img.shields.io/azure-devops/coverage/eduherminio/Sheeptools/8/master
+[coveragelink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=8&branchName=master
 [sonarqubelink]: https://sonarcloud.io/dashboard?id=SheepTools
 [sonarqualitylogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=alert_status
-[sonarcoveragelogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=coverage
 [sonarvulnerabilitieslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=vulnerabilities
 [sonarbugslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=bugs
 [sonarcodesmellslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=code_smells
