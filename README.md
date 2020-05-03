@@ -185,7 +185,7 @@ Helper methods to interpolate 2D points
 
 ## SheepTools.Moq
 
-[![Nuget][nugetlogo]][nugetlink]
+[![Nuget][nugetlogo-moq]][nugetlink-moq]
 
 Depends on [Moq](https://github.com/moq/moq4) and [Microsoft.Extensions.Logging](https://www.nuget.org/packages/Microsoft.Extensions.Logging/).
 
@@ -213,7 +213,7 @@ Helps verifying `ILogger<T>` invocations.
 
 ## SheepTools.XUnit
 
-[![Nuget][nugetlogo]][nugetlink]
+[![Nuget][nugetlogo-xunit]][nugetlink-xunit]
 
 <a name="asssert"></a>
 
