@@ -31,5 +31,15 @@ namespace SheepTools.Extensions
         {
             return (dateTime - new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds;
         }
+
+        /// <summary>
+        /// Returns a unique string id with format yyyy'-'MM'-'dd'__'HH'_'mm'_'ss
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static string StringId(this DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy'-'MM'-'dd'__'HH'_'mm'_'ss");
+        }
     }
 }

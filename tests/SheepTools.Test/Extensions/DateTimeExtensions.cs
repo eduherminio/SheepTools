@@ -32,6 +32,26 @@ namespace SheepTools.Test.Extensions
             var epochPlusOneHour = new DateTime(1970, 1, 1, 1, 0, 0);
             Assert.Equal(3600 * 1_000, epochPlusOneHour.MillisecondsFromEpoch());
         }
+
+        [Fact]
+        public void StringId()
+        {
+            // Arrange
+            var date = DateTime.Now;
+
+            // Act
+            var stringId = date.StringId();
+
+            // Assert
+            var parsedDate = DateTime.ParseExact(stringId, "yyyy'-'MM'-'dd'__'HH'_'mm'_'ss", null);
+
+            Assert.Equal(date.Year, parsedDate.Year);
+            Assert.Equal(date.Month, parsedDate.Month);
+            Assert.Equal(date.Day, parsedDate.Day);
+            Assert.Equal(date.Hour, parsedDate.Hour);
+            Assert.Equal(date.Minute, parsedDate.Minute);
+            Assert.Equal(date.Second, parsedDate.Second);
+        }
     }
 
     internal static class DateTimeExtension
