@@ -13,6 +13,9 @@ schedules:
     include:
     - master
 
+variables:
+  SdkVersion: '3.1.x'
+
 stages:
 - stage: CI
   displayName: 'Build & test'
@@ -36,6 +39,13 @@ stages:
       TestResults: '$(Agent.TempDirectory)'
       CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
     steps:
+
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk v$(SdkVersion)'
+      inputs:
+        packageType: sdk
+        version: '$(SdkVersion)'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
@@ -120,6 +130,13 @@ stages:
       persistCredentials: true
       clean: true
 
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk v$(SdkVersion)'
+      inputs:
+        packageType: sdk
+        version: '$(SdkVersion)'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
     - task: NuGetToolInstaller@1
       displayName: 'Setup NuGet'
       inputs:
@@ -142,14 +159,15 @@ stages:
             dotnet new tool-manifest
             dotnet tool install dotnet-version-cli --version 1.1.2
 
-    #- task: CmdLine@2
-    #  displayName: 'Modify SheepTools version'
-    #  inputs:
-    #    failOnStderr: true
-    #    script: |
-    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
-    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
-    #        dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+    - task: CmdLine@2
+      displayName: 'Modify SheepTools version'
+      condition: ne(variables['PackageVersion'], '')
+      inputs:
+        failOnStderr: true
+        script: |
+            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools/SheepTools.csproj --skip-vcs $(PackageVersion)
 
     - task: DotNetCoreCLI@2
       displayName: 'Restore'
@@ -183,6 +201,7 @@ stages:
 
     - task: NuGetCommand@2
       displayName: 'Push NuGet package'
+      condition: ne(variables['PackageVersion'], '')
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
@@ -192,6 +211,7 @@ stages:
 
     - task: NuGetCommand@2
       displayName: 'Push GitHub package'
+      condition: ne(variables['PackageVersion'], '')
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
@@ -201,7 +221,7 @@ stages:
 
     - task: CmdLine@2
       displayName: 'Commit and push version increment'
-      condition: eq(variables['NoCommit'], '')
+      condition: and(eq(variables['NoCommit'], ''), ne(variables['PackageVersion'], ''))
       inputs:
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
