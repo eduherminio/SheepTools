@@ -117,7 +117,7 @@ stages:
 - stage: CD
   displayName: 'Pack & push'
   dependsOn: 'CI'
-  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['PackageVersion'], ''))
+  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   # It makes sense to allow other branches only of version replacement works with pre-release labels (-alpha-1, etc.)
   jobs:
   - job: cd
