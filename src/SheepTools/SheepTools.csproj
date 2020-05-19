@@ -26,14 +26,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
-  <PropertyGroup Label="Workaround for https://github.com/dotnet/sourcelink/issues/572">
-    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
-  </PropertyGroup>
-
-  <ItemGroup Label="Workaround for https://github.com/dotnet/sourcelink/issues/572">
-    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
-  </ItemGroup>
-
   <ItemGroup>
     <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath=""/>
   </ItemGroup>
