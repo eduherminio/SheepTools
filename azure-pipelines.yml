@@ -29,11 +29,11 @@ stages:
     pool:
       vmImage: $(imageName)
     variables:
-      PackageVersion: '0.0.0-ci-${{ variables.BuildID }}'
+      PackageVersion: '0.0.0-ci-${{ BuildID }}'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
-      TestResults: '${{ variables.Agent.TempDirectory }}'
-      CoverageResults: '${{ variables.Build.SourcesDirectory }}/CoverageResults'
+      TestResults: '${{ Agent.TempDirectory }}'
+      CoverageResults: '${{ Build.SourcesDirectory }}/CoverageResults'
       DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
 
@@ -68,18 +68,18 @@ stages:
             sonar.cs.opencover.reportsPaths="$(Build.SourcesDirectory)/**/coverage.opencover.xml"
             sonar.cs.vstest.reportsPaths="$(TestResults)/**/*.trx"
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore'
-      inputs:
-        command: restore
-        arguments: '--configuration Release'
-        projects: 'SheepToolsSolution.sln'
+#    - task: DotNetCoreCLI@2
+#      displayName: 'Restore'
+#      inputs:
+#        command: restore
+#        arguments: '--configuration Release'
+#        projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release /p:ContinuousIntegrationBuild=true'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
