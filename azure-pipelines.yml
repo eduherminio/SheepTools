@@ -33,7 +33,7 @@ stages:
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
       TestResults: '${{ variables.Agent.TempDirectory }}'
-      CoverageResults: '${{ Build.SourcesDirectory }}/CoverageResults'
+      CoverageResults: '${{ variables.Build.SourcesDirectory }}/CoverageResults'
       DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
 
