@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
@@ -10,7 +10,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>SheepTools.Moq</Title>
     <PackageId>SheepTools.Moq</PackageId>
-    <Version>0.2.0-alpha-1</Version>
+    <Version>0.1.0</Version>
     <PackageTags>Tools, Productivity, Extensions</PackageTags>
     <Tags>$(PackageTags)</Tags>
     <Authors>Eduardo Cáceres</Authors>
