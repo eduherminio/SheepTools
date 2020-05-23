@@ -34,10 +34,12 @@ stages:
     pool:
       vmImage: $(imageName)
     variables:
+      PackageVersion: '0.0.0-ci-$(BuildID)'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
       TestResults: '$(Agent.TempDirectory)'
       CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
+      DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
 
     - task: UseDotNet@2
@@ -45,7 +47,18 @@ stages:
       inputs:
         packageType: sdk
         version: '$(SdkVersion)'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: CmdLine@2
+      displayName: 'Modify SheepTools version'
+      condition: and(eq(variables['imageName'], 'ubuntu-latest'), ne(variables['Push'], ''))
+      inputs:
+        failOnStderr: true
+        script: |
+            dotnet new tool-manifest
+            dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
+            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
 
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
@@ -71,7 +84,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=false'
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
@@ -104,87 +117,9 @@ stages:
         reportDirectory: '$(CoverageResults)'
         pathToSources: '$(Build.SourcesDirectory)'
 
-    - task: SonarCloudAnalyze@1
-      displayName: 'Perform SonarCloud analysis'
-      condition: eq(variables['imageName'], 'windows-latest')
-
-    - task: SonarCloudPublish@1
-      displayName: 'Publish SonarCloud analysis'
-      condition: eq(variables['imageName'], 'windows-latest')
-      inputs:
-        pollingTimeoutSec: '300'
-
-- stage: CD
-  displayName: 'Pack & push'
-  dependsOn: 'CI'
-  condition: and(succeeded('CI'), true)
-  # It makes sense to allow other branches only of version replacement works with pre-release labels (-alpha-1, etc.)
-  jobs:
-  - job: cd
-    displayName: 'Pack & push linux'
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-
-    - checkout: self
-      persistCredentials: true
-      clean: true
-
-    - task: UseDotNet@2
-      displayName: 'Use .NET Core sdk v$(SdkVersion)'
-      inputs:
-        packageType: sdk
-        version: '$(SdkVersion)'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-
-    - task: NuGetToolInstaller@1
-      displayName: 'Setup NuGet'
-      inputs:
-        versionSpec: '5.5.0'
-        checkLatest: true
-
-    - task: CmdLine@2
-      displayName: 'Setup Git'
-      inputs:
-        failOnStderr: true
-        script: |
-            git config --replace-all user.email "azure@devops.com"
-            git config --replace-all user.name "Azure DevOps"
-
-    - task: CmdLine@2
-      displayName: 'Setup dotnet-version-cli'
-      inputs:
-        failOnStderr: true
-        script: |
-            dotnet new tool-manifest
-            dotnet tool install dotnet-version-cli --version 2.0.0-next.7
-
-    - task: CmdLine@2
-      displayName: 'Modify SheepTools version'
-      condition: ne(variables['PackageVersion'], '')
-      inputs:
-        failOnStderr: true
-        script: |
-            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore'
-      inputs:
-        command: restore
-        arguments: '--configuration Release'
-        projects: 'SheepToolsSolution.sln'
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Build'
-      inputs:
-        command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
-        projects: 'SheepToolsSolution.sln'
-
     - task: DotNetCoreCLI@2
       displayName: 'Generate SheepTools NuGet package'
+      condition: eq(variables['imageName'], 'ubuntu-latest')
       inputs:
         command: 'pack'
         arguments: '--configuration Release'
@@ -195,13 +130,50 @@ stages:
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish artifact with NuGet package and its symbols'
+      condition: eq(variables['imageName'], 'ubuntu-latest')
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/SheepTools/Artifacts/'
         artifactName: 'SheepTools'
 
+    - task: SonarCloudAnalyze@1
+      displayName: 'Perform SonarCloud analysis'
+      condition: eq(variables['imageName'], 'windows-latest')
+
+    - task: SonarCloudPublish@1
+      displayName: 'Publish SonarCloud analysis'
+      condition: eq(variables['imageName'], 'windows-latest')
+      inputs:
+        pollingTimeoutSec: '300'
+
+- stage: Publish
+  displayName: 'Publish packages'
+  dependsOn: 'CI'
+  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['BuildID'])), ne(variables['Push'], '')))
+  jobs:
+  - job: cd
+    displayName: 'Publish package linux'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: SheepTools
+        path: $(Build.SourcesDirectory)/SheepTools/Artifacts/
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Setup NuGet'
+      inputs:
+        versionSpec: '5.5.0'
+        checkLatest: true
+
 #    - task: NuGetCommand@2
 #      displayName: 'Push NuGet package'
-#      condition: ne(variables['PackageVersion'], '')
+#      condition: and(ne(variables['PackageVersion'], ''), eq(variables['NoNuGetPush'], ''))
 #      inputs:
 #        command: 'push'
 #        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
@@ -211,7 +183,7 @@ stages:
 #
 #    - task: NuGetCommand@2
 #      displayName: 'Push GitHub package'
-#      condition: ne(variables['PackageVersion'], '')
+#      condition: and(ne(variables['PackageVersion'], ''), eq(variables['NoGitHubPush'], ''))
 #      inputs:
 #        command: 'push'
 #        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
@@ -220,22 +192,34 @@ stages:
 #        verbosityPush: 'Detailed'
 
     - task: CmdLine@2
-      displayName: 'Commit and push version increment'
-      condition: and(eq(variables['NoCommit'], ''), ne(variables['PackageVersion'], ''))
+      displayName: 'Modify SheepTools version'
       inputs:
         failOnStderr: true
+        script: |
+            dotnet new tool-manifest
+            dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
+            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
+
+    - task: CmdLine@2
+      displayName: 'Commit and push version increment'
+      condition: eq(variables['NoCommit'], '')
+      inputs:
+        failOnStderr: false
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
+          git config --replace-all user.email "azure@devops.com"
+          git config --replace-all user.name "Azure DevOps"
           git switch $(Build.SourceBranchName)
           git status
-          git commit -am "Release v$(PackageVersion) [skip ci]"
+          git commit -am "Release v$(PackageVersion)"
           git push
 
         #script: |
-        #  git checkout master
+        #  git switch master
         #  git status
-        #  git add -A
-        #  git commit -m "Release v$(PackageVersion)"
+        #  git commit -am "Release v$(PackageVersion)"
         #  git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
         #  git push
         #  git push --tags
