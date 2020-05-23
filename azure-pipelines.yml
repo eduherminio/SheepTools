@@ -226,10 +226,9 @@ stages:
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
-          git checkout $(Build.SourceBranchName)
+          git switch $(Build.SourceBranchName)
           git status
-          git add -A
-          git commit -m "Release v$(PackageVersion) [skip ci]"
+          git commit -am "Release v$(PackageVersion) [skip ci]"
           git push
 
         #script: |
