@@ -117,7 +117,7 @@ stages:
 - stage: CD
   displayName: 'Pack & push'
   dependsOn: 'CI'
-  condition: and(succeeded('CI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded('CI'), true)
   # It makes sense to allow other branches only of version replacement works with pre-release labels (-alpha-1, etc.)
   jobs:
   - job: cd
@@ -157,7 +157,7 @@ stages:
         failOnStderr: true
         script: |
             dotnet new tool-manifest
-            dotnet tool install dotnet-version-cli --version 1.1.2
+            dotnet tool install dotnet-version-cli --version 2.0.0-next.6
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
@@ -199,25 +199,25 @@ stages:
         pathtoPublish: '$(Build.SourcesDirectory)/SheepTools/Artifacts/'
         artifactName: 'SheepTools'
 
-    - task: NuGetCommand@2
-      displayName: 'Push NuGet package'
-      condition: ne(variables['PackageVersion'], '')
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'SheepTools_NuGet'
-        verbosityPush: 'Detailed'
-
-    - task: NuGetCommand@2
-      displayName: 'Push GitHub package'
-      condition: ne(variables['PackageVersion'], '')
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'SheepTools_GitHub'
-        verbosityPush: 'Detailed'
+#    - task: NuGetCommand@2
+#      displayName: 'Push NuGet package'
+#      condition: ne(variables['PackageVersion'], '')
+#      inputs:
+#        command: 'push'
+#        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+#        nuGetFeedType: 'external'
+#        publishFeedCredentials: 'SheepTools_NuGet'
+#        verbosityPush: 'Detailed'
+#
+#    - task: NuGetCommand@2
+#      displayName: 'Push GitHub package'
+#      condition: ne(variables['PackageVersion'], '')
+#      inputs:
+#        command: 'push'
+#        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+#        nuGetFeedType: 'external'
+#        publishFeedCredentials: 'SheepTools_GitHub'
+#        verbosityPush: 'Detailed'
 
     - task: CmdLine@2
       displayName: 'Commit and push version increment'
@@ -226,10 +226,16 @@ stages:
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
-          git checkout master
           git status
           git add -A
           git commit -m "Release v$(PackageVersion)"
-          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
           git push
-          git push --tags
+
+        #script: |
+        #  git checkout master
+        #  git status
+        #  git add -A
+        #  git commit -m "Release v$(PackageVersion)"
+        #  git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
+        #  git push
+        #  git push --tags
