@@ -29,11 +29,11 @@ stages:
     pool:
       vmImage: $(imageName)
     variables:
-      PackageVersion: '0.0.0-ci-$(BuildID)'
+      PackageVersion: '0.0.0-ci-${{ variables.BuildID }}'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
-      TestResults: '$(Agent.TempDirectory)'
-      CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
+      TestResults: '${{ variables.Agent.TempDirectory }}'
+      CoverageResults: '${{ variables.Build.SourcesDirectory }}/CoverageResults'
       DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
 
@@ -45,7 +45,7 @@ stages:
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
-      condition: and(eq(variables['imageName'], 'ubuntu-latest'), ne(variables['Push'], ''))
+      condition: eq(variables['imageName'], 'ubuntu-latest')
       inputs:
         failOnStderr: true
         script: |
@@ -89,7 +89,7 @@ stages:
         arguments: >-
             --configuration Release --no-build
             /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura$(EscapedComma)opencover"
-            /p:CoverletOutput=./CoverageResults/ /p:ExcludeByFile="**/*Exceptions.cs$(EscapedComma)**/*Test.cs"
+            /p:CoverletOutput=$(CoverageResults)/ /p:ExcludeByFile="**/*Exceptions.cs$(EscapedComma)**/*Test.cs"
         nobuild: true
         projects: '**/*.Test.csproj'
         publishTestResults: true
