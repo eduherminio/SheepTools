@@ -143,7 +143,7 @@ stages:
 - stage: Publish
   displayName: 'Publish packages'
   dependsOn: 'CI'
-  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['BuildID'])), ne(variables['Push'], '')))
+  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['BuildID']), ne(variables['Push'], ''))
   jobs:
   - job: cd
     displayName: 'Publish package linux'
