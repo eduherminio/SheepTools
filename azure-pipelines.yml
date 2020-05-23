@@ -1,10 +1,5 @@
 name: $(BuildID)
 
-trigger:
-  branches:
-    include:
-    - master
-
 schedules:
 - cron: "1 0 * * 1"
   displayName: 'Weekly build'
