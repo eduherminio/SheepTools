@@ -29,10 +29,10 @@ stages:
     pool:
       vmImage: $(imageName)
     variables:
-      PackageVersion: '0.0.0-ci-${{ BuildID }}'
+      PackageVersion: '0.0.0-ci-${{ variables.Build.BuildNumber }}'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
-      TestResults: '${{ Agent.TempDirectory }}'
+      TestResults: '${{ variables.Agent.TempDirectory }}'
       CoverageResults: '${{ Build.SourcesDirectory }}/CoverageResults'
       DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
