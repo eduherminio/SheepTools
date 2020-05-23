@@ -157,7 +157,7 @@ stages:
         failOnStderr: true
         script: |
             dotnet new tool-manifest
-            dotnet tool install dotnet-version-cli --version 2.0.0-next.6
+            dotnet tool install dotnet-version-cli --version 2.0.0-next.7
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
