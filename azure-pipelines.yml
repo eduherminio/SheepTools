@@ -10,6 +10,7 @@ schedules:
 
 variables:
   SdkVersion: '3.1.x'
+  DotnetVersionCliVersion: '2.0.0-next.7'
 
 stages:
 - stage: CI
@@ -35,7 +36,6 @@ stages:
       EscapedComma: '%2c'
       TestResults: '$(Agent.TempDirectory)'
       CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
-      DotnetVersionCliVersion: '2.0.0-next.7'
     steps:
 
     - task: UseDotNet@2
@@ -46,7 +46,7 @@ stages:
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
-      condition: eq(variables['imageName'], 'ubuntu-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
       inputs:
         failOnStderr: true
         script: |
@@ -56,17 +56,9 @@ stages:
             dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
             dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
 
-    #- task: PowerShell@2
-    #displayName: "Use JDK11 by default"
-    #inputs:
-    #targetType: 'inline'
-    #script: |
-    #    $jdkPath = $env:JAVA_HOME_11_X64
-    #    Write-Host "##vso[task.setvariable variable=JAVA_HOME]$jdkPath"
-
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
-      condition: eq(variables['imageName'], 'windows-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'windows-latest'))
       inputs:
         SonarCloud: 'SheepTools_SonarCloud'
         organization: 'eduherminio-github'
@@ -105,7 +97,7 @@ stages:
 
     - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
       displayName: 'Generate tests report'
-      condition: eq(variables['imageName'], 'ubuntu-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
       inputs:
         reports: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
         targetdir: '$(CoverageResults)'
@@ -114,7 +106,7 @@ stages:
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
-      condition: eq(variables['imageName'], 'ubuntu-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
       inputs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(CoverageResults)/Cobertura.xml'
@@ -123,7 +115,7 @@ stages:
 
     - task: DotNetCoreCLI@2
       displayName: 'Generate SheepTools NuGet package'
-      condition: eq(variables['imageName'], 'ubuntu-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
       inputs:
         command: 'pack'
         arguments: '--configuration Release'
@@ -134,18 +126,18 @@ stages:
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish artifact with NuGet package and its symbols'
-      condition: eq(variables['imageName'], 'ubuntu-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/SheepTools/Artifacts/'
         artifactName: 'SheepTools'
 
     - task: SonarCloudAnalyze@1
       displayName: 'Perform SonarCloud analysis'
-      condition: eq(variables['imageName'], 'windows-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'windows-latest'))
 
     - task: SonarCloudPublish@1
       displayName: 'Publish SonarCloud analysis'
-      condition: eq(variables['imageName'], 'windows-latest')
+      condition: and(succeeded(), eq(variables['imageName'], 'windows-latest'))
       inputs:
         pollingTimeoutSec: '300'
 
@@ -177,7 +169,7 @@ stages:
 
 #    - task: NuGetCommand@2
 #      displayName: 'Push NuGet package'
-#      condition: eq(variables['NoNuGetPush'], '')
+#      condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
 #      inputs:
 #        command: 'push'
 #        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
@@ -187,7 +179,7 @@ stages:
 #
 #    - task: NuGetCommand@2
 #      displayName: 'Push GitHub package'
-#      condition: eq(variables['NoGitHubPush'], '')
+#      condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
 #      inputs:
 #        command: 'push'
 #        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
