@@ -195,7 +195,6 @@ stages:
       displayName: 'Commit and push version increment'
       condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
-        failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git config --replace-all user.email "azure@devops.com"
