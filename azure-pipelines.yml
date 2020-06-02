@@ -69,13 +69,6 @@ stages:
             sonar.cs.opencover.reportsPaths="$(Build.SourcesDirectory)/**/coverage.opencover.xml"
             sonar.cs.vstest.reportsPaths="$(TestResults)/**/*.trx"
 
-#    - task: DotNetCoreCLI@2
-#      displayName: 'Restore'
-#      inputs:
-#        command: restore
-#        arguments: '--configuration Release'
-#        projects: 'SheepToolsSolution.sln'
-
     - task: DotNetCoreCLI@2
       displayName: 'Build'
       inputs:
@@ -167,25 +160,25 @@ stages:
         versionSpec: '5.5.0'
         checkLatest: true
 
-#    - task: NuGetCommand@2
-#      displayName: 'Push NuGet package'
-#      condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
-#      inputs:
-#        command: 'push'
-#        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-#        nuGetFeedType: 'external'
-#        publishFeedCredentials: 'SheepTools_NuGet'
-#        verbosityPush: 'Detailed'
-#
-#    - task: NuGetCommand@2
-#      displayName: 'Push GitHub package'
-#      condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
-#      inputs:
-#        command: 'push'
-#        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-#        nuGetFeedType: 'external'
-#        publishFeedCredentials: 'SheepTools_GitHub'
-#        verbosityPush: 'Detailed'
+    #- task: NuGetCommand@2
+    #  displayName: 'Push NuGet package'
+    #  condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
+    #  inputs:
+    #    command: 'push'
+    #    packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+    #    nuGetFeedType: 'external'
+    #    publishFeedCredentials: 'SheepTools_NuGet'
+    #    verbosityPush: 'Detailed'
+    #
+    #- task: NuGetCommand@2
+    #  displayName: 'Push GitHub package'
+    #  condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
+    #  inputs:
+    #    command: 'push'
+    #    packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+    #    nuGetFeedType: 'external'
+    #    publishFeedCredentials: 'SheepTools_GitHub'
+    #    verbosityPush: 'Detailed'
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
@@ -202,7 +195,7 @@ stages:
       displayName: 'Commit and push version increment'
       condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
-        failOnStderr: false
+        failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git config --replace-all user.email "azure@devops.com"
