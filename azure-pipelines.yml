@@ -70,10 +70,17 @@ stages:
             sonar.cs.vstest.reportsPaths="$(TestResults)/**/*.trx"
 
     - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: restore
+        arguments: '--configuration Release'
+        projects: 'SheepToolsSolution.sln'
+
+    - task: DotNetCoreCLI@2
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
