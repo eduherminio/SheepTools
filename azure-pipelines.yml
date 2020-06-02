@@ -56,6 +56,14 @@ stages:
             dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
             dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
 
+    #- task: PowerShell@2
+    #displayName: "Use JDK11 by default"
+    #inputs:
+    #targetType: 'inline'
+    #script: |
+    #    $jdkPath = $env:JAVA_HOME_11_X64
+    #    Write-Host "##vso[task.setvariable variable=JAVA_HOME]$jdkPath"
+
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
       condition: eq(variables['imageName'], 'windows-latest')
@@ -200,7 +208,7 @@ stages:
 
     - task: CmdLine@2
       displayName: 'Commit and push version increment'
-      condition: eq(variables['NoCommit'], '')
+      condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
         failOnStderr: false
         workingDirectory: $(Build.SourcesDirectory)/SheepTools
@@ -213,7 +221,9 @@ stages:
           git push
 
         #script: |
-        #  git switch master
+        #  git config --replace-all user.email "azure@devops.com"
+        #  git config --replace-all user.name "Azure DevOps"
+        #  git switch $(Build.SourceBranchName)
         #  git status
         #  git commit -am "Release v$(PackageVersion)"
         #  git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
