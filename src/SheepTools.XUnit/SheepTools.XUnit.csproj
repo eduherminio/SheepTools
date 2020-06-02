@@ -5,7 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
-	<SonarQubeTestProject>false</SonarQubeTestProject>
+    <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath=""/>
+    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <PropertyGroup>
