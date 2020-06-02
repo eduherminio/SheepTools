@@ -167,25 +167,25 @@ stages:
         versionSpec: '5.5.0'
         checkLatest: true
 
-    #- task: NuGetCommand@2
-    #  displayName: 'Push NuGet package'
-    #  condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
-    #  inputs:
-    #    command: 'push'
-    #    packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-    #    nuGetFeedType: 'external'
-    #    publishFeedCredentials: 'SheepTools_NuGet'
-    #    verbosityPush: 'Detailed'
-    #
-    #- task: NuGetCommand@2
-    #  displayName: 'Push GitHub package'
-    #  condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
-    #  inputs:
-    #    command: 'push'
-    #    packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-    #    nuGetFeedType: 'external'
-    #    publishFeedCredentials: 'SheepTools_GitHub'
-    #    verbosityPush: 'Detailed'
+    - task: NuGetCommand@2
+      displayName: 'Push NuGet package'
+      condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_NuGet'
+        verbosityPush: 'Detailed'
+
+    - task: NuGetCommand@2
+      displayName: 'Push GitHub package'
+      condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'SheepTools_GitHub'
+        verbosityPush: 'Detailed'
 
     - task: CmdLine@2
       displayName: 'Modify SheepTools version'
@@ -209,14 +209,6 @@ stages:
           git switch $(Build.SourceBranchName)
           git status
           git commit -am "Release v$(PackageVersion)"
+          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
           git push
-
-        #script: |
-        #  git config --replace-all user.email "azure@devops.com"
-        #  git config --replace-all user.name "Azure DevOps"
-        #  git switch $(Build.SourceBranchName)
-        #  git status
-        #  git commit -am "Release v$(PackageVersion)"
-        #  git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
-        #  git push
-        #  git push --tags
+          git push --tags
