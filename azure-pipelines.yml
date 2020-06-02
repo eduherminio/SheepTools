@@ -14,10 +14,10 @@ variables:
 
 stages:
 - stage: CI
-  displayName: 'Build & test'
+  displayName: 'CI'
   jobs:
   - job: ci
-    displayName: 'Build & test'
+    displayName: 'CI'
     strategy:
       maxParallel: 3
       matrix:
@@ -29,6 +29,7 @@ stages:
           imageName: 'windows-latest'
     pool:
       vmImage: $(imageName)
+
     variables:
       DefaultPackageVersion: '0.0.0-ci-$(Build.BuildNumber)'
       PackageVersion: '$(DefaultPackageVersion)'
@@ -36,8 +37,8 @@ stages:
       EscapedComma: '%2c'
       TestResults: '$(Agent.TempDirectory)'
       CoverageResults: '$(Build.SourcesDirectory)/CoverageResults'
-    steps:
 
+    steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core sdk v$(SdkVersion)'
       inputs:
@@ -150,8 +151,8 @@ stages:
     displayName: 'Publish package linux'
     pool:
       vmImage: ubuntu-latest
-    steps:
 
+    steps:
     - checkout: self
       persistCredentials: true
       clean: true
@@ -160,6 +161,14 @@ stages:
       inputs:
         artifact: SheepTools
         path: $(Build.SourcesDirectory)/SheepTools/Artifacts/
+
+    - task: CmdLine@2
+      displayName: 'Setup git profile'
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/FileParser
+        script: |
+          git config --replace-all user.email "azure@devops.com"
+          git config --replace-all user.name "Azure DevOps"
 
     - task: NuGetToolInstaller@1
       displayName: 'Setup NuGet'
@@ -202,13 +211,20 @@ stages:
       displayName: 'Commit and push version increment'
       condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheepTools
+        workingDirectory: $(Build.SourcesDirectory)/FileParser
         script: |
-          git config --replace-all user.email "azure@devops.com"
-          git config --replace-all user.name "Azure DevOps"
           git switch $(Build.SourceBranchName)
           git status
           git commit -am "Release v$(PackageVersion)"
-          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
           git push
+
+    - task: CmdLine@2
+      displayName: 'Tag version release'
+      condition: and(succeeded(), eq(variables['NoCommit'], ''), eq(variables['NoTag'], ''))
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/FileParser
+        script: |
+          git switch $(Build.SourceBranchName)
+          git status
+          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
           git push --tags
