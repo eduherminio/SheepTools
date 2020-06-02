@@ -10,7 +10,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>SheepTools</Title>
     <PackageId>SheepTools</PackageId>
-    <Version>0.2.0-alpha</Version>
+    <Version>0.1.0</Version>
     <PackageTags>Tools, Productivity, Extensions</PackageTags>
     <Tags>$(PackageTags)</Tags>
     <Authors>Eduardo Cáceres</Authors>
