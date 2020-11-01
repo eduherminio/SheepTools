@@ -20,7 +20,7 @@ jobs:
 
     - name: Setup variables
       run: |
-        echo "$ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
+        echo "ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
         echo "BUILD_VERSION=$GITHUB_RUN_NUMBER_$(date +%y-%d-%m_%H-%M)" >> $GITHUB_ENV
 
     - name: Setup .NET Core

@@ -38,7 +38,7 @@ jobs:
     - name: Setup variables
       run: |
         echo "GITHUB_TOKEN={{ secrets.GitHubToken }}" >> $GITHUB_ENV
-        echo "$ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
+        echo "ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
         echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     - name: Setup .NET Core
