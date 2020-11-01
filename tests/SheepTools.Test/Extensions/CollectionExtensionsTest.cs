@@ -51,7 +51,6 @@ namespace SheepTools.Test.Extensions
 
             // Assert
             Assert.Equal(initialList.Except(evens).ToList(), existingList);
-            Assert.Throws<ArgumentNullException>(() => existingList.RemoveAll(null));
         }
 
         [Fact]
@@ -67,7 +66,6 @@ namespace SheepTools.Test.Extensions
 
             // Assert
             Assert.Equal(initialCollection.Except(evens).ToList(), existingCollection);
-            Assert.Throws<ArgumentNullException>(() => existingCollection.RemoveAll(null));
         }
     }
 }

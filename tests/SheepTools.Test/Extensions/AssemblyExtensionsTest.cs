@@ -59,13 +59,13 @@ namespace SheepTools.Test.Extensions
         public void GetAssembliesImplementingInterface()
         {
             var assemblies = AssemblyExtensions.GetAssemblies<IAssemblyExtensionTestInterface>();
-            Assert.Equal(Assembly.GetAssembly(typeof(AssemblyExtensionTest)).GetName().Name, assemblies.Single());
+            Assert.Equal(Assembly.GetAssembly(typeof(AssemblyExtensionTest))?.GetName().Name, assemblies.Single());
 
             assemblies = AssemblyExtensions.GetAssemblies<IAssemblyExtensionTestInterfaceNotImplemented>();
             Assert.Empty(assemblies);
         }
 
-        private static void ValidateTypes(IEnumerable<Type> currentTypes)
+        private static void ValidateTypes(IEnumerable<Type>? currentTypes)
         {
             var expectedTypes = new List<Type>()
             {
@@ -74,19 +74,21 @@ namespace SheepTools.Test.Extensions
                typeof(SingletonBar)
             };
 
-            Assert.Subset(currentTypes.ToHashSet(), expectedTypes.ToHashSet());
+            Assert.NotNull(currentTypes);
+            Assert.Subset(currentTypes!.ToHashSet(), expectedTypes.ToHashSet());
         }
 
-        private static void ValidateTypesAndAttributes(IEnumerable<Tuple<Type, FooAttribute>> tuples)
+        private static void ValidateTypesAndAttributes(IEnumerable<Tuple<Type, FooAttribute>>? tuples)
         {
-            var scopedTuples = tuples.Where(tuple => tuple.Item1 == typeof(ScopedBar));
+            Assert.NotNull(tuples);
+            var scopedTuples = tuples!.Where(tuple => tuple.Item1 == typeof(ScopedBar));
             Assert.NotEmpty(scopedTuples);
             foreach (var tuple in scopedTuples)
             {
                 Assert.Equal(ServiceLifetime.Scoped, tuple.Item2.ServiceLifetime);
             }
 
-            var singletonTuples = tuples.Where(tuple => tuple.Item1 == typeof(ScopedBar));
+            var singletonTuples = tuples!.Where(tuple => tuple.Item1 == typeof(ScopedBar));
             Assert.NotEmpty(singletonTuples);
             foreach (var tuple in singletonTuples)
             {
@@ -97,7 +99,7 @@ namespace SheepTools.Test.Extensions
                     tuple.Item2.ServiceLifetime);
             }
 
-            var transientTuples = tuples.Where(tuple => tuple.Item1 == typeof(TransientBar));
+            var transientTuples = tuples!.Where(tuple => tuple.Item1 == typeof(TransientBar));
             Assert.NotEmpty(transientTuples);
             foreach (var tuple in transientTuples)
             {

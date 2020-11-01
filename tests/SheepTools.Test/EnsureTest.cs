@@ -1,4 +1,6 @@
-﻿using SheepTools.Extensions;
+﻿#nullable disable
+
+using SheepTools.Extensions;
 using SheepTools.Model;
 using SheepTools.XUnit;
 using System;
@@ -18,6 +20,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.Equal(date, otherDate()));
             Assert.Throws<ValidationException>(() => Ensure.Equal(date, otherDate(1)));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(null, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(new EnsureTest(), null));
+            Assert.Throws<ValidationException>(() => Ensure.Equal<EnsureTest>(null, null));
         }
 
         [Fact]
@@ -28,6 +33,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.Equals(date, otherDate()));
             Assert.Throws<ValidationException>(() => Ensure.Equals(date, otherDate(1)));
+            Assert.Throws<ValidationException>(() => Ensure.Equals(null, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.Equals(new EnsureTest(), null));
+            Assert.Throws<ValidationException>(() => Ensure.Equal<EnsureTest>(null, null));
         }
 
         [Fact]
@@ -38,6 +46,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.NotEqual(date, otherDate(-1)));
             Assert.Throws<ValidationException>(() => Ensure.NotEqual(date, otherDate()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual(null, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual(new EnsureTest(), null));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual<EnsureTest>(null, null));
         }
 
         [Fact]
@@ -48,6 +59,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.NotEquals(date, otherDate(-1)));
             Assert.Throws<ValidationException>(() => Ensure.NotEquals(date, otherDate()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals(null, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals(new EnsureTest(), null));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals<EnsureTest>(null, null));
         }
 
         [Fact]

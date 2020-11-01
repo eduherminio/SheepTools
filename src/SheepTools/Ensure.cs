@@ -23,7 +23,7 @@ namespace SheepTools
         /// <exception cref="ValidationException"></exception>
         public static void Equal<T>(T item, T otherItem, string message = DefaultMessage)
         {
-            if (!item.Equals(otherItem))
+            if (item is null || otherItem is null || !item.Equals(otherItem))
             {
                 throw new ValidationException(message);
             }
@@ -51,7 +51,7 @@ namespace SheepTools
         /// <exception cref="ValidationException"></exception>
         public static void NotEqual<T>(T item, T otherItem, string message = DefaultMessage)
         {
-            if (item.Equals(otherItem))
+            if (item == null || otherItem == null || item.Equals(otherItem))
             {
                 throw new ValidationException(message);
             }

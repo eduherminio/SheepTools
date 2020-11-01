@@ -20,9 +20,8 @@ namespace SheepTools.Test.Model
         }
 
         [Fact]
-        public void ShouldNotHaveDefaultOrNullKey()
+        public void ShouldNotHaveDefaultKey()
         {
-            Assert.Throws<ArgumentException>(() => new Node(null));
             Assert.Throws<ArgumentException>(() => new CustomNode(default));
         }
 

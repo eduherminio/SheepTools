@@ -3,7 +3,7 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Node class, with equality operators overriden
+    /// Node class, with equality operators overridden
     /// <See cref="TreeNode{TKey}"/> con TKey: string
     /// </summary>
     public class Node : TreeNode<string>

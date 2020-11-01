@@ -4,7 +4,7 @@ using SheepTools.Extensions;
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Straight line class, with equality operators overriden
+    /// Straight line class, with equality operators overridden
     /// </summary>
     public class Line : IEquatable<Line>
     {
@@ -14,7 +14,7 @@ namespace SheepTools.Model
 
         public double X0 { get; set; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public Line(Point a, Point b)
         {
@@ -40,19 +40,16 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is Line other)
+            {
+                return Equals(other);
+            }
+            else
             {
                 return false;
             }
-
-            if (!(obj is Line))
-            {
-                return false;
-            }
-
-            return Equals((Line)obj);
         }
 
         /// <summary>
@@ -60,9 +57,9 @@ namespace SheepTools.Model
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(Line other)
+        public bool Equals(Line? other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return false;
             }

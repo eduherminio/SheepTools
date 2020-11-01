@@ -23,7 +23,6 @@ namespace SheepTools.Test.Extensions
 
             // Assert
             mock.Verify(m => m.Foo(), Times.Exactly(list.Count()));
-            Assert.Throws<ArgumentNullException>(() => list.ForEach(null));
         }
 
         [Fact]
@@ -38,7 +37,6 @@ namespace SheepTools.Test.Extensions
 
             // Assert
             mock.Verify(m => m.Foo(), Times.Exactly(enumerable.Count));
-            Assert.Throws<ArgumentNullException>(() => enumerable.ForEach(null));
         }
 
         [Fact]
@@ -47,7 +45,7 @@ namespace SheepTools.Test.Extensions
             var emptyEnumerable = Enumerable.Empty<double>();
             Assert.True(emptyEnumerable.IsNullOrEmpty());
 
-            IEnumerable<double> nullEnumerable = null;
+            IEnumerable<double>? nullEnumerable = null;
             Assert.True(nullEnumerable.IsNullOrEmpty());
 
             var notNullOrEmptyEnumerable = new List<double> { Math.PI };
