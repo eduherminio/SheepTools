@@ -54,9 +54,9 @@ stages:
         script: |
             dotnet new tool-manifest
             dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs ${{variables.PackageVersion}}
+            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs ${{variables.PackageVersion}}
+            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs ${{variables.PackageVersion}}
 
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
