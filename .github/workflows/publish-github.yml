@@ -47,7 +47,7 @@ jobs:
         dotnet-version: 3.1.403
 
     - name: Change version to {{ github.event.inputs.new_package_version }}
-      shell: powershell
+      shell: pwsh
       run: |
         $input_path = "Directory.Build.props"
         $regex = "(?<=<Version>).*(?=</Version>)"
