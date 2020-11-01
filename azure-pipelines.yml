@@ -9,7 +9,7 @@ schedules:
     - master
 
 variables:
-  SdkVersion: '3.1.x'
+  SdkVersion: '5.0.x'
   DotnetVersionCliVersion: '2.0.0-next.7'
 
 stages:
@@ -145,7 +145,7 @@ stages:
 - stage: Publish
   displayName: 'Publish packages'
   dependsOn: 'CI'
-  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['DefaultPackageVersion']), ne(variables['Push'], ''))
+  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['DefaultPackageVersion']))
   jobs:
   - job: cd
     displayName: 'Publish package linux'
@@ -165,7 +165,7 @@ stages:
     - task: CmdLine@2
       displayName: 'Setup git profile'
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/FileParser
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git config --replace-all user.email "azure@devops.com"
           git config --replace-all user.name "Azure DevOps"
@@ -211,7 +211,7 @@ stages:
       displayName: 'Commit and push version increment'
       condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/FileParser
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git switch $(Build.SourceBranchName)
           git status
@@ -222,7 +222,7 @@ stages:
       displayName: 'Tag version release'
       condition: and(succeeded(), eq(variables['NoCommit'], ''), eq(variables['NoTag'], ''))
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/FileParser
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git switch $(Build.SourceBranchName)
           git status
