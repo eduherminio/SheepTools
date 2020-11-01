@@ -5,7 +5,7 @@ using System.Linq;
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Point class, with equality operators overriden
+    /// Point class, with equality operators overridden
     /// </summary>
     public class Point : IEquatable<Point>
     {
@@ -13,7 +13,7 @@ namespace SheepTools.Model
 
         public double Y { get; set; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public Point(double x, double y)
         {
@@ -58,7 +58,7 @@ namespace SheepTools.Model
         /// </summary>
         /// <param name="candidatePoints"></param>
         /// <returns></returns>
-        public Point CalculateClosestManhattanPointNotTied(ICollection<Point> candidatePoints)
+        public Point? CalculateClosestManhattanPointNotTied(ICollection<Point> candidatePoints)
         {
             Dictionary<Point, double> pointDistanceDictionary = new Dictionary<Point, double>();
 
@@ -113,24 +113,21 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is Point otherPoint)
+            {
+                return Equals(otherPoint);
+            }
+            else
             {
                 return false;
             }
-
-            if (!(obj is Point))
-            {
-                return false;
-            }
-
-            return Equals((Point)obj);
         }
 
-        public bool Equals(Point other)
+        public bool Equals(Point? other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return false;
             }
@@ -148,7 +145,10 @@ namespace SheepTools.Model
                 var hashCode = 1166230731;
                 hashCode = hashCode * -1521134295 + X.GetHashCode();
                 hashCode = hashCode * -1521134295 + Y.GetHashCode();
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+                if (!(Id is null))
+                {
+                    hashCode = hashCode * -1521134295 + Id.GetHashCode();
+                }
                 return hashCode;
             }
 #endif

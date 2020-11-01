@@ -3,7 +3,7 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// 3D Point class, with equality operators overriden
+    /// 3D Point class, with equality operators overridden
     /// </summary>
     public class Point3D : IEquatable<Point3D>
     {
@@ -13,7 +13,7 @@ namespace SheepTools.Model
 
         public double Z { get; set; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public Point3D(double x, double y, double z)
         {
@@ -43,24 +43,21 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is Point3D other)
+            {
+                return Equals(other);
+            }
+            else
             {
                 return false;
             }
-
-            if (!(obj is Point3D))
-            {
-                return false;
-            }
-
-            return Equals((Point3D)obj);
         }
 
-        public bool Equals(Point3D other)
+        public bool Equals(Point3D? other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return false;
             }
@@ -79,7 +76,10 @@ namespace SheepTools.Model
                 hashCode = hashCode * -1521134295 + X.GetHashCode();
                 hashCode = hashCode * -1521134295 + Y.GetHashCode();
                 hashCode = hashCode * -1521134295 + Z.GetHashCode();
-                hashCode = hashCode * -1521134295 + Id.GetHashCode();
+                if (!(Id is null))
+                {
+                    hashCode = hashCode * -1521134295 + Id.GetHashCode();
+                }
                 return hashCode;
             }
 #endif

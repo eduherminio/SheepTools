@@ -11,13 +11,14 @@ namespace SheepTools.Model
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public class TreeNode<TKey> : GenericNode<TKey>
+        where TKey : notnull
     {
-        public TKey ParentId { get; set; }
+        public TKey ParentId { get; set; } = default!;
 
         /// <summary>
         /// Parent
         /// </summary>
-        public TreeNode<TKey> Parent { get; set; }
+        public TreeNode<TKey>? Parent { get; set; }
 
         /// <summary>
         /// Direct descendants
@@ -149,7 +150,7 @@ namespace SheepTools.Model
         {
             var identifiers = new HashSet<TKey>();
 
-            TreeNode<TKey> commonAncestor = null;
+            TreeNode<TKey>? commonAncestor = null;
 
             void transverseBackwards(IEnumerable<TreeNode<TKey>> nodes, ref HashSet<TKey> identifiers, TreeNode<TKey> currentNode)
             {
@@ -168,7 +169,7 @@ namespace SheepTools.Model
             transverseBackwards(nodes, ref identifiers, this);
             transverseBackwards(nodes, ref identifiers, otherNode);
 
-            if (commonAncestor == null)
+            if (commonAncestor is null)
             {
                 throw new NotFoundException($"We couldn't find any common ancestors between nodes {Id} and {otherNode.Id}");
             }

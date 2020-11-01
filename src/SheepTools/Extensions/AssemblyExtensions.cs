@@ -24,9 +24,9 @@ namespace SheepTools.Extensions
         /// <typeparam name="TAttribute"></typeparam>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static IEnumerable<Type> GetTypes<TAttribute>(this Assembly assembly)
+        public static IEnumerable<Type> GetTypes<TAttribute>(this Assembly? assembly)
         {
-            foreach (Type type in assembly?.GetTypes())
+            foreach (Type type in assembly?.GetTypes() ?? Array.Empty<Type>())
             {
                 if (type.IsDefined(typeof(TAttribute), true))
                 {
@@ -52,10 +52,10 @@ namespace SheepTools.Extensions
         /// <typeparam name="TAttribute"></typeparam>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static IEnumerable<Tuple<Type, TAttribute>> GetTypesAndAttributes<TAttribute>(this Assembly assembly)
+        public static IEnumerable<Tuple<Type, TAttribute>> GetTypesAndAttributes<TAttribute>(this Assembly? assembly)
             where TAttribute : Attribute
         {
-            foreach (Type type in assembly?.GetTypes())
+            foreach (Type type in assembly?.GetTypes() ?? Array.Empty<Type>())
             {
                 if (type.IsDefined(typeof(TAttribute), true))
                 {
@@ -82,11 +82,14 @@ namespace SheepTools.Extensions
             foreach (var assemblyName in assemblies)
             {
                 var candidate = Assembly.Load(assemblyName);
-                foreach (var ti in candidate.DefinedTypes)
+                if(!(candidate is null))
                 {
-                    if (ti.ImplementedInterfaces.Contains(typeof(TInterface)))
+                    foreach (var ti in candidate.DefinedTypes)
                     {
-                        validAssemblies.Add(candidate.GetName().Name);
+                        if (ti.ImplementedInterfaces.Contains(typeof(TInterface)))
+                        {
+                            validAssemblies.Add(candidate.GetName().Name ?? candidate.GetName().FullName);
+                        }
                     }
                 }
             }

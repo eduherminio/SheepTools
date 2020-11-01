@@ -3,23 +3,24 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Generic node class, with equality operators overriden
+    /// Generic node class, with equality operators overridden
     /// <See cref="TreeNode{TKey}"/>
     /// </summary>
     /// <typeparam name="TKey">Generic key</typeparam>
     public class GenericNode<TKey> : IEquatable<GenericNode<TKey>>
+        where TKey : notnull
     {
         public TKey Id { get; set; }
 
         /// <summary>
-        /// Identifier cannot be null or default
+        /// Identifier cannot have TKey's default value
         /// </summary>
         /// <param name="id"></param>
         public GenericNode(TKey id)
         {
-            if (id == null || id.Equals(default(TKey)))
+            if (id is null || id.Equals(default(TKey)))
             {
-                throw new ArgumentException($"Id cannot be {(id == null ? "null" : id.ToString())}");
+                throw new ArgumentException($"Id cannot be {id} (default value)");
             }
 
             Id = id;
@@ -27,9 +28,9 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public bool Equals(GenericNode<TKey> other)
+        public bool Equals(GenericNode<TKey>? other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return false;
             }
@@ -37,19 +38,16 @@ namespace SheepTools.Model
             return Id.GetType() == typeof(TKey) && Id.Equals(other.Id);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is GenericNode<TKey> other)
+            {
+                return Equals(other);
+            }
+            else
             {
                 return false;
             }
-
-            if (!(obj is GenericNode<TKey>))
-            {
-                return false;
-            }
-
-            return Equals((GenericNode<TKey>)obj);
         }
 
         public override int GetHashCode()
