@@ -14,14 +14,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
       fail-fast: false
 
+    env:
+      ARTIFACT_DIR: ./Artifacts
+      BUILD_VERSION: .$GITHUB_RUN_NUMBER_$(date +%y-%d-%m_%H-%M)
     steps:
 
     - uses: actions/checkout@v2
-
-    - name: Setup variables
-      run: |
-        echo "ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
-        echo "BUILD_VERSION=$GITHUB_RUN_NUMBER_$(date +%y-%d-%m_%H-%M)" >> $GITHUB_ENV
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.4.0
@@ -29,6 +27,7 @@ jobs:
         dotnet-version: 3.1.403
 
     - name: Append -ci.$BUILD_VERSION to version
+      if: matrix.os == 'ubuntu-latest'
       shell: pwsh
       run: |
         $input_path = "Directory.Build.props"
