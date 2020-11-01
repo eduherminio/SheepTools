@@ -29,17 +29,16 @@ on:
         required: false
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      ARTIFACT_DIR: ./Artifacts
+      GITHUB_TOKEN: '{{ secrets.GitHubToken }}'
 
     steps:
     - uses: actions/checkout@v2.3.3
-
-    - name: Setup variables
-      run: |
-        echo "GITHUB_TOKEN={{ secrets.GitHubToken }}" >> $GITHUB_ENV
-        echo "ARTIFACT_DIR=./Artifacts" >> $GITHUB_ENV
-        echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.7.2
@@ -52,7 +51,6 @@ jobs:
         $input_path = "Directory.Build.props"
         $regex = "(?<=<Version>).*(?=</Version>)"
         (Get-Content $input_path) -Replace $regex, '{{ github.event.inputs.new_package_version }}' | Out-File $input_path
-        $currentVersion >> $CURRENT_VERSION
 
     - name: Build
       run: dotnet build -c Release
@@ -81,28 +79,28 @@ jobs:
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == true }}
       run: |
-          git switch $BRANCH_NAME
-          git status
-          git commit -am "Release v${{ github.event.inputs.new_package_version }}"
-          git push
+        git switch {{ github.ref }}
+        git status
+        git commit -am "Release v${{ github.event.inputs.new_package_version }}"
+        git push
 
     - name: Tag version release
       if: ${{ github.event.inputs.should_tag_new_version == true }}
       run: |
-          git switch $BRANCH_NAME
-          git status
-          git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
-          git push --tags
+        git switch {{ github.ref }}
+        git status
+        git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
+        git push --tags
 
     - name: Create GitHub release
       id: create_release
       if: ${{ github.event.inputs.should_create_github_release == true && github.event.inputs.should_tag_new_version == true }}
       uses: actions/create-release@v1
       with:
-          tag_name: v{{ github.event.inputs.new_package_version }}
-          release_name: v{{ github.event.inputs.new_package_version }}
-          draft: true
-          prerelease: false
+        tag_name: v{{ github.event.inputs.new_package_version }}
+        release_name: v{{ github.event.inputs.new_package_version }}
+        draft: true
+        prerelease: false
 
     - name: Upload release asset
       if: ${{ github.event.inputs.should_create_github_release == true }}
@@ -110,5 +108,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GitHubToken }}
       with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_DIR }}/*.nupkg
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: |
+          ${{ env.ARTIFACT_DIR }}/*.nupkg
+          ${{ env.ARTIFACT_DIR }}/*.snupkg

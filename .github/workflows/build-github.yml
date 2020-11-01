@@ -27,7 +27,7 @@ jobs:
       with:
         dotnet-version: 3.1.403
 
-    - name: Append -ci-${{ env.BUILD_VERSION }} to version
+    - name: Set version to -ci-${{ github.run_number }}
       if: matrix.os == 'ubuntu-latest'
       shell: pwsh
       run: |
@@ -53,5 +53,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: SheepTools-ci-artifact
-        path: ${{ env.ARTIFACT_DIR }}/*.nupkg
+        path: |
+          ${{ env.ARTIFACT_DIR }}/*.nupkg
+          ${{ env.ARTIFACT_DIR }}/*.snupkg
         if-no-files-found: error
