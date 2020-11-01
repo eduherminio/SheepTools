@@ -63,20 +63,20 @@ jobs:
     - name: Pack
       if: matrix.os == 'ubuntu-latest'
       run: |
-        dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o $ARTIFACT_DIR
-        dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o $ARTIFACT_DIR
-        dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o $ARTIFACT_DIR
+        dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
+        dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
+        dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
 
     - name: Push to NuGet
       if: ${{ github.event.inputs.should_push_nuget == true }}
       run: |
-        nuget push $ARTIFACT_DIR/*.nupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
-        nuget push $ARTIFACT_DIR/*.snupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
+        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
+        nuget push ${{ env.ARTIFACT_DIR }}/*.snupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
 
     - name: Push to GitHub packages registry
       if: ${{ github.event.inputs.should_push_github == true }}
       run: |
-        nuget push $ARTIFACT_DIR/*.nupkg --skip-duplicate -Source https://nuget.pkg.github.com/eduherminio/index.json -ApiKey $GITHUB_TOKEN
+        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg --skip-duplicate -Source https://nuget.pkg.github.com/eduherminio/index.json -ApiKey $GITHUB_TOKEN
 
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == true }}
@@ -111,4 +111,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GitHubToken }}
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: $ARTIFACT_DIR/*.nupkg
+          asset_path: ${{ env.ARTIFACT_DIR }}/*.nupkg

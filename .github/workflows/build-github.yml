@@ -44,13 +44,14 @@ jobs:
     - name: Pack
       if: matrix.os == 'ubuntu-latest'
       run: |
-        dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o $ARTIFACT_DIR
-        dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o $ARTIFACT_DIR
-        dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o $ARTIFACT_DIR
+        dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
+        dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
+        dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
 
     - name: Upload Artifact
       if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
         name: SheepTools-ci-artifact
-        path: $ARTIFACT_DIR/*.nupkg
+        path: ${{ env.ARTIFACT_DIR }}/*.nupkg
+        if-no-files-found: error
