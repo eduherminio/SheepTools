@@ -76,7 +76,7 @@ namespace SheepTools.Model
                 hashCode = hashCode * -1521134295 + X.GetHashCode();
                 hashCode = hashCode * -1521134295 + Y.GetHashCode();
                 hashCode = hashCode * -1521134295 + Z.GetHashCode();
-                if (Id is not null)
+                if (!(Id is null))
                 {
                     hashCode = hashCode * -1521134295 + Id.GetHashCode();
                 }

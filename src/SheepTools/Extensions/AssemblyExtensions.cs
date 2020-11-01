@@ -82,7 +82,7 @@ namespace SheepTools.Extensions
             foreach (var assemblyName in assemblies)
             {
                 var candidate = Assembly.Load(assemblyName);
-                if(candidate is not null)
+                if(!(candidate is null))
                 {
                     foreach (var ti in candidate.DefinedTypes)
                     {
