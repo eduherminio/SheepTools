@@ -13,7 +13,7 @@ namespace SheepTools.Model
     public class TreeNode<TKey> : GenericNode<TKey>
         where TKey : notnull
     {
-        public TKey? ParentId { get; set; } = default!;
+        public TKey ParentId { get; set; } = default!;
 
         /// <summary>
         /// Parent
