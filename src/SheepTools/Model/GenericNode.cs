@@ -52,11 +52,7 @@ namespace SheepTools.Model
 
         public override int GetHashCode()
         {
-#if !NETSTANDARD2_0
             return HashCode.Combine(Id);
-#else
-            return Id.GetHashCode();
-#endif
         }
 
         public static bool operator ==(GenericNode<TKey> node1, GenericNode<TKey> node2)

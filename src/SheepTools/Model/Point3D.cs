@@ -67,22 +67,7 @@ namespace SheepTools.Model
 
         public override int GetHashCode()
         {
-#if !NETSTANDARD2_0
             return HashCode.Combine(X, Y, Z, Id);
-#else
-            unchecked
-            {
-                var hashCode = -1895077416;
-                hashCode = hashCode * -1521134295 + X.GetHashCode();
-                hashCode = hashCode * -1521134295 + Y.GetHashCode();
-                hashCode = hashCode * -1521134295 + Z.GetHashCode();
-                if (!(Id is null))
-                {
-                    hashCode = hashCode * -1521134295 + Id.GetHashCode();
-                }
-                return hashCode;
-            }
-#endif
         }
 
         public static bool operator ==(Point3D Point3D1, Point3D Point3D2)

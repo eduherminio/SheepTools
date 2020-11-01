@@ -73,21 +73,7 @@ namespace SheepTools.Model
 
         public override int GetHashCode()
         {
-#if !NETSTANDARD2_0
             return HashCode.Combine(M, X0, Y0, Id);
-#else
-            unchecked
-            {
-                var hashCode = M.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y0.GetHashCode();
-                hashCode = (hashCode * 397) ^ X0.GetHashCode();
-                if (!(Id is null))
-                {
-                    hashCode = (hashCode * 397) ^ Id.GetHashCode();
-                }
-                return hashCode;
-            }
-#endif
         }
 
         public static bool operator ==(Line line1, Line line2)
