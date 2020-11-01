@@ -45,12 +45,12 @@ jobs:
       with:
         dotnet-version: 3.1.403
 
-    - name: Change version to {{ github.event.inputs.new_package_version }}
+    - name: Set version to ${{ github.event.inputs.new_package_version }}
       shell: pwsh
       run: |
         $input_path = "Directory.Build.props"
         $regex = "(?<=<Version>).*(?=</Version>)"
-        (Get-Content $input_path) -Replace $regex, '{{ github.event.inputs.new_package_version }}' | Out-File $input_path
+        (Get-Content $input_path) -Replace $regex, '${{ github.event.inputs.new_package_version }}' | Out-File $input_path
 
     - name: Build
       run: dotnet build -c Release
@@ -105,8 +105,6 @@ jobs:
     - name: Upload release asset
       if: ${{ github.event.inputs.should_create_github_release == true }}
       uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GitHubToken }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: |
