@@ -32,7 +32,8 @@ stages:
 
     variables:
       DefaultPackageVersion: '0.0.0-ci-$(Build.BuildNumber)'
-      PackageVersion: '$(DefaultPackageVersion)'
+      ${{ if eq(variables['PackageVersion'], '') }}:
+        PackageVersion: '$(DefaultPackageVersion)'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
       TestResults: '$(Agent.TempDirectory)'
