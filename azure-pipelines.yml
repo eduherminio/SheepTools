@@ -165,7 +165,7 @@ stages:
     - task: CmdLine@2
       displayName: 'Setup git profile'
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheelTools
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git config --replace-all user.email "azure@devops.com"
           git config --replace-all user.name "Azure DevOps"
@@ -211,7 +211,7 @@ stages:
       displayName: 'Commit and push version increment'
       condition: and(succeeded(), eq(variables['NoCommit'], ''))
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheelTools
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git switch $(Build.SourceBranchName)
           git status
@@ -222,7 +222,7 @@ stages:
       displayName: 'Tag version release'
       condition: and(succeeded(), eq(variables['NoCommit'], ''), eq(variables['NoTag'], ''))
       inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheelTools
+        workingDirectory: $(Build.SourcesDirectory)/SheepTools
         script: |
           git switch $(Build.SourceBranchName)
           git status
