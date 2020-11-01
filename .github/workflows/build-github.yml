@@ -21,22 +21,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup variables
-      run: |
-        echo "BUILD_VERSION=${{ github.run_number }}_$(date +%y-%d-%m_%H-%M)" >> $GITHUB_ENV
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.4.0
       with:
         dotnet-version: 3.1.403
 
-    - name: Append -ci.${{ env.BUILD_VERSION }} to version
+    - name: Append -ci-${{ env.BUILD_VERSION }} to version
       if: matrix.os == 'ubuntu-latest'
       shell: pwsh
       run: |
         $input_path = "Directory.Build.props"
         $regex = "(?<=<Version>).*(?=</Version>)"
-        (Get-Content $input_path) -Replace $regex, '$0-ci.${{ env.BUILD_VERSION }}' | Out-File $input_path
+        (Get-Content $input_path) -Replace $regex, '$0-ci-${{ github.run_number }}' | Out-File $input_path
 
     - name: Build
       run: dotnet build -c Release
