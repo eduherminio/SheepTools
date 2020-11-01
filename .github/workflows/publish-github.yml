@@ -1,0 +1,110 @@
+name: CI GitHub Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_package_version:
+        description: 'New package version'
+        default: '0.0.0'
+        required: true
+      should_push_nuget:
+        description: 'Push to NuGet'
+        default: 'true'
+        required: false
+      should_push_github:
+        description: 'Push to GitHub package registry'
+        default: 'true'
+        required: false
+      should_commit_new_version:
+        description: 'Commit and push version increment'
+        default: 'true'
+        required: false
+      should_tag_new_version:
+        description: 'Tag version release'
+        default: 'true'
+        required: false
+      should_create_github_release:
+        description: 'Create GitHub Release'
+        default: 'true'
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup variables
+      run: |
+        echo {{ secrets.GitHubToken }} >> GITHUB_TOKEN
+        echo ./Artifacts >> $ARTIFACT_DIR
+        echo ${GITHUB_REF#refs/heads/} >> $BRANCH_NAME
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1.4.0
+      with:
+        dotnet-version: 3.1.403
+
+    - name: Change version to {{ github.event.inputs.new_package_version }}
+      shell: powershell
+      run: |
+        $input_path = "Directory.Build.props"
+        $regex = "(?<=<Version>).*(?=</Version>)"
+        (Get-Content $input_path) -Replace $regex, '{{ github.event.inputs.new_package_version }}' | Out-File $input_path
+        $currentVersion >> $CURRENT_VERSION
+
+    - name: Build
+      run: dotnet build -c Release
+
+    - name: Run tests
+      run: dotnet test -c Release --no-build
+
+    - name: Pack
+      run: dotnet pack -c Release --no-build ./src/**/*.csproj -c Release --include-symbols -o $ARTIFACT_DIR
+
+    - name: Push to NuGet
+      if: ${{ github.event.inputs.should_push_nuget == true }}
+      run: |
+        nuget push $ARTIFACT_DIR/*.nupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
+        nuget push $ARTIFACT_DIR/*.snupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
+
+    - name: Push to GitHub packages registry
+      if: ${{ github.event.inputs.should_push_github == true }}
+      run: |
+        nuget push $ARTIFACT_DIR/*.nupkg --skip-duplicate -Source https://nuget.pkg.github.com/eduherminio/index.json -ApiKey $GITHUB_TOKEN
+
+    - name: Commit and push version increment
+      if: ${{ github.event.inputs.should_commit_new_version == true }}
+      run: |
+          git switch $BRANCH_NAME
+          git status
+          git commit -am "Release v${{ github.event.inputs.new_package_version }}"
+          git push
+
+    - name: Tag version release
+      if: ${{ github.event.inputs.should_tag_new_version == true }}
+      run: |
+          git switch $BRANCH_NAME
+          git status
+          git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
+          git push --tags
+
+    - name: Create GitHub release
+      id: create_release
+      if: ${{ github.event.inputs.should_create_github_release == true && github.event.inputs.should_tag_new_version == true }}
+      uses: actions/create-release@v1
+      with:
+          tag_name: v{{ github.event.inputs.new_package_version }}
+          release_name: v{{ github.event.inputs.new_package_version }}
+          draft: true
+          prerelease: false
+
+    - name: Upload release asset
+      if: ${{ github.event.inputs.should_create_github_release == true }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GitHubToken }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: $ARTIFACT_DIR/*.nupkg

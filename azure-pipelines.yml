@@ -54,9 +54,9 @@ stages:
         script: |
             dotnet new tool-manifest
             dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs ${{variables.PackageVersion}}
-            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs ${{variables.PackageVersion}}
-            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs ${{variables.PackageVersion}}
+            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
+            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
 
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
@@ -143,89 +143,3 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
 
-- stage: Publish
-  displayName: 'Publish packages'
-  dependsOn: 'CI'
-  condition: and(succeeded('CI'), ne(variables['PackageVersion'], variables['DefaultPackageVersion']))
-  jobs:
-  - job: cd
-    displayName: 'Publish package linux'
-    pool:
-      vmImage: ubuntu-latest
-
-    steps:
-    - checkout: self
-      persistCredentials: true
-      clean: true
-
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        artifact: SheepTools
-        path: $(Build.SourcesDirectory)/SheepTools/Artifacts/
-
-    - task: CmdLine@2
-      displayName: 'Setup git profile'
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheepTools
-        script: |
-          git config --replace-all user.email "azure@devops.com"
-          git config --replace-all user.name "Azure DevOps"
-
-    - task: NuGetToolInstaller@1
-      displayName: 'Setup NuGet'
-      inputs:
-        versionSpec: '5.5.0'
-        checkLatest: true
-
-    - task: NuGetCommand@2
-      displayName: 'Push NuGet package'
-      condition: and(succeeded(), eq(variables['NoNuGetPush'], ''))
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'SheepTools_NuGet'
-        verbosityPush: 'Detailed'
-
-    - task: NuGetCommand@2
-      displayName: 'Push GitHub package'
-      condition: and(succeeded(), eq(variables['NoGitHubPush'], ''))
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.SourcesDirectory)/SheepTools/Artifacts/*.nupkg'
-        nuGetFeedType: 'external'
-        publishFeedCredentials: 'SheepTools_GitHub'
-        verbosityPush: 'Detailed'
-
-    - task: CmdLine@2
-      displayName: 'Modify SheepTools version'
-      inputs:
-        failOnStderr: true
-        script: |
-            dotnet new tool-manifest
-            dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
-
-    - task: CmdLine@2
-      displayName: 'Commit and push version increment'
-      condition: and(succeeded(), eq(variables['NoCommit'], ''))
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheepTools
-        script: |
-          git switch $(Build.SourceBranchName)
-          git status
-          git commit -am "Release v$(PackageVersion)"
-          git push
-
-    - task: CmdLine@2
-      displayName: 'Tag version release'
-      condition: and(succeeded(), eq(variables['NoCommit'], ''), eq(variables['NoTag'], ''))
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/SheepTools
-        script: |
-          git switch $(Build.SourceBranchName)
-          git status
-          git tag -a v$(PackageVersion) -m "v$(PackageVersion)"
-          git push --tags

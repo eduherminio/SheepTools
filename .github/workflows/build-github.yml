@@ -1,0 +1,57 @@
+name: CI GitHub Actions
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+  schedule:
+    - cron:  '1 0 * * 1'    # * is a special character in YAML, therefore this string needs to be quoted
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+      fail-fast: false
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup variables
+      run: |
+        echo ./Artifacts >> $ARTIFACT_DIR
+        echo GITHUB_RUN_NUMBER_$(date +%y-%d-%m_%H-%M) >> $BUILD_VERSION
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1.4.0
+      with:
+        dotnet-version: 3.1.403
+
+    - name: Append -ci.$BUILD_VERSION to version
+      shell: powershell
+      run: |
+        $input_path = "Directory.Build.props"
+        $regex = "(?<=<Version>).*(?=</Version>)"
+        (Get-Content $input_path) -Replace $regex, '$0-ci.$BUILD_VERSION' | Out-File $input_path
+
+    - name: Build
+      run: dotnet build -c Release
+
+    - name: Run tests
+      run: dotnet test -c Release --no-build
+
+    - name: Pack
+      if: matrix.os == 'ubuntu-latest'
+      run: dotnet pack -c Release --no-build src/**/*.csproj -c Release --include-symbols -o $ARTIFACT_DIR
+
+    - name: Upload Artifact
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: SheepTools-ci-artifact
+        path: $ARTIFACT_DIR/*.nupkg
