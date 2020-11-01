@@ -1,4 +1,4 @@
-name: CI GitHub Actions
+name: CI
 
 on:
   push:
@@ -20,10 +20,10 @@ jobs:
       ARTIFACT_DIR: ./Artifacts
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.3
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1.4.0
+      uses: actions/setup-dotnet@v1.7.2
       with:
         dotnet-version: 3.1.403
 
