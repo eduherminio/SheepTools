@@ -110,7 +110,7 @@ jobs:
       run: |
         set -x
         assets=()
-        for asset in ${{ env.ARTIFACT_DIR }}/; do
+        for asset in ${{ env.ARTIFACT_DIR }}/*; do
           assets+=("-a" "$asset")
         done
         tag_name="v${{ github.event.inputs.new_package_version }}"
