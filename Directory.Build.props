@@ -13,7 +13,7 @@
     <PackageTags>Tools, Productivity, Extensions</PackageTags>
     <Tags>$(PackageTags)</Tags>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/eduherminio/SheepTools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
