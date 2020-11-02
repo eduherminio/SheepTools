@@ -86,6 +86,9 @@ jobs:
         name: SheepTools-publish-artifact
         path: ${{ env.ARTIFACT_DIR }}
 
+    - name: Check path
+      run: ls -R ${{ env.ARTIFACT_DIR }}
+
     - name: Push to NuGet
       if: ${{ github.event.inputs.should_push_nuget == 'true' }}
       run: |
