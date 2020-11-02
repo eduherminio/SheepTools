@@ -86,21 +86,16 @@ jobs:
         name: SheepTools-publish-artifact
         path: ${{ env.ARTIFACT_DIR }}
 
-    - name: Check path
-      run: |
-        ls -R ${{ env.ARTIFACT_DIR }}
-        nuget
-
     - name: Push to NuGet
       if: ${{ github.event.inputs.should_push_nuget == 'true' }}
       run: |
-        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
-        nuget push ${{ env.ARTIFACT_DIR }}/*.snupkg -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
+        nuget push '${{ env.ARTIFACT_DIR }}/*.nupkg' -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
+        nuget push '${{ env.ARTIFACT_DIR }}/*.snupkg' -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
 
     - name: Push to GitHub packages registry
       if: ${{ github.event.inputs.should_push_github == 'true' }}
       run: |
-        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg -ApiKey ${{ secrets.GitHubToken }} -Source https://nuget.pkg.github.com/eduherminio/index.json -Verbosity detailed
+        nuget push '${{ env.ARTIFACT_DIR }}/*.nupkg' -ApiKey ${{ secrets.GitHubToken }} -Source https://nuget.pkg.github.com/eduherminio/index.json -SkipDuplicate -Verbosity detailed
 
     - name: Configure git user
       if: ${{ github.event.inputs.should_push_github == 'true' || github.event.inputs.should_commit_new_version == 'true' }}
