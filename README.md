@@ -13,11 +13,16 @@
 [![Nuget][nugetlogo-moq]][nugetlink-moq]
 [![Nuget][nugetlogo-xunit]][nugetlink-xunit]
 
-Sheeptools is (yet another) toolbox library which contains handy classes, extension methods, etc.
+SheepTools is (yet another) toolbox library which contains handy classes, extension methods, etc.
 
-It's dividided in different libraries so that using the general purpose, main one doesn't imply adding any transitive dependencies to your project.
+It's divided in different libraries so that using the general purpose, main one doesn't imply adding any transitive dependencies to your project.
 
 I'm more than happy to accept suggestions, comments, or addition proposals.
+
+#### Relevant info
+
+- .NET Standard 2.0 and 2.1 are supported until v0.2.x (included)
+- `Nullable` is enabled from v0.2.x (included).
 
 ## Content
 
