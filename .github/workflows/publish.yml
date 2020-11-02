@@ -35,7 +35,7 @@ jobs:
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       ARTIFACT_DIR: ./Artifacts
-      GITHUB_TOKEN: '{{ secrets.GitHubToken }}'
+      GITHUB_TOKEN: ${{ secrets.GitHubToken }}
 
     steps:
     - uses: actions/checkout@v2.3.3
@@ -59,17 +59,25 @@ jobs:
       run: dotnet test -c Release --no-build
 
     - name: Pack
-      if: matrix.os == 'ubuntu-latest'
       run: |
         dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
         dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
         dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: SheepTools-publish-artifact
+        path: |
+          ${{ env.ARTIFACT_DIR }}/*.nupkg
+          ${{ env.ARTIFACT_DIR }}/*.snupkg
+        if-no-files-found: error
+
     - name: Push to NuGet
       if: ${{ github.event.inputs.should_push_nuget == true }}
       run: |
-        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
-        nuget push ${{ env.ARTIFACT_DIR }}/*.snupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets.NuGetKey }}
+        nuget push ${{ env.ARTIFACT_DIR }}/*.nupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NuGetKey }}
+        nuget push ${{ env.ARTIFACT_DIR }}/*.snupkg --skip-duplicate -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NuGetKey }}
 
     - name: Push to GitHub packages registry
       if: ${{ github.event.inputs.should_push_github == true }}
@@ -79,7 +87,7 @@ jobs:
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == true }}
       run: |
-        git switch {{ github.ref }}
+        git switch ${{ github.ref }}
         git status
         git commit -am "Release v${{ github.event.inputs.new_package_version }}"
         git push
@@ -87,7 +95,7 @@ jobs:
     - name: Tag version release
       if: ${{ github.event.inputs.should_tag_new_version == true }}
       run: |
-        git switch {{ github.ref }}
+        git switch ${{ github.ref }}
         git status
         git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
         git push --tags
