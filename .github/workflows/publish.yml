@@ -38,6 +38,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.3
 
+    - name: Configure git user
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email '<>'
+
     - name: Inject slug/short variables
       uses: rlespinasse/github-slug-action@v3.x
 
@@ -83,12 +88,6 @@ jobs:
       if: ${{ github.event.inputs.should_push_github == 'true' }}
       run: |
         nuget push '${{ env.ARTIFACT_DIR }}/*.nupkg' -ApiKey ${{ secrets.GitHubToken }} -Source https://nuget.pkg.github.com/eduherminio/index.json -SkipDuplicate -Verbosity detailed
-
-    - name: Configure git user
-      if: ${{ github.event.inputs.should_push_github == 'true' || github.event.inputs.should_commit_new_version == 'true' }}
-      run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email '<>'
 
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == 'true' }}
