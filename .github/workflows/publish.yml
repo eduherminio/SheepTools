@@ -80,17 +80,11 @@ jobs:
       ARTIFACT_DIR: ./artifacts
 
     steps:
-
-    - name: Setup NuGet.exe
-      uses: nuget/setup-nuget@v1.0.2
-      with:
-        nuget-version: 5.7.x
-
     - name: Download Artifact
       uses: actions/download-artifact@v2
       with:
         name: SheepTools-publish-artifact
-        path: artifacts
+        path: ${{ env.ARTIFACT_DIR }}
 
     - name: Push to NuGet
       if: ${{ github.event.inputs.should_push_nuget == 'true' }}
