@@ -105,23 +105,15 @@ jobs:
         git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
         git push --tags
 
-    - name: Create GitHub release
-      id: create_release
+    - name: Create GitHub release and upload assets
       if: ${{ github.event.inputs.should_create_github_release == 'true' && github.event.inputs.should_tag_new_version == 'true' }}
-      uses: actions/create-release@v1
+      run: |
+        set -x
+        assets=()
+        for asset in ${{ env.ARTIFACT_DIR }}; do
+          assets+=("-a" "$asset")
+        done
+        tag_name="v${{ github.event.inputs.new_package_version }}"
+        hub release create "${assets[@]}" --draft --message "$tag_name" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GitHubToken }}
-      with:
-        tag_name: v${{ github.event.inputs.new_package_version }}
-        release_name: v${{ github.event.inputs.new_package_version }}
-        draft: true
-        prerelease: false
-
-    - name: Upload release asset
-      if: ${{ github.event.inputs.should_create_github_release == 'true' }}
-      uses: actions/upload-release-asset@v1.0.2
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: |
-          ${{ env.ARTIFACT_DIR }}/*.nupkg
-          ${{ env.ARTIFACT_DIR }}/*.snupkg
