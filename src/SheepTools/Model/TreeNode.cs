@@ -169,7 +169,9 @@ namespace SheepTools.Model
             transverseBackwards(nodes, ref identifiers, this);
             transverseBackwards(nodes, ref identifiers, otherNode);
 
+#pragma warning disable S2589 // Boolean expressions should not be gratuitous - False Positive (see https://github.com/SonarSource/sonar-dotnet/issues/3701)
             if (commonAncestor is null)
+#pragma warning restore S2589 // Boolean expressions should not be gratuitous
             {
                 throw new NotFoundException($"We couldn't find any common ancestors between nodes {Id} and {otherNode.Id}");
             }

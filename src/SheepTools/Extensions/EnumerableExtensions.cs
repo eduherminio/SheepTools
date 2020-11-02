@@ -8,11 +8,6 @@ namespace SheepTools.Extensions
     {
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
             if (enumerable is List<T> list)
             {
                 list.ForEach(action);

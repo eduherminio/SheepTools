@@ -74,9 +74,9 @@ namespace SheepTools
         /// <param name="boolean"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void True(bool boolean, string message = DefaultMessage)
+        public static void True(bool? boolean, string message = DefaultMessage)
         {
-            if (!boolean)
+            if (boolean != true)
             {
                 throw new ValidationException(message);
             }
@@ -88,9 +88,9 @@ namespace SheepTools
         /// <param name="boolean"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void False(bool boolean, string message = DefaultMessage)
+        public static void False(bool? boolean, string message = DefaultMessage)
         {
-            if (boolean)
+            if (boolean != false)
             {
                 throw new ValidationException(message);
             }
@@ -131,11 +131,11 @@ namespace SheepTools
         /// </summary>
         /// <param name="objects"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void NotNull(params object[] objects)
+        public static void NotNull(params object?[] objects)
         {
             foreach (var obj in objects)
             {
-                if (obj == null)
+                if (obj is null)
                 {
                     throw new ArgumentNullException(nameof(objects), "At least one of the arguments is null");
                 }
@@ -148,7 +148,7 @@ namespace SheepTools
         /// <param name="str"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void Empty(string str, string message = DefaultMessage)
+        public static void Empty(string? str, string message = DefaultMessage)
         {
             if (!str.IsEmpty())
             {
@@ -163,9 +163,9 @@ namespace SheepTools
         /// <param name="enumerable"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void Empty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        public static void Empty<T>(IEnumerable<T>? enumerable, string message = DefaultMessage)
         {
-            if (enumerable == null || enumerable?.Any() == true)
+            if (enumerable?.Any() != false)
             {
                 throw new ValidationException(message);
             }
@@ -177,7 +177,7 @@ namespace SheepTools
         /// <param name="str"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NotEmpty(string str, string message = DefaultMessage)
+        public static void NotEmpty(string? str, string message = DefaultMessage)
         {
             if (str.IsEmpty())
             {
@@ -192,9 +192,9 @@ namespace SheepTools
         /// <param name="enumerable"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NotEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        public static void NotEmpty<T>(IEnumerable<T>? enumerable, string message = DefaultMessage)
         {
-            if (enumerable == null || enumerable?.Any() == false)
+            if (enumerable?.Any() != true)
             {
                 throw new ValidationException(message);
             }
@@ -205,7 +205,7 @@ namespace SheepTools
         /// </summary>
         /// <param name="str"></param>
         /// <param name="message"></param>
-        public static void NullOrEmpty(string str, string message = DefaultMessage)
+        public static void NullOrEmpty(string? str, string message = DefaultMessage)
         {
             if (!str.IsNullOrEmpty())
             {
@@ -220,7 +220,7 @@ namespace SheepTools
         /// <param name="enumerable"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        public static void NullOrEmpty<T>(IEnumerable<T>? enumerable, string message = DefaultMessage)
         {
             if (enumerable?.Any() == true)
             {
@@ -234,9 +234,9 @@ namespace SheepTools
         /// <param name="str"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NotNullOrEmpty(string str, string message = DefaultMessage)
+        public static void NotNullOrEmpty(string? str, string message = DefaultMessage)
         {
-            if (str.IsNullOrEmpty())
+            if (str?.IsNullOrEmpty() != false)
             {
                 throw new ValidationException(message);
             }
@@ -249,7 +249,7 @@ namespace SheepTools
         /// <param name="enumerable"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NotNullOrEmpty<T>(IEnumerable<T> enumerable, string message = DefaultMessage)
+        public static void NotNullOrEmpty<T>(IEnumerable<T>? enumerable, string message = DefaultMessage)
         {
             if (enumerable?.Any() == false)
             {
@@ -263,7 +263,7 @@ namespace SheepTools
         /// <param name="str"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NullOrWhiteSpace(string str, string message = DefaultMessage)
+        public static void NullOrWhiteSpace(string? str, string message = DefaultMessage)
         {
             if (!string.IsNullOrWhiteSpace(str))
             {
@@ -277,7 +277,7 @@ namespace SheepTools
         /// <param name="str"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void NotNullOrWhiteSpace(string str, string message = DefaultMessage)
+        public static void NotNullOrWhiteSpace(string? str, string message = DefaultMessage)
         {
             if (string.IsNullOrWhiteSpace(str))
             {
@@ -293,7 +293,7 @@ namespace SheepTools
         /// <param name="enumerable"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void Count<T>(int expectedCount, IEnumerable<T> enumerable, string message = DefaultMessage)
+        public static void Count<T>(int expectedCount, IEnumerable<T>? enumerable, string message = DefaultMessage)
         {
             if (enumerable?.Count() != expectedCount)
             {
@@ -310,7 +310,7 @@ namespace SheepTools
         /// <param name="predicate"></param>
         /// <param name="message"></param>
         /// <exception cref="ValidationException"></exception>
-        public static void Count<T>(int expectedCount, IEnumerable<T> enumerable, Func<T, bool> predicate, string message = DefaultMessage)
+        public static void Count<T>(int expectedCount, IEnumerable<T>? enumerable, Func<T, bool> predicate, string message = DefaultMessage)
         {
             if (enumerable?.Count(predicate) != expectedCount)
             {
