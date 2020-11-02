@@ -227,8 +227,8 @@ Depends on [XUnit](https://xunit.net/).
 
 [azuredevopslogo]: https://dev.azure.com/eduherminio/SheepTools/_apis/build/status/eduherminio.SheepTools?branchName=master
 [azuredevopslink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=1&branchName=master
-[githubactionslogo]: https://github.com/eduherminio/SheepTools/workflows/CI%20GitHub%20Actions/badge.svg
-[githubactionslink]: https://github.com/eduherminio/SheepTools/actions
+[githubactionslogo]: https://github.com/eduherminio/SheepTools/workflows/CI/badge.svg
+[githubactionslink]: https://github.com/eduherminio/SheepTools/actions?query=workflow%3ACI
 [nugetlogo]: https://img.shields.io/nuget/v/SheepTools.svg?style=flat-square&label=nuget
 [nugetlink]: https://www.nuget.org/packages/SheepTools
 [nugetlogo-moq]: https://img.shields.io/nuget/v/SheepTools.Moq.svg?style=flat-square&label=nuget

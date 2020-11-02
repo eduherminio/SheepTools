@@ -3,37 +3,23 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>SheepTools</Title>
     <PackageId>SheepTools</PackageId>
-    <Version>0.1.0</Version>
-    <PackageTags>Tools, Productivity, Extensions</PackageTags>
-    <Tags>$(PackageTags)</Tags>
-    <Authors>Eduardo Cáceres</Authors>
     <Description>
       Handy toolbox with commonly used classes and extension methods.
     </Description>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageLicenseUrl>https://github.com/eduherminio/SheepTools/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/eduherminio/SheepTools</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/eduherminio/SheepTools</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath="" />
-  </ItemGroup>
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>
