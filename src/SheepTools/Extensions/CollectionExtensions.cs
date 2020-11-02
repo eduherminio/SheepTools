@@ -23,11 +23,6 @@ namespace SheepTools.Extensions
 
         public static int RemoveAll<T>(this ICollection<T> collection, Predicate<T> match)
         {
-            if (match == null)
-            {
-                throw new ArgumentNullException(nameof(match));
-            }
-
             if (collection is List<T> list)
             {
                 return list.RemoveAll(match);

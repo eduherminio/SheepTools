@@ -1,17 +1,17 @@
-﻿#nullable disable
-
-using SheepTools.Extensions;
-using SheepTools.Model;
+﻿using SheepTools.Model;
 using SheepTools.XUnit;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace SheepTools.Test
 {
     public class EnsureTest
     {
+#pragma warning disable CA1805 // Do not initialize unnecessarily - Intended for the purpose of the test
+        private static readonly EnsureTest? NullInstance = null;
+#pragma warning restore CA1805 // Do not initialize unnecessarily
+
         [Fact]
         public void Equal()
         {
@@ -20,9 +20,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.Equal(date, otherDate()));
             Assert.Throws<ValidationException>(() => Ensure.Equal(date, otherDate(1)));
-            Assert.Throws<ValidationException>(() => Ensure.Equal(null, new EnsureTest()));
-            Assert.Throws<ValidationException>(() => Ensure.Equal(new EnsureTest(), null));
-            Assert.Throws<ValidationException>(() => Ensure.Equal<EnsureTest>(null, null));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(NullInstance, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(new EnsureTest(), NullInstance));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(NullInstance, NullInstance));
         }
 
         [Fact]
@@ -33,9 +33,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.Equals(date, otherDate()));
             Assert.Throws<ValidationException>(() => Ensure.Equals(date, otherDate(1)));
-            Assert.Throws<ValidationException>(() => Ensure.Equals(null, new EnsureTest()));
-            Assert.Throws<ValidationException>(() => Ensure.Equals(new EnsureTest(), null));
-            Assert.Throws<ValidationException>(() => Ensure.Equal<EnsureTest>(null, null));
+            Assert.Throws<ValidationException>(() => Ensure.Equals(NullInstance, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.Equals(new EnsureTest(), NullInstance));
+            Assert.Throws<ValidationException>(() => Ensure.Equal(NullInstance, NullInstance));
         }
 
         [Fact]
@@ -46,9 +46,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.NotEqual(date, otherDate(-1)));
             Assert.Throws<ValidationException>(() => Ensure.NotEqual(date, otherDate()));
-            Assert.Throws<ValidationException>(() => Ensure.NotEqual(null, new EnsureTest()));
-            Assert.Throws<ValidationException>(() => Ensure.NotEqual(new EnsureTest(), null));
-            Assert.Throws<ValidationException>(() => Ensure.NotEqual<EnsureTest>(null, null));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual(NullInstance, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual(new EnsureTest(), NullInstance));
+            Assert.Throws<ValidationException>(() => Ensure.NotEqual(NullInstance, NullInstance));
         }
 
         [Fact]
@@ -59,9 +59,9 @@ namespace SheepTools.Test
 
             Asssert.DoesNotThrow(() => Ensure.NotEquals(date, otherDate(-1)));
             Assert.Throws<ValidationException>(() => Ensure.NotEquals(date, otherDate()));
-            Assert.Throws<ValidationException>(() => Ensure.NotEquals(null, new EnsureTest()));
-            Assert.Throws<ValidationException>(() => Ensure.NotEquals(new EnsureTest(), null));
-            Assert.Throws<ValidationException>(() => Ensure.NotEquals<EnsureTest>(null, null));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals(NullInstance, new EnsureTest()));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals(new EnsureTest(), NullInstance));
+            Assert.Throws<ValidationException>(() => Ensure.NotEquals(NullInstance, NullInstance));
         }
 
         [Fact]
@@ -69,6 +69,7 @@ namespace SheepTools.Test
         {
             Asssert.DoesNotThrow(() => Ensure.True(true));
             Assert.Throws<ValidationException>(() => Ensure.True(false));
+            Assert.Throws<ValidationException>(() => Ensure.True(null));
         }
 
         [Fact]
@@ -76,12 +77,13 @@ namespace SheepTools.Test
         {
             Asssert.DoesNotThrow(() => Ensure.False(false));
             Assert.Throws<ValidationException>(() => Ensure.False(true));
+            Assert.Throws<ValidationException>(() => Ensure.False(null));
         }
 
         [Fact]
         public void Null()
         {
-            Point nullPoint = null;
+            Point? nullPoint = null;
 
             Asssert.DoesNotThrow(() => Ensure.Null(nullPoint));
             Assert.Throws<ValidationException>(() => Ensure.Null(new Point(1, 2)));
@@ -90,7 +92,7 @@ namespace SheepTools.Test
         [Fact]
         public void NotNull()
         {
-            Point nullPoint = null;
+            Point? nullPoint = null;
 
             Asssert.DoesNotThrow(() => Ensure.NotNull(new Point(1, 2)));
             Assert.Throws<ValidationException>(() => Ensure.NotNull(nullPoint));
@@ -99,13 +101,10 @@ namespace SheepTools.Test
         [Fact]
         public void NotNullParams()
         {
-            Point nullPoint = null;
-            const string nullString = null;
-
             Asssert.DoesNotThrow(() => Ensure.NotNull(new Point(1, 2), 3));
-            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(nullPoint, 3));
+            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(null, 3));
             Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(new Point(1, 2), 1, null));
-            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(new Point(1, 2), "", nullString));
+            Assert.Throws<ArgumentNullException>(() => Ensure.NotNull(new Point(1, 2), "", null));
         }
 
         [Fact]
@@ -113,12 +112,14 @@ namespace SheepTools.Test
         {
             Asssert.DoesNotThrow(() => Ensure.Empty(string.Empty));
             Assert.Throws<ValidationException>(() => Ensure.Empty(" "));
+            Assert.Throws<ValidationException>(() => Ensure.Empty(null));
         }
 
         [Fact]
         public void NotEmpty()
         {
             Asssert.DoesNotThrow(() => Ensure.NotEmpty(" "));
+            Asssert.DoesNotThrow(() => Ensure.NotEmpty(null));
             Assert.Throws<ValidationException>(() => Ensure.NotEmpty(string.Empty));
         }
 
@@ -167,7 +168,7 @@ namespace SheepTools.Test
         [Fact]
         public void NotEmptyEnumerable()
         {
-            Asssert.DoesNotThrow(() => Ensure.NotEmpty(new string[] { null }));
+            Asssert.DoesNotThrow(() => Ensure.NotEmpty(new string?[] { null }));
             Asssert.DoesNotThrow(() => Ensure.NotEmpty(null));
             Assert.Throws<ValidationException>(() => Ensure.NotEmpty(Array.Empty<string>()));
         }
@@ -183,7 +184,7 @@ namespace SheepTools.Test
         [Fact]
         public void NotNullOrEmptyEnumerable()
         {
-            Asssert.DoesNotThrow(() => Ensure.NotNullOrEmpty(new string[] { null }));
+            Asssert.DoesNotThrow(() => Ensure.NotNullOrEmpty(new string?[] { null }));
             Assert.Throws<ValidationException>(() => Ensure.NotNullOrEmpty(Array.Empty<string>()));
             Assert.Throws<ValidationException>(() => Ensure.NotNullOrEmpty(null));
         }
@@ -191,9 +192,9 @@ namespace SheepTools.Test
         [Fact]
         public void Count()
         {
-            IEnumerable<string> nullEnumerable = null;
+            IEnumerable<string>? nullEnumerable = null;
 
-            Asssert.DoesNotThrow(() => Ensure.Count(1, new string[] { null }));
+            Asssert.DoesNotThrow(() => Ensure.Count(1, new string?[] { null }));
             Assert.Throws<ValidationException>(() => Ensure.Count(1, Array.Empty<string>()));
             Assert.Throws<ValidationException>(() => Ensure.Count(1, nullEnumerable));
         }
@@ -201,10 +202,10 @@ namespace SheepTools.Test
         [Fact]
         public void CountWithPredicate()
         {
-            IEnumerable<string> nullEnumerable = null;
-            static bool predicate(string str) => str == null;
+            IEnumerable<string>? nullEnumerable = null;
+            static bool predicate(string? str) => str is null;
 
-            Asssert.DoesNotThrow(() => Ensure.Count(1, new string[] { null }, predicate));
+            Asssert.DoesNotThrow(() => Ensure.Count(1, new string?[] { null }, predicate));
             Assert.Throws<ValidationException>(() => Ensure.Count(1, new string[] { string.Empty }, predicate));
             Assert.Throws<ValidationException>(() => Ensure.Count(1, Array.Empty<string>(), predicate));
             Assert.Throws<ValidationException>(() => Ensure.Count(1, nullEnumerable, predicate));
