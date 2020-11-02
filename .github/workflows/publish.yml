@@ -90,7 +90,7 @@ jobs:
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == 'true' }}
       run: |
-        git switch ${{ github.ref }}
+        git switch ${{ github.ref#refs/heads/ }}
         git status
         git commit -am "Release v${{ github.event.inputs.new_package_version }}"
         git push
@@ -98,7 +98,7 @@ jobs:
     - name: Tag version release
       if: ${{ github.event.inputs.should_tag_new_version == 'true' }}
       run: |
-        git switch ${{ github.ref }}
+        git switch ${{ github.ref#refs/heads/ }}
         git status
         git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
         git push --tags
