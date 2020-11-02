@@ -80,6 +80,12 @@ jobs:
       ARTIFACT_DIR: ./artifacts
 
     steps:
+
+    - name: Setup NuGet.exe
+      uses: nuget/setup-nuget@v1.02
+      with:
+        nuget-version: 5.7.x
+
     - name: Download Artifact
       uses: actions/download-artifact@v2
       with:
