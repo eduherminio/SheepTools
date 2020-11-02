@@ -27,7 +27,7 @@ jobs:
       with:
         dotnet-version: 5.0.100-rc.2.20479.15
 
-    - name: Set version to -ci-${{ github.run_number }}
+    - name: \[Ubuntu\] Set version to -ci-${{ github.run_number }}
       if: matrix.os == 'ubuntu-latest'
       shell: pwsh
       run: |
@@ -41,14 +41,14 @@ jobs:
     - name: Run tests
       run: dotnet test -c Release --no-build
 
-    - name: Pack
+    - name: \[Ubuntu\] Pack
       if: matrix.os == 'ubuntu-latest'
       run: |
         dotnet pack -c Release --no-build src/SheepTools/SheepTools.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
         dotnet pack -c Release --no-build src/SheepTools.Moq/SheepTools.Moq.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
         dotnet pack -c Release --no-build src/SheepTools.XUnit/SheepTools.XUnit.csproj --include-symbols -o ${{ env.ARTIFACT_DIR }}
 
-    - name: Upload Artifact
+    - name: \[Ubuntu\] Upload Artifact
       if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:

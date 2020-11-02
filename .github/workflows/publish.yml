@@ -107,6 +107,8 @@ jobs:
 
     - name: Create GitHub release and upload assets
       if: ${{ github.event.inputs.should_create_github_release == 'true' && github.event.inputs.should_tag_new_version == 'true' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GitHubToken }}
       run: |
         set -x
         assets=()
@@ -115,5 +117,3 @@ jobs:
         done
         tag_name="v${{ github.event.inputs.new_package_version }}"
         hub release create "${assets[@]}" --message "$tag_name" "$tag_name"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GitHubToken }}
