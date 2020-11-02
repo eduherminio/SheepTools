@@ -1,25 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Title>SheepTools</Title>
     <PackageId>SheepTools</PackageId>
     <Description>
       Handy toolbox with commonly used classes and extension methods.
     </Description>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath="" />
-  </ItemGroup>
 
 </Project>
