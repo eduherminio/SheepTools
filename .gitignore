@@ -360,3 +360,6 @@ CodeCoverage/
 
 # https://github.com/dotnet/sourcelink/issues/572
 *.AssemblyAttributes
+
+# artifacts
+artifacts/
