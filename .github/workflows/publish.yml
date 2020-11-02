@@ -38,6 +38,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.3
 
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v3.x
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.7.2
       with:
@@ -90,7 +93,7 @@ jobs:
     - name: Commit and push version increment
       if: ${{ github.event.inputs.should_commit_new_version == 'true' }}
       run: |
-        git switch ${{ github.ref#refs/heads/ }}
+        git switch ${{ env.GITHUB_REF_SLUG }}
         git status
         git commit -am "Release v${{ github.event.inputs.new_package_version }}"
         git push
@@ -98,7 +101,7 @@ jobs:
     - name: Tag version release
       if: ${{ github.event.inputs.should_tag_new_version == 'true' }}
       run: |
-        git switch ${{ github.ref#refs/heads/ }}
+        git switch ${{ env.GITHUB_REF_SLUG }}
         git status
         git tag -a v${{ github.event.inputs.new_package_version }} -m "v${{ github.event.inputs.new_package_version }}"
         git push --tags
