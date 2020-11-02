@@ -5,7 +5,6 @@ on:
     inputs:
       new_package_version:
         description: 'New package version'
-        default: '0.0.0'
         required: true
       should_push_nuget:
         description: 'Push to NuGet'
