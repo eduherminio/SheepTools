@@ -90,7 +90,6 @@ jobs:
       if: ${{ github.event.inputs.should_push_nuget == 'true' }}
       run: |
         nuget push '${{ env.ARTIFACT_DIR }}/*.nupkg' -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
-        nuget push '${{ env.ARTIFACT_DIR }}/*.snupkg' -ApiKey ${{ secrets.NuGetKey }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -Verbosity detailed
 
     - name: Push to GitHub packages registry
       if: ${{ github.event.inputs.should_push_github == 'true' }}
