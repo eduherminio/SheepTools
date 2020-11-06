@@ -22,6 +22,10 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(DeterministicBuild)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\resources\icon.png'))" Pack="true" PackagePath="" />
   </ItemGroup>
