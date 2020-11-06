@@ -21,8 +21,8 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
 #### Relevant info
 
-- .NET Standard 2.0 and 2.1 are supported until v0.2.x (included)
-- `Nullable` is enabled from v0.2.x (included).
+- .NET Standard 2.0 and 2.1 were supported until v0.2.x.
+- `Nullable` is enabled from v0.2.x.
 
 ## Content
 
