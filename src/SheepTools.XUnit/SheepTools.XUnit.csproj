@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
-    <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
@@ -14,15 +12,6 @@
       Handy toolbox with XUnit-related extension methods.
     </Description>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\resources\icon.png'))" Pack="true" PackagePath="" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />

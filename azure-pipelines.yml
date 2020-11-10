@@ -9,8 +9,7 @@ schedules:
     - master
 
 variables:
-  SdkVersion: '3.1.x'
-  DotnetVersionCliVersion: '2.0.0-next.7'
+  SdkVersion: '5.0.100'
 
 stages:
 - stage: CI
@@ -31,9 +30,6 @@ stages:
       vmImage: $(imageName)
 
     variables:
-      DefaultPackageVersion: '0.0.0-ci-$(Build.BuildNumber)'
-      ${{ if eq(variables['PackageVersion'], '') }}:
-        PackageVersion: '$(DefaultPackageVersion)'
       disable.coverage.autogenerate: 'true'
       EscapedComma: '%2c'
       TestResults: '$(Agent.TempDirectory)'
@@ -45,18 +41,6 @@ stages:
       inputs:
         packageType: sdk
         version: '$(SdkVersion)'
-
-    - task: CmdLine@2
-      displayName: 'Modify SheepTools version'
-      condition: and(succeeded(), eq(variables['imageName'], 'ubuntu-latest'))
-      inputs:
-        failOnStderr: true
-        script: |
-            dotnet new tool-manifest
-            dotnet tool install dotnet-version-cli --version $(DotnetVersionCliVersion)
-            dotnet version -f src/SheepTools/SheepTools.csproj              --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.Moq/SheepTools.Moq.csproj      --skip-vcs $(PackageVersion)
-            dotnet version -f src/SheepTools.XUnit/SheepTools.XUnit.csproj  --skip-vcs $(PackageVersion)
 
     - task: SonarCloudPrepare@1
       displayName: 'Prepare SonarCloud analysis'
@@ -82,7 +66,7 @@ stages:
       displayName: 'Build'
       inputs:
         command: build
-        arguments: '--configuration Release --no-restore /p:ContinuousIntegrationBuild=true'
+        arguments: '--configuration Release --no-restore /p:DeterministicBuild=true'
         projects: 'SheepToolsSolution.sln'
 
     - task: DotNetCoreCLI@2
@@ -142,4 +126,3 @@ stages:
       condition: and(succeeded(), eq(variables['imageName'], 'windows-latest'))
       inputs:
         pollingTimeoutSec: '300'
-
