@@ -10,7 +10,7 @@ namespace SheepTools.Model
     /// That's to say, it can be transversed recursively due its lack of cycles: a node only has one parent
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public class TreeNode<TKey> : GenericNode<TKey>
+    public record TreeNode<TKey> : GenericNode<TKey>
         where TKey : notnull
     {
         public TKey ParentId { get; set; } = default!;
@@ -39,7 +39,7 @@ namespace SheepTools.Model
         /// <exception cref="ArgumentException">When provided child's key is the same as TreeNode key</exception>
         public TreeNode(TKey id, TreeNode<TKey> child) : base(id)
         {
-            if (Equals(child))
+            if (id.Equals(child.Id))
             {
                 throw new ArgumentException("A node cannot be its own child");
             }
@@ -127,7 +127,7 @@ namespace SheepTools.Model
             }
             else
             {
-                int existingDistance = Children.Any()
+                int existingDistance = Children.Count > 0
                     ? Children.Min(child =>
                         child.DistanceTo(childNode, initialDistance))
                     : int.MaxValue;
@@ -178,5 +178,15 @@ namespace SheepTools.Model
 
             return commonAncestor;
         }
+
+        #region Equals override
+
+        public override bool Equals(TreeNode<TKey>? other) => base.Equals(other);
+
+#pragma warning disable RCS1132 // Remove redundant overriding member. - https://github.com/JosefPihrt/Roslynator/issues/744
+        public override int GetHashCode() => base.GetHashCode();
+#pragma warning restore RCS1132 // Remove redundant overriding member.
+
+        #endregion
     }
 }
