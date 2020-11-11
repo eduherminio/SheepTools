@@ -38,8 +38,13 @@ jobs:
     - name: Build
       run: dotnet build -c Release /p:DeterministicBuild=true
 
-    - name: Run tests
+    - name: Run tests without coverage
+      if: matrix.os != 'ubuntu-latest'
       run: dotnet test -c Release --no-build
+
+    - name: Run tests with coverage
+      if: matrix.os == 'ubuntu-latest'
+      run: dotnet test -c Release --no-build --collect:"XPlat Code Coverage"
 
     - name: '[Ubuntu] Pack'
       if: matrix.os == 'ubuntu-latest'
@@ -57,3 +62,18 @@ jobs:
           ${{ env.ARTIFACT_DIR }}/*.nupkg
           ${{ env.ARTIFACT_DIR }}/*.snupkg
         if-no-files-found: error
+
+    - name: ReportGenerator
+      if: matrix.os == 'ubuntu-latest'
+      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.0
+      with:
+        reports: 'tests/TestResults/**/*.cobertura.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'Cobertura'
+        assemblyfilters: '+*'
+        classfilters: '+*'
+        filefilters: '+*'
+        verbosity: 'Info'
+        title: 'SheepTools coverage #${{ github.run_number }}'
+        tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
+        customSettings: 'numberOfReportsParsedInParallel=3;numberOfReportsMergedInParallel=3' # Optional custom settings (separated by semicolon). See: https://github.com/danielpalme/ReportGenerator/wiki/Settings.
