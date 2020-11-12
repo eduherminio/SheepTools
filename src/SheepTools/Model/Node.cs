@@ -3,7 +3,7 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Tree node Node record class with string as key.
+    /// Tree node record class with string as key.
     /// See the generic <see cref="TreeNode{TKey}"/> for more information.
     /// </summary>
     public record Node : TreeNode<string>
