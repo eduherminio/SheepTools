@@ -22,6 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.3
 
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v3.x
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.7.2
       with:
@@ -38,12 +41,8 @@ jobs:
     - name: Build
       run: dotnet build -c Release /p:DeterministicBuild=true
 
-    - name: Run tests without coverage
+    - name: Run tests
       if: matrix.os != 'ubuntu-latest'
-      run: dotnet test -c Release --no-build
-
-    - name: '[Ubuntu] Run tests with coverage'
-      if: matrix.os == 'ubuntu-latest'
       run: dotnet test -c Release --no-build --collect:"XPlat Code Coverage"
 
     - name: '[Ubuntu] Pack'
@@ -63,18 +62,18 @@ jobs:
           ${{ env.ARTIFACT_DIR }}/*.snupkg
         if-no-files-found: error
 
-    - name: '[Ubuntu] ReportGenerator'
+    - name: '[Ubuntu] Generate test coverage report'
       if: matrix.os == 'ubuntu-latest'
       uses: danielpalme/ReportGenerator-GitHub-Action@4.8.0
       with:
         reports: 'tests/**/*.cobertura.xml'
         targetdir: 'coveragereport'
-        reporttypes: 'Html;HtmlChart;HtmlInline;HtmlInline_AzurePipelines;HtmlInline_AzurePipelines_Dark;HtmlSummary;Badges;SonarQube;PngChart'
+        reporttypes: HtmlInline_AzurePipelines_Dark'
         assemblyfilters: '+*'
         classfilters: '+*'
         filefilters: '+*'
         verbosity: 'Info'
-        title: 'SheepTools coverage #${{ github.run_number }}'
+        title: 'SheepTools coverage #${{ github.run_number }} (${{ env.GITHUB_REF_SLUG }})'
         tag: '${{ github.run_number }}_${{ github.run_id }}'
         customSettings: 'numberOfReportsParsedInParallel=3;numberOfReportsMergedInParallel=3'
 
