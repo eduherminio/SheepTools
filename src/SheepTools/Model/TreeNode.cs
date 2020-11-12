@@ -5,9 +5,11 @@ using System.Linq;
 namespace SheepTools.Model
 {
     /// <summary>
+    /// Generic tree node record class.
     /// Tree: undirected graph in which any two vertices are connected by exactly one path,
     /// or equivalently a connected acyclic undirected graph.
     /// That's to say, it can be transversed recursively due its lack of cycles: a node only has one parent
+    /// Only Id property is taken into account for Equality (both Equals and GetHashCode())
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public record TreeNode<TKey> : GenericNode<TKey>

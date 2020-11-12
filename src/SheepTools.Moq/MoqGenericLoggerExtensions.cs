@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace JobSeekerAccount.Tests.Unit.TestHelpers
+namespace JSheepTools.Moq.Unit.TestHelpers
 {
     public static class MoqGenericLoggerExtensions
     {

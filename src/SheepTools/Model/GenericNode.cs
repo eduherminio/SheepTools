@@ -3,8 +3,7 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Generic node record class
-    /// <See cref="TreeNode{TKey}"/>
+    /// Generic node record class with a non default <typeparamref name="TKey"/>.
     /// </summary>
     /// <typeparam name="TKey">Generic key</typeparam>
     public record GenericNode<TKey>
