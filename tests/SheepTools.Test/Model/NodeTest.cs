@@ -8,7 +8,7 @@ namespace SheepTools.Test.Model
 {
     public class NodeTest
     {
-        private class CustomNode : TreeNode<DateTime>
+        private record CustomNode : TreeNode<DateTime>
         {
             public CustomNode(DateTime id) : base(id)
             {

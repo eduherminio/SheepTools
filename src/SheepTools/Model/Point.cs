@@ -5,9 +5,9 @@ using System.Linq;
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Point class, with equality operators overridden
+    /// Point record class
     /// </summary>
-    public class Point : IEquatable<Point>
+    public record Point
     {
         public double X { get; set; }
 
@@ -113,19 +113,7 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public override bool Equals(object? obj)
-        {
-            if (obj is Point otherPoint)
-            {
-                return Equals(otherPoint);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool Equals(Point? other)
+        public virtual bool Equals(Point? other)
         {
             if (other is null)
             {
@@ -138,26 +126,6 @@ namespace SheepTools.Model
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y, Id);
-        }
-
-        public static bool operator ==(Point point1, Point point2)
-        {
-            if (point1 is null)
-            {
-                return point2 is null;
-            }
-
-            return point1.Equals(point2);
-        }
-
-        public static bool operator !=(Point point1, Point point2)
-        {
-            if (point1 is null)
-            {
-                return point2 is object;
-            }
-
-            return !point1.Equals(point2);
         }
         #endregion
     }

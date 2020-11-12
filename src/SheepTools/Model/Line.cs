@@ -4,9 +4,9 @@ using SheepTools.Extensions;
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Straight line class, with equality operators overridden
+    /// Straight line record class
     /// </summary>
-    public class Line : IEquatable<Line>
+    public record Line
     {
         public double M { get; set; }
 
@@ -40,24 +40,12 @@ namespace SheepTools.Model
 
         #region Equals override
 
-        public override bool Equals(object? obj)
-        {
-            if (obj is Line other)
-            {
-                return Equals(other);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         /// <summary>
         /// Check if both have the same m, and then check if other goes through X0 and Y0
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(Line? other)
+        public virtual bool Equals(Line? other)
         {
             if (other is null)
             {
@@ -74,26 +62,6 @@ namespace SheepTools.Model
         public override int GetHashCode()
         {
             return HashCode.Combine(M, X0, Y0, Id);
-        }
-
-        public static bool operator ==(Line line1, Line line2)
-        {
-            if (line1 is null)
-            {
-                return line2 is null;
-            }
-
-            return line1.Equals(line2);
-        }
-
-        public static bool operator !=(Line line1, Line line2)
-        {
-            if (line1 is null)
-            {
-                return line2 is object;
-            }
-
-            return !line1.Equals(line2);
         }
         #endregion
     }

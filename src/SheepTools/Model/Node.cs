@@ -3,10 +3,10 @@
 namespace SheepTools.Model
 {
     /// <summary>
-    /// Node class, with equality operators overridden
-    /// <See cref="TreeNode{TKey}"/> con TKey: string
+    /// Tree node record class with string as key.
+    /// See the generic <see cref="TreeNode{TKey}"/> for more information.
     /// </summary>
-    public class Node : TreeNode<string>
+    public record Node : TreeNode<string>
     {
         /// <inheritdoc/>
         public Node(string id) : base(id)

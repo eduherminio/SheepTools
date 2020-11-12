@@ -1,5 +1,4 @@
-﻿using JobSeekerAccount.Tests.Unit.TestHelpers;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;

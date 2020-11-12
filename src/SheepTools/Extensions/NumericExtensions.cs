@@ -20,11 +20,13 @@ namespace SheepTools.Helpers
                       IEquatable<T>,
                       IFormattable
         {
+#pragma warning disable S3358 // Ternary operators should not be nested
             return (value.CompareTo(min) <= 0)
                 ? min
                 : (value.CompareTo(max) >= 0)
                     ? max
                     : value;
+#pragma warning restore S3358 // Ternary operators should not be nested
         }
     }
 }
