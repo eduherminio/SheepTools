@@ -95,9 +95,9 @@ namespace JobSeekerAccount.Tests.Unit.TestHelpers
             loggerMock.Verify(l => l.Log(
                     level,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((_, __) => true),
+                    It.IsAny<It.IsAnyType>(),
                     It.IsAny<TException>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((_, __) => true)),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 times,
                 failMessage);
         }
@@ -110,7 +110,7 @@ namespace JobSeekerAccount.Tests.Unit.TestHelpers
                     It.IsAny<EventId>(),
                     It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                     It.IsAny<TException>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((_, __) => true)),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 times,
                 failMessage);
         }
@@ -123,7 +123,7 @@ namespace JobSeekerAccount.Tests.Unit.TestHelpers
                     It.IsAny<EventId>(),
                     It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                     It.Is<TException>(e => (e != null ? e.GetHashCode() : -1) == ex.GetHashCode()),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((_, __) => true)),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 times,
                 failMessage);
         }
@@ -136,7 +136,7 @@ namespace JobSeekerAccount.Tests.Unit.TestHelpers
                     It.IsAny<EventId>(),
                     It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                     It.Is<TException>(e => (e != null ? e.GetHashCode() : -1) == ex.GetHashCode()),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((_, __) => true)),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 times,
                 failMessage);
         }
