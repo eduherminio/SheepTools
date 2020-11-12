@@ -68,12 +68,12 @@ jobs:
       with:
         reports: 'tests/**/*.cobertura.xml'
         targetdir: 'coveragereport'
-        reporttypes: HtmlInline_AzurePipelines_Dark'
+        reporttypes: 'HtmlInline_AzurePipelines_Dark'
         assemblyfilters: '+*'
         classfilters: '+*'
         filefilters: '+*'
         verbosity: 'Info'
-        title: 'SheepTools coverage #${{ github.run_number }} (${{ env.GITHUB_REF_SLUG }})'
+        title: 'SheepTools #${{ github.run_number }} (${{ env.GITHUB_REF_SLUG }})'
         tag: '${{ github.run_number }}_${{ github.run_id }}'
         customSettings: 'numberOfReportsParsedInParallel=3;numberOfReportsMergedInParallel=3'
 
