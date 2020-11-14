@@ -64,7 +64,7 @@ jobs:
       run: dotnet build -c Release /p:DeterministicBuild=true
 
     - name: Run tests
-      run: dotnet test -c Release --no-build
+      run: dotnet test -c Release --no-build --collect:"XPlat Code Coverage"
 
     - name: 'Generate test coverage report'
       continue-on-error: true
