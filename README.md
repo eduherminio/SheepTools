@@ -1,7 +1,7 @@
 # SheepTools
 
-[![Azure DevOps][azuredevopslogo]][azuredevopslink]
 [![GitHub Actions][githubactionslogo]][githubactionslink]
+[![Azure DevOps][azuredevopslogo]][azuredevopslink]
 
 [![Code coverage][coveragelogo]][coveragelink]
 [![Sonar Quality][sonarqualitylogo]][sonarqubelink]
@@ -9,9 +9,10 @@
 [![Sonar bugs][sonarbugslogo]][sonarqubelink]
 [![Sonar code smells][sonarcodesmellslogo]][sonarqubelink]
 
-[![Nuget][nugetlogo]][nugetlink]
-[![Nuget][nugetlogo-moq]][nugetlink-moq]
-[![Nuget][nugetlogo-xunit]][nugetlink-xunit]
+| SheepTools |[![Nuget][nugetlogo]][nugetlink] | [![API][apimundologo]][apimundolink]
+|:---|:---|:---|
+|**SheepTools.Moq**|[![Nuget][nugetlogo-moq]][nugetlink-moq]|[![API][apimundologo-moq]][apimundolink-moq]
+|**SheepTools.XUnit**|[![Nuget][nugetlogo-xunit]][nugetlink-xunit]|[![API][apimundologo-xunit]][apimundolink-xunit]
 
 SheepTools is (yet another) toolbox library which contains handy classes, extension methods, etc.
 
@@ -240,6 +241,12 @@ Depends on [XUnit](https://xunit.net/).
 [nugetlink-moq]: https://www.nuget.org/packages/SheepTools.Moq
 [nugetlogo-xunit]: https://img.shields.io/nuget/v/SheepTools.XUnit.svg?style=flat-square&label=nuget
 [nugetlink-xunit]: https://www.nuget.org/packages/SheepTools.XUnit
+[apimundologo]: https://img.shields.io/badge/SheepTools%20API-Apimundo-728199.svg
+[apimundolink]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools/versions/latest?tab=types
+[apimundologo-moq]: https://img.shields.io/badge/SheepTools.Moq%20API-Apimundo-728199.svg
+[apimundolink-moq]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools.Moq/versions/latest?tab=types
+[apimundologo-xunit]: https://img.shields.io/badge/SheepTools.XUnit%20API-Apimundo-728199.svg
+[apimundolink-xunit]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools.XUnit/versions/latest?tab=types
 [coveragelogo]: https://img.shields.io/azure-devops/coverage/eduherminio/Sheeptools/8/master
 [coveragelink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=8&branchName=master
 [sonarqubelink]: https://sonarcloud.io/dashboard?id=SheepTools
