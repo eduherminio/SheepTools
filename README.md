@@ -14,7 +14,7 @@
 |**SheepTools.Moq**|[![Nuget][nugetlogo-moq]][nugetlink-moq]|[![API][apimundologo-moq]][apimundolink-moq]
 |**SheepTools.XUnit**|[![Nuget][nugetlogo-xunit]][nugetlink-xunit]|[![API][apimundologo-xunit]][apimundolink-xunit]
 
-SheepTools is (yet another) toolbox library which contains handy classes, extension methods, etc.
+SheepTools is a .NET toolbox library (yet another!) which contains handy classes, extension methods, etc.
 
 It's divided in different libraries so that using the general purpose, main one doesn't imply adding any transitive dependencies to your project.
 
