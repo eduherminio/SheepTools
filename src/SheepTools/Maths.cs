@@ -34,7 +34,6 @@ namespace SheepTools
         /// <param name="a">Greater than 0</param>
         /// <param name="b">Greater than 0</param>
         /// <returns></returns>
-        /// <exception cref=""></exception>
         public static ulong GreatestCommonDivisor(ulong a, ulong b)
         {
             if (a == 0 || b == 0)
