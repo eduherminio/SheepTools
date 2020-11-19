@@ -1,57 +1,42 @@
 ﻿using SheepTools.Extensions;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SheepTools.Test.Extensions
 {
     public class IntExtensionsTest
     {
-        [Fact]
-        public void Factorial()
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(1, 1)]
+        [InlineData(2, 2)]
+        [InlineData(3, 6)]
+        [InlineData(4, 24)]
+        [InlineData(5, 120)]
+        public void Factorial(int n, int result)
         {
-            var testCases = new Dictionary<int, int>()
-            {
-                [0] = 1,
-                [1] = 1,
-                [2] = 2,
-                [3] = 6,
-                [4] = 24,
-                [5] = 120
-            };
-
-            foreach (var pair in testCases)
-            {
-                Assert.Equal(pair.Value, pair.Key.Factorial());
-            }
+            Assert.Equal(result, n.Factorial());
         }
 
-        [Fact]
-        public void Clamp()
+        [Theory]
+        [InlineData(int.MinValue, -3)]
+        [InlineData(-99999999, -3)]
+        [InlineData(-4, -3)]
+        [InlineData(-3, -3)]
+        [InlineData(-2, -2)]
+        [InlineData(-1, -1)]
+        [InlineData(0, 0)]
+        [InlineData(+1, +1)]
+        [InlineData(+2, +2)]
+        [InlineData(+3, +3)]
+        [InlineData(+4, +3)]
+        [InlineData(+99999999, +3)]
+        [InlineData(int.MaxValue, +3)]
+        public void Clamp(int n, int result)
         {
             const int minValue = -3;
             const int maxValue = +3;
 
-            var testCases = new Dictionary<int, int>()
-            {
-                [int.MinValue] = minValue,
-                [-99999999] = minValue,
-                [-4] = minValue,
-                [minValue] = minValue,
-                [-2] = -2,
-                [-1] = -1,
-                [0] = 0,
-                [+1] = +1,
-                [+2] = +2,
-                [maxValue] = maxValue,
-                [+4] = maxValue,
-                [+99999999] = maxValue,
-                [int.MaxValue] = maxValue
-            };
-
-            foreach (var pair in testCases)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(minValue, maxValue));
-            }
+            Assert.Equal(result, n.Clamp(minValue, maxValue));
         }
     }
 }

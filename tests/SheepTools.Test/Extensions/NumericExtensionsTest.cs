@@ -7,124 +7,123 @@ namespace SheepTools.Test.Extensions
 {
     public class NumericExtensionsTest
     {
-        [Fact]
-        public void ClampInt()
+        [Theory]
+        [InlineData(int.MinValue, 3)]
+        [InlineData(0, 3)]
+        [InlineData(1, 3)]
+        [InlineData(3, 3)]
+        [InlineData(4, 4)]
+        [InlineData(5, 5)]
+        [InlineData(7, 5)]
+        [InlineData(int.MaxValue, 5)]
+        public void ClampInt(int n, int result)
         {
             const int min = 3;
             const int max = 5;
 
-            Dictionary<int, int> numberExpectedClampedValuePair = new Dictionary<int, int>()
-            {
-                [int.MinValue] = min,
-                [0] = min,
-                [1] = min,
-                [3] = 3,
-                [4] = 4,
-                [5] = 5,
-                [7] = max,
-                [int.MaxValue] = max
-            };
-
-            foreach (var pair in numberExpectedClampedValuePair)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(min, max));
-            }
+            Assert.Equal(result, n.Clamp(min, max));
         }
 
-        [Fact]
-        public void ClampShort()
+        [Theory]
+        [InlineData(short.MinValue, 3)]
+        [InlineData(0, 3)]
+        [InlineData(1, 3)]
+        [InlineData(3, 3)]
+        [InlineData(4, 4)]
+        [InlineData(5, 5)]
+        [InlineData(7, 5)]
+        [InlineData(short.MaxValue, 5)]
+        public void ClampShort(short n, short result)
         {
             const short min = 3;
             const short max = 5;
 
-            Dictionary<short, short> numberExpectedClampedValuePair = new Dictionary<short, short>()
-            {
-                [short.MinValue] = min,
-                [0] = min,
-                [1] = min,
-                [3] = 3,
-                [4] = 4,
-                [5] = 5,
-                [7] = max,
-                [short.MaxValue] = max
-            };
-
-            foreach (var pair in numberExpectedClampedValuePair)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(min, max));
-            }
+            Assert.Equal(result, n.Clamp(min, max));
         }
 
-        [Fact]
-        public void ClampLong()
+        [Theory]
+        [InlineData(long.MinValue, 3)]
+        [InlineData(0, 3)]
+        [InlineData(1, 3)]
+        [InlineData(3, 3)]
+        [InlineData(4, 4)]
+        [InlineData(5, 5)]
+        [InlineData(7, 5)]
+        [InlineData(long.MaxValue, 5)]
+        public void ClampLong(long n, long result)
         {
             const long min = 3;
             const long max = 5;
 
-            Dictionary<long, long> numberExpectedClampedValuePair = new Dictionary<long, long>()
-            {
-                [long.MinValue] = min,
-                [0] = min,
-                [1] = min,
-                [3] = 3,
-                [4] = 4,
-                [5] = 5,
-                [7] = max,
-                [long.MaxValue] = max
-            };
-
-            foreach (var pair in numberExpectedClampedValuePair)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(min, max));
-            }
+            Assert.Equal(result, n.Clamp(min, max));
         }
 
-        [Fact]
-        public void ClampFloat()
+        [Theory]
+        [InlineData(uint.MinValue, 3)]
+        [InlineData(0, 3)]
+        [InlineData(1, 3)]
+        [InlineData(3, 3)]
+        [InlineData(4, 4)]
+        [InlineData(5, 5)]
+        [InlineData(7, 5)]
+        [InlineData(uint.MaxValue, 5)]
+        public void ClampUint(uint n, uint result)
         {
-            const float min = 3;
-            const float max = 5;
+            const uint min = 3;
+            const uint max = 5;
 
-            Dictionary<float, float> numberExpectedClampedValuePair = new Dictionary<float, float>()
-            {
-                [float.MinValue] = min,
-                [0] = min,
-                [1] = min,
-                [3] = 3,
-                [4] = 4,
-                [5] = 5,
-                [7] = max,
-                [float.MaxValue] = max
-            };
-
-            foreach (var pair in numberExpectedClampedValuePair)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(min, max));
-            }
+            Assert.Equal(result, n.Clamp(min, max));
         }
 
-        [Fact]
-        public void ClampDouble()
+        [Theory]
+        [InlineData(ulong.MinValue, 3)]
+        [InlineData(0, 3)]
+        [InlineData(1, 3)]
+        [InlineData(3, 3)]
+        [InlineData(4, 4)]
+        [InlineData(5, 5)]
+        [InlineData(7, 5)]
+        [InlineData(ulong.MaxValue, 5)]
+        public void ClampUlong(ulong n, ulong result)
+        {
+            const ulong min = 3;
+            const ulong max = 5;
+
+            Assert.Equal(result, n.Clamp(min, max));
+        }
+
+        [Theory]
+        [InlineData(float.MinValue, 3.01)]
+        [InlineData(0, 3.01)]
+        [InlineData(1, 3.01)]
+        [InlineData(3.02, 3.02)]
+        [InlineData(4, 4)]
+        [InlineData(4.98, 4.98)]
+        [InlineData(5, 4.99)]
+        [InlineData(float.MaxValue, 4.99)]
+        public void ClampFloat(float n, float result)
+        {
+            const float min = 3.01f;
+            const float max = 4.99f;
+
+            Assert.Equal(result, n.Clamp(min, max));
+        }
+
+        [Theory]
+        [InlineData(double.MinValue, 3.01)]
+        [InlineData(0, 3.01)]
+        [InlineData(1, 3.01)]
+        [InlineData(3.02, 3.02)]
+        [InlineData(4, 4)]
+        [InlineData(4.98, 4.98)]
+        [InlineData(5, 4.99)]
+        [InlineData(double.MaxValue, 4.99)]
+        public void ClampDouble(double n, double result)
         {
             const double min = 3.01;
             const double max = 4.99;
 
-            Dictionary<double, double> numberExpectedClampedValuePair = new Dictionary<double, double>()
-            {
-                [double.MinValue] = min,
-                [0] = min,
-                [1] = min,
-                [3.02] = 3.02,
-                [4] = 4,
-                [4.98] = 4.98,
-                [5] = max,
-                [double.MaxValue] = max
-            };
-
-            foreach (var pair in numberExpectedClampedValuePair)
-            {
-                Assert.Equal(pair.Value, pair.Key.Clamp(min, max));
-            }
+            Assert.Equal(result, n.Clamp(min, max));
         }
 
         [Fact]

@@ -26,6 +26,31 @@ namespace SheepTools.Test.Extensions
         }
 
         [Fact]
+        public void IsWhiteSpace()
+        {
+            var dictionary = new List<Tuple<string?, bool>>
+            {
+                new Tuple<string?, bool>(null, false),
+                new Tuple<string?, bool>(string.Empty, true),
+                new Tuple<string?, bool>(" ", true),
+                new Tuple<string?, bool>("  ", true),
+                new Tuple<string?, bool>("\r", true),
+                new Tuple<string?, bool>("\n", true),
+                new Tuple<string?, bool>("\r\n", true),
+                new Tuple<string?, bool>("/t", false),
+                new Tuple<string?, bool>("\u0000", false),
+                new Tuple<string?, bool>("\u001F", false),
+                new Tuple<string?, bool>("\u200B", false),
+                new Tuple<string?, bool>(".", false),
+            };
+
+            foreach (var entry in dictionary)
+            {
+                Assert.Equal(entry.Item2, entry.Item1.IsWhiteSpace());
+            }
+        }
+
+        [Fact]
         public void HasWhiteSpaces()
         {
             var dictionary = new List<Tuple<string?, bool>>
