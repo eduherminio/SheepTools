@@ -1,4 +1,6 @@
-﻿namespace SheepTools.Extensions
+﻿using System.Linq;
+
+namespace SheepTools.Extensions
 {
     public static class StringHelpers
     {

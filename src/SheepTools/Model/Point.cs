@@ -40,6 +40,30 @@ namespace SheepTools.Model
                 + Math.Pow(otherPoint.Y - Y, 2));
         }
 
+        public Point Move(char direction)
+        {
+            return direction switch
+            {
+                '>' => this with { X = X + 1 },
+                '<' => this with { X = X - 1 },
+                '^' => this with { Y = Y + 1 },
+                'v' => this with { Y = Y - 1 },
+                _ => throw new ArgumentException("Supported directions: >, <, ^, v")
+            };
+        }
+
+        public Point Move(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Right => this with { X = X + 1 },
+                Direction.Left => this with { X = X - 1 },
+                Direction.Up => this with { Y = Y + 1 },
+                Direction.Down => this with { Y = Y - 1 },
+                _ => throw new NotSupportedException($"Direction {direction} isn't supported yet")
+            };
+        }
+
         public Point CalculateClosestManhattanPoint(ICollection<Point> candidatePoints)
         {
             Dictionary<Point, double> pointDistanceDictionary = new Dictionary<Point, double>();

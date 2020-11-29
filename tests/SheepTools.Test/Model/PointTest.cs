@@ -62,6 +62,65 @@ namespace SheepTools.Test.Model
         }
 
         [Fact]
+        public void MoveChar()
+        {
+            var startPoint = new Point(0, 0);
+
+            var newPoint = startPoint.Move('^');
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(0, newPoint.X);
+            Assert.Equal(1, newPoint.Y);
+
+            newPoint = startPoint.Move('v');
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(0, newPoint.X);
+            Assert.Equal(-1, newPoint.Y);
+
+            newPoint = startPoint.Move('<');
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(-1, newPoint.X);
+            Assert.Equal(0, newPoint.Y);
+
+            newPoint = startPoint.Move('>');
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(1, newPoint.X);
+            Assert.Equal(0, newPoint.Y);
+        }
+
+        [Fact]
+        public void MoveDirection()
+        {
+            var startPoint = new Point(0, 0);
+
+            var newPoint = startPoint.Move(Direction.Up);
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(0, newPoint.X);
+            Assert.Equal(1, newPoint.Y);
+
+            newPoint = startPoint.Move(Direction.Down);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(0, newPoint.X);
+            Assert.Equal(-1, newPoint.Y);
+
+            newPoint = startPoint.Move(Direction.Left);
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(-1, newPoint.X);
+            Assert.Equal(0, newPoint.Y);
+
+            newPoint = startPoint.Move(Direction.Right);
+            Assert.Equal(0, startPoint.X);
+            Assert.Equal(0, startPoint.Y);
+            Assert.Equal(1, newPoint.X);
+            Assert.Equal(0, newPoint.Y);
+        }
+
+        [Fact]
         public void CalculateClosestManhattanPoint()
         {
             var a = new Point(0, 0);

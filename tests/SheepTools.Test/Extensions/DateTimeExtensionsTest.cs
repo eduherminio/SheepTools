@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SheepTools.Test.Extensions
 {
-    public class DateTimeExtensions
+    public class DateTimeExtensionsTest
     {
         [Fact]
         public void IsAfterNow()
