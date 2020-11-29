@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace SheepTools.Extensions
+﻿namespace SheepTools.Extensions
 {
     public static class StringHelpers
     {
