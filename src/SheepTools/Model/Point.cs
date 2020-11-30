@@ -40,26 +40,26 @@ namespace SheepTools.Model
                 + Math.Pow(otherPoint.Y - Y, 2));
         }
 
-        public Point Move(char direction)
+        public Point Move(char direction, double distance = 1)
         {
             return direction switch
             {
-                '>' => this with { X = X + 1 },
-                '<' => this with { X = X - 1 },
-                '^' => this with { Y = Y + 1 },
-                'v' => this with { Y = Y - 1 },
+                '>' => this with { X = X + distance },
+                '<' => this with { X = X - distance },
+                '^' => this with { Y = Y + distance },
+                'v' => this with { Y = Y - distance },
                 _ => throw new ArgumentException("Supported directions: >, <, ^, v")
             };
         }
 
-        public Point Move(Direction direction)
+        public Point Move(Direction direction, double distance = 1)
         {
             return direction switch
             {
-                Direction.Right => this with { X = X + 1 },
-                Direction.Left => this with { X = X - 1 },
-                Direction.Up => this with { Y = Y + 1 },
-                Direction.Down => this with { Y = Y - 1 },
+                Direction.Right => this with { X = X + distance },
+                Direction.Left => this with { X = X - distance },
+                Direction.Up => this with { Y = Y + distance },
+                Direction.Down => this with { Y = Y - distance },
                 _ => throw new NotSupportedException($"Direction {direction} isn't supported yet")
             };
         }

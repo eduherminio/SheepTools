@@ -66,11 +66,11 @@ namespace SheepTools.Test.Model
         {
             var startPoint = new Point(0, 0);
 
-            var newPoint = startPoint.Move('^');
+            var newPoint = startPoint.Move('^', 2);
             Assert.Equal(0, startPoint.X);
             Assert.Equal(0, startPoint.Y);
             Assert.Equal(0, newPoint.X);
-            Assert.Equal(1, newPoint.Y);
+            Assert.Equal(2, newPoint.Y);
 
             newPoint = startPoint.Move('v');
             Assert.Equal(0, startPoint.X);
@@ -78,16 +78,16 @@ namespace SheepTools.Test.Model
             Assert.Equal(0, newPoint.X);
             Assert.Equal(-1, newPoint.Y);
 
-            newPoint = startPoint.Move('<');
+            newPoint = startPoint.Move('<', -2);
             Assert.Equal(0, startPoint.X);
             Assert.Equal(0, startPoint.Y);
-            Assert.Equal(-1, newPoint.X);
+            Assert.Equal(2, newPoint.X);
             Assert.Equal(0, newPoint.Y);
 
-            newPoint = startPoint.Move('>');
+            newPoint = startPoint.Move('>', -3);
             Assert.Equal(0, startPoint.X);
             Assert.Equal(0, startPoint.Y);
-            Assert.Equal(1, newPoint.X);
+            Assert.Equal(-3, newPoint.X);
             Assert.Equal(0, newPoint.Y);
         }
 
@@ -102,21 +102,21 @@ namespace SheepTools.Test.Model
             Assert.Equal(0, newPoint.X);
             Assert.Equal(1, newPoint.Y);
 
-            newPoint = startPoint.Move(Direction.Down);
+            newPoint = startPoint.Move(Direction.Down, -1);
             Assert.Equal(0, startPoint.Y);
             Assert.Equal(0, newPoint.X);
-            Assert.Equal(-1, newPoint.Y);
+            Assert.Equal(1, newPoint.Y);
 
-            newPoint = startPoint.Move(Direction.Left);
+            newPoint = startPoint.Move(Direction.Left, 2);
             Assert.Equal(0, startPoint.X);
             Assert.Equal(0, startPoint.Y);
-            Assert.Equal(-1, newPoint.X);
+            Assert.Equal(-2, newPoint.X);
             Assert.Equal(0, newPoint.Y);
 
-            newPoint = startPoint.Move(Direction.Right);
+            newPoint = startPoint.Move(Direction.Right, 3);
             Assert.Equal(0, startPoint.X);
             Assert.Equal(0, startPoint.Y);
-            Assert.Equal(1, newPoint.X);
+            Assert.Equal(3, newPoint.X);
             Assert.Equal(0, newPoint.Y);
         }
 
