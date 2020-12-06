@@ -51,5 +51,44 @@ namespace SheepTools.Test.Extensions
             var notNullOrEmptyEnumerable = new List<double> { Math.PI };
             Assert.False(notNullOrEmptyEnumerable.IsNullOrEmpty());
         }
+
+        [Fact]
+        public void IntersectAll()
+        {
+            var listOfListsOfChars = new List<List<char>>
+            {
+                new List<char> { 'a', 'b', 'c' },
+                new List<char> { 'a', 'a', 'c' },
+                new List<char> { 'a' }
+            };
+            var charIntersection = listOfListsOfChars.IntersectAll();
+            Assert.Single(charIntersection);
+            Assert.Equal('a', charIntersection.Single());
+
+            var listOfListsOfInt = new List<List<int>>
+            {
+                new List<int> { 1 },
+                new List<int> { 2 },
+            };
+            var intIntersection = listOfListsOfInt.IntersectAll();
+            Assert.Empty(intIntersection);
+
+            Assert.Empty(new List<List<double>>().IntersectAll());
+        }
+
+        [Fact]
+        public void IntersectAllString()
+        {
+            var listOfStrings = new List<string>
+            {
+                "abc",
+                "aac",
+                "a"
+            };
+
+            var intersection = listOfStrings.IntersectAll();
+            Assert.Equal('a', intersection.Single());
+            Assert.Single(intersection);
+        }
     }
 }
