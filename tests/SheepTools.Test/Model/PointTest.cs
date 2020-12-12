@@ -120,6 +120,38 @@ namespace SheepTools.Test.Model
             Assert.Equal(0, newPoint.Y);
         }
 
+        [Theory]
+        [InlineData(0, 0, 90, 1, 0, 0, 1)]
+        [InlineData(0, 0, 90, 0, 1, -1, 0)]
+        [InlineData(0, 0, 90, -1, 0, 0, -1)]
+        [InlineData(0, 0, 90, 0, -1, 1, 0)]
+        public void RotateCounterclockwise(int x0, int y0, int angle, int x1, int y1, int expectedX, int expectedY)
+        {
+            var pivot = new Point(x0, y0);
+            var pointToBeRotated = new Point(x1, y1);
+
+            var result = pointToBeRotated.RotateCounterclockwise(pivot, angle);
+
+            Assert.Equal(expectedX, result.X, 4);
+            Assert.Equal(expectedY, result.Y, 4);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 90, 1, 0, 0, -1)]
+        [InlineData(0, 0, 90, 0, -1, -1, 0)]
+        [InlineData(0, 0, 90, -1, 0, 0, 1)]
+        [InlineData(0, 0, 90, 0, 1, 1, 0)]
+        public void RotateClockwise(int x0, int y0, int angle, int x1, int y1, int expectedX, int expectedY)
+        {
+            var pivot = new Point(x0, y0);
+            var pointToBeRotated = new Point(x1, y1);
+
+            var result = pointToBeRotated.RotateClockwise(pivot, angle);
+
+            Assert.Equal(expectedX, result.X, 4);
+            Assert.Equal(expectedY, result.Y, 4);
+        }
+
         [Fact]
         public void CalculateClosestManhattanPoint()
         {
