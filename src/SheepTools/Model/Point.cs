@@ -64,6 +64,50 @@ namespace SheepTools.Model
             };
         }
 
+        public Point RotateCounterclockwise(Point pivot, double angle, bool isRadians = false)
+        {
+            if (!isRadians)
+            {
+                angle = Math.PI * angle / 180;
+            }
+
+            var sinAngle = Math.Sin(angle);
+            var cosAngle = Math.Cos(angle);
+
+            double deltaX = X - pivot.X;
+            double deltaY = Y - pivot.Y;
+
+            return new Point(
+                x: pivot.X
+                    + (cosAngle * deltaX)
+                    - (sinAngle * deltaY),
+                y: pivot.Y
+                    + (sinAngle * deltaX)
+                    + (cosAngle * deltaY));
+        }
+
+        public Point RotateClockwise(Point pivot, double angle, bool isRadians = false)
+        {
+            if (!isRadians)
+            {
+                angle = Math.PI * angle / 180;
+            }
+
+            var sinAngle = Math.Sin(angle);
+            var cosAngle = Math.Cos(angle);
+
+            var deltaX = X - pivot.X;
+            var deltaY = Y - pivot.Y;
+
+            return new Point(
+                x: pivot.X
+                    + (cosAngle * deltaX)
+                    + (sinAngle * deltaY),
+                y: pivot.Y
+                    - (sinAngle * deltaX)
+                    + (cosAngle * deltaY));
+        }
+
         public Point CalculateClosestManhattanPoint(ICollection<Point> candidatePoints)
         {
             Dictionary<Point, double> pointDistanceDictionary = new Dictionary<Point, double>();
