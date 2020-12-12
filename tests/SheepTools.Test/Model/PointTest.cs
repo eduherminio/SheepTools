@@ -125,6 +125,10 @@ namespace SheepTools.Test.Model
         [InlineData(0, 0, 90, 0, 1, -1, 0)]
         [InlineData(0, 0, 90, -1, 0, 0, -1)]
         [InlineData(0, 0, 90, 0, -1, 1, 0)]
+        [InlineData(0, 0, 180, 1, 1, -1, -1)]
+        [InlineData(0, 0, 180, 1, -1, -1, 1)]
+        [InlineData(0, 0, 180, -1, 1, 1, -1)]
+        [InlineData(0, 0, 180, -1, -1, 1, 1)]
         public void RotateCounterclockwise(int x0, int y0, int angle, int x1, int y1, int expectedX, int expectedY)
         {
             var pivot = new Point(x0, y0);
@@ -141,6 +145,10 @@ namespace SheepTools.Test.Model
         [InlineData(0, 0, 90, 0, -1, -1, 0)]
         [InlineData(0, 0, 90, -1, 0, 0, 1)]
         [InlineData(0, 0, 90, 0, 1, 1, 0)]
+        [InlineData(0, 0, 180, 1, 1, -1, -1)]
+        [InlineData(0, 0, 180, 1, -1, -1, 1)]
+        [InlineData(0, 0, 180, -1, 1, 1, -1)]
+        [InlineData(0, 0, 180, -1, -1, 1, 1)]
         public void RotateClockwise(int x0, int y0, int angle, int x1, int y1, int expectedX, int expectedY)
         {
             var pivot = new Point(x0, y0);
