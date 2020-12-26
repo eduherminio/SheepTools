@@ -1,5 +1,7 @@
 ﻿using SheepTools.Extensions;
 using System;
+using System.Collections;
+using System.Linq;
 using Xunit;
 
 namespace SheepTools.Test.Extensions
@@ -67,6 +69,28 @@ namespace SheepTools.Test.Extensions
         public void ReverseString(string input, string expected)
         {
             Assert.Equal(expected, input.ReverseString());
+        }
+
+        [Theory]
+        [InlineData("011011101011110001010111100,,,,1234aabbcc  \n\t", '1')]
+        [InlineData("#.#...###.#...###.......##,,,,1234aabbcc  \n\t", '#')]
+        public void ToBoolEnumerable(string input, char one)
+        {
+            var expected = input.Select(ch => ch == one);
+            var result = input.ToBoolEnumerable(one);
+
+            expected.Zip(result).ForEach(pair => Assert.Equal(pair.First, pair.Second));
+        }
+
+        [Theory]
+        [InlineData("011011101011110001010111100,,,,1234aabbcc  \n\t", '1')]
+        [InlineData("#.#...###.#...###.......##,,,,1234aabbcc  \n\t", '#')]
+        public void ToBitArray(string input, char one)
+        {
+            var expected = new BitArray(input.Select(ch => ch == one).ToArray());
+            var result = input.ToBitArray(one);
+
+            Assert.Equal(expected, result, new BitArrayComparer());
         }
     }
 }

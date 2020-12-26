@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SheepTools.Extensions
 {
@@ -47,12 +50,39 @@ namespace SheepTools.Extensions
                 : str;
         }
 
+        /// <summary>
+        /// Reverses a string
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string ReverseString(this string str)
         {
             var charArray = str.ToCharArray();
             Array.Reverse(charArray);
 
             return new string(charArray);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BitArray"/> from a 'binary' string, where true is represented by <paramref name="one"/> and false by any other character.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="one"></param>
+        /// <returns></returns>
+        public static BitArray ToBitArray(this string str, char one = '1')
+        {
+            return new BitArray(str.ToBoolEnumerable(one).ToArray());
+        }
+
+        /// <summary>
+        /// Creates an enumerable of booleans from a 'binary' string, where true is represented by <paramref name="one"/> and false by any other character.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="one"></param>
+        /// <returns></returns>
+        public static IEnumerable<bool> ToBoolEnumerable(this string str, char one = '1')
+        {
+            return str.Select(ch => ch == one);
         }
     }
 }
