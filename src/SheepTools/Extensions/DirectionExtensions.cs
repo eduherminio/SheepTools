@@ -18,5 +18,7 @@ namespace SheepTools.Extensions
         {
             return (Direction)(((int)direction + 2) % 4);
         }
+
+        public static Direction Opposite(this Direction direction) => Turn180(direction);
     }
 }

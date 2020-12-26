@@ -35,5 +35,15 @@ namespace SheepTools.Test.Extensions
         {
             Assert.Equal(expected, input.Turn180());
         }
+
+        [Theory]
+        [InlineData(Direction.Up, Direction.Down)]
+        [InlineData(Direction.Right, Direction.Left)]
+        [InlineData(Direction.Down, Direction.Up)]
+        [InlineData(Direction.Left, Direction.Right)]
+        public void Opposite(Direction input, Direction expected)
+        {
+            Assert.Equal(expected, input.Opposite());
+        }
     }
 }
