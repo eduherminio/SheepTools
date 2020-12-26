@@ -1,4 +1,6 @@
-﻿namespace SheepTools.Extensions
+﻿using System;
+
+namespace SheepTools.Extensions
 {
     public static class StringHelpers
     {
@@ -43,6 +45,14 @@
             return (str?.Length > maxLength)
                 ? str.Substring(0, maxLength)
                 : str;
+        }
+
+        public static string ReverseString(this string str)
+        {
+            var charArray = str.ToCharArray();
+            Array.Reverse(charArray);
+
+            return new string(charArray);
         }
     }
 }

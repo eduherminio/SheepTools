@@ -1,93 +1,72 @@
-﻿using Castle.DynamicProxy.Generators.Emitters;
-using SheepTools.Extensions;
+﻿using SheepTools.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Resources;
 using Xunit;
 
 namespace SheepTools.Test.Extensions
 {
     public class StringExtensionsTest
     {
-        [Fact]
-        public void IsEmpty()
+        [Theory]
+        [InlineData("", true)]
+        [InlineData(null, false)]
+        [InlineData(" ", false)]
+        [InlineData(".", false)]
+        public void IsEmpty(string? input, bool expected)
         {
-            var dictionary = new List<Tuple<string?, bool>>
-            {
-                new Tuple<string?, bool>(string.Empty, true),
-                new Tuple<string?, bool>(null, false),
-                new Tuple<string?, bool>(" ", false),
-            };
-
-            foreach (var entry in dictionary)
-            {
-                Assert.Equal(entry.Item2, entry.Item1.IsEmpty());
-            }
+            Assert.Equal(expected, input.IsEmpty());
         }
 
-        [Fact]
-        public void IsWhiteSpace()
+        [Theory]
+        [InlineData(null, false)]
+        [InlineData("", true)]
+        [InlineData(" ", true)]
+        [InlineData("  ", true)]
+        [InlineData("\r", true)]
+        [InlineData("\n", true)]
+        [InlineData("\r\n", true)]
+        [InlineData("/t", false)]
+        [InlineData("\u0000", false)]
+        [InlineData("\u001F", false)]
+        [InlineData("\u200B", false)]
+        [InlineData(".", false)]
+        public void IsWhiteSpace(string? input, bool expected)
         {
-            var dictionary = new List<Tuple<string?, bool>>
-            {
-                new Tuple<string?, bool>(null, false),
-                new Tuple<string?, bool>(string.Empty, true),
-                new Tuple<string?, bool>(" ", true),
-                new Tuple<string?, bool>("  ", true),
-                new Tuple<string?, bool>("\r", true),
-                new Tuple<string?, bool>("\n", true),
-                new Tuple<string?, bool>("\r\n", true),
-                new Tuple<string?, bool>("/t", false),
-                new Tuple<string?, bool>("\u0000", false),
-                new Tuple<string?, bool>("\u001F", false),
-                new Tuple<string?, bool>("\u200B", false),
-                new Tuple<string?, bool>(".", false),
-            };
-
-            foreach (var entry in dictionary)
-            {
-                Assert.Equal(entry.Item2, entry.Item1.IsWhiteSpace());
-            }
+            Assert.Equal(expected, input.IsWhiteSpace());
         }
 
-        [Fact]
-        public void HasWhiteSpaces()
+        [Theory]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        [InlineData(" ", true)]
+        [InlineData(" true", true)]
+        [InlineData("true ", true)]
+        [InlineData(" true ", true)]
+        [InlineData("tr ue", true)]
+        [InlineData("false", false)]
+        public void HasWhiteSpaces(string? input, bool expected)
         {
-            var dictionary = new List<Tuple<string?, bool>>
-            {
-                new Tuple<string?, bool>(string.Empty, false),
-                new Tuple<string?, bool>(null, false),
-                new Tuple<string?, bool>(" ", true),
-                new Tuple<string?, bool>(" true", true),
-                new Tuple<string?, bool>("true ", true),
-                new Tuple<string?, bool>(" true ", true),
-                new Tuple<string?, bool>("tr ue", true),
-                new Tuple<string?, bool>("false", false),
-            };
-
-            foreach (var entry in dictionary)
-            {
-                Assert.Equal(entry.Item2, entry.Item1.HasWhiteSpaces());
-            }
+            Assert.Equal(expected, input.HasWhiteSpaces());
         }
 
-        [Fact]
-        public void Truncate()
+        [Theory]
+        [InlineData("", "")]
+        [InlineData(null, null)]
+        [InlineData("1", "1")]
+        [InlineData("123", "123")]
+        [InlineData("12345", "12345")]
+        [InlineData("123456879", "12345")]
+        public void Truncate(string? input, string? expected)
         {
-            var dictionary = new List<Tuple<string?, string?>>
-            {
-                new Tuple<string?, string?>(string.Empty, string.Empty),
-                new Tuple<string?, string?>(null, null),
-                new Tuple<string?, string?>("1", "1"),
-                new Tuple<string?, string?>("123", "123"),
-                new Tuple<string?, string?>("12345", "12345"),
-                new Tuple<string?, string?>("123456879", "12345")
-            };
+            Assert.Equal(expected, input.Truncate(5));
+        }
 
-            foreach (var entry in dictionary)
-            {
-                Assert.Equal(entry.Item2, entry.Item1.Truncate(5));
-            }
+        [Theory]
+        [InlineData("abcde", "edcba")]
+        [InlineData("  12 34 ", " 43 21  ")]
+        [InlineData("", "")]
+        public void ReverseString(string input, string expected)
+        {
+            Assert.Equal(expected, input.ReverseString());
         }
     }
 }
