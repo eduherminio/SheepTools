@@ -31,6 +31,27 @@ namespace SheepTools
         /// <summary>
         /// gcd calculated using the Euclidean Algorithm (iterative implementation)
         /// </summary>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
+        public static ulong GreatestCommonDivisor(this IEnumerable<ulong> enumerable)
+        {
+            var result = enumerable.ElementAt(0);
+            for (int i = 1; i < enumerable.Count(); i++)
+            {
+                result = GreatestCommonDivisor(enumerable.ElementAt(i), result);
+
+                if (result == 1)
+                {
+                    return 1;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// gcd calculated using the Euclidean Algorithm (iterative implementation)
+        /// </summary>
         /// <param name="a">Greater than 0</param>
         /// <param name="b">Greater than 0</param>
         /// <returns></returns>
@@ -47,27 +68,6 @@ namespace SheepTools
             }
 
             return a;
-        }
-
-        /// <summary>
-        /// gcd calculated using the Euclidean Algorithm (iterative implementation)
-        /// </summary>
-        /// <param name="enumerable"></param>
-        /// <returns></returns>
-        public static ulong GreatestCommonDivisor(IEnumerable<ulong> enumerable)
-        {
-            var result = enumerable.ElementAt(0);
-            for (int i = 1; i < enumerable.Count(); i++)
-            {
-                result = GreatestCommonDivisor(enumerable.ElementAt(i), result);
-
-                if (result == 1)
-                {
-                    return 1;
-                }
-            }
-
-            return result;
         }
     }
 }
