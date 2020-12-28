@@ -106,10 +106,12 @@ namespace SheepTools.Test.Extensions
 
         [Theory]
         [InlineData("abccba")]
+        [InlineData("abcba")]
         [InlineData("abc   CBA ")]
         [InlineData("abc cb a")]
         [InlineData(" abc cb    a")]
-        [InlineData("AbC 1234 567\t76 5 43 2 1c\t Ba")]
+        [InlineData("AbC 1234 567  76 5 43 2 1c Ba")]
+        [InlineData("AbC 1234 56  76 5 43 2 1c Ba")]
         public void IsPalindrome(string str)
         {
             Assert.True(str.IsPalindrome());
