@@ -92,5 +92,27 @@ namespace SheepTools.Test.Extensions
 
             Assert.Equal(expected, result, new BitArrayComparer());
         }
+
+        [Theory]
+        [InlineData("abc", "ABC")]
+        [InlineData("abc", "AbC")]
+        [InlineData("abc", " abc")]
+        [InlineData("AbC 1234 567", "  aBc123 45 67   ")]
+        public void RemoveBlanksAndMakeInvariant(string str1, string str2)
+        {
+            Assert.NotEqual(str1, str2);
+            Assert.Equal(str1.RemoveBlanksAndMakeInvariant(), str2.RemoveBlanksAndMakeInvariant());
+        }
+
+        [Theory]
+        [InlineData("abccba")]
+        [InlineData("abc   CBA ")]
+        [InlineData("abc cb a")]
+        [InlineData(" abc cb    a")]
+        [InlineData("AbC 1234 567\t76 5 43 2 1c\t Ba")]
+        public void IsPalindrome(string str)
+        {
+            Assert.True(str.IsPalindrome());
+        }
     }
 }
