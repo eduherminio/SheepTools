@@ -57,10 +57,7 @@ namespace SheepTools.Extensions
         /// <returns></returns>
         public static string ReverseString(this string str)
         {
-            var charArray = str.ToCharArray();
-            Array.Reverse(charArray);
-
-            return new string(charArray);
+            return string.Join(string.Empty, str.Reverse());
         }
 
         /// <summary>
@@ -83,6 +80,16 @@ namespace SheepTools.Extensions
         public static IEnumerable<bool> ToBoolEnumerable(this string str, char one = '1')
         {
             return str.Select(ch => ch == one);
+        }
+
+        public static string RemoveBlanksAndMakeInvariant(this string str)
+        {
+            return str.Replace(" ", string.Empty).ToLowerInvariant();
+        }
+
+        public static bool IsPalindrome(this string str)
+        {
+            return str.RemoveBlanksAndMakeInvariant() == str.ReverseString().RemoveBlanksAndMakeInvariant();
         }
     }
 }
