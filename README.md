@@ -30,16 +30,23 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 - [SheepTools](#sheeptools)
 
   - [Point](#point)
-  - [Line](#line)
+  - [IntPoint](#intpoint)
   - [Point3D](#point3d)
+  - [Line](#line)
+  - [BitMatrix](#bitmatrix)
+  - [BitArrayComparer](#bitarray-comparer)
   - [TreeNode](#tree-node)
   - [Node](#node)
   - [Ensure](#ensure)
   - [RangeHelpers](#rangehelpers)
   - [LinearInterpolation](#lerp)
   - [AssemblyExtensions](#collection-extensions)
+  - [BitArrayExtensions](#bitarray-extensions)
+  - [CharExtensions](#char-extensions)
   - [CollectionExtensions](#datetime-extensions)
   - [DateTimeExtensions](#assembly-extensions)
+  - [DictionaryExtensions](#dictionary-extensions)
+  - [DirectionExtensions](#direction-extensions)
   - [DoubleExtensions](#double-extensions)
   - [EnumerableExtensions](#enumerable-extensions)
   - [IntExtensions](#int-extensions)
@@ -70,7 +77,19 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
 ### Point
 
-2D Point class.
+2D Point class with an optional `string` Id.
+
+<a name="intpoint"></a>
+
+### IntPoint
+
+Slim 2D Point class, using ints and without and optional `string` Id
+
+<a name="point3d"></a>
+
+### Point3D
+
+3D point class with an optional `string` Id.
 
 <a name="line"></a>
 
@@ -78,11 +97,17 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
 2D (straight) line class.
 
-<a name="point3d"></a>
+<a name="bitmatrix"></a>
 
-### Point3D
+### BitMatrix
 
-3D point class.
+Class to work with bidimensional matrixes of bits.
+
+<a name="bitarray-comparer"></a>
+
+### BitArrayComparer
+
+`IEqualityComparer<BitArray>` implementation
 
 <a name="tree-node"></a>
 
@@ -98,6 +123,17 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
 Essentially, `TreeNode<string>`.
 
+<a name="maths"></a>
+
+### Maths
+
+General math algorithms
+
+- `LeastCommonMultiple(this IEnumerable<ulong>)`
+- `LeastCommonMultiple(ulong, ulong)`
+- `GreatestCommonDivisor(this IEnumerable<ulong>)`
+- `GreatestCommonDivisor(ulong, ulong)`
+
 <a name="ensure"></a>
 
 ### Ensure
@@ -105,6 +141,7 @@ Essentially, `TreeNode<string>`.
 Assert-style class that throws exceptions when things don't go as expected.
 
 - `Equal()` / `NotEqual()`
+- `Equals()` / `NotEquals()`
 - `True()` / `False()`
 - `Null()` / `NotNull()`
 - `Empty()` / `NotEmpty()`
@@ -138,6 +175,21 @@ Helper methods to interpolate 2D points
 - `GetTypesAndAttributes<TAttribute>()`
 - `GetAssemblies<TInterface>()`
 
+<a name="bitarray-extensions"></a>
+
+### BitArrayExtensions
+
+- `Reverse()`
+- `ToBitString()`
+
+<a name="char-extensions"></a>
+
+### CharExtensions
+
+- `GetDirection()`
+
+<a name="string-extensions"></a>
+
 <a name="collection-extensions"></a>
 
 ### CollectionExtensions
@@ -152,6 +204,24 @@ Helper methods to interpolate 2D points
 - `IsAfterNow()`
 - `IsAfter(DateTime)`
 - `MillisecondsFromEpoch()`
+- `StringId()`
+
+<a name="dictionary-extensions"></a>
+
+### DictionaryExtensions
+
+- `AddOrUpdate(TKey, TValue, Func<TKey, TValue, TValue>)`
+- `AddOrUpdate(TKey, Func<TKey, TValue>, Func<TKey, TValue, TValue>)`
+- `AddOrUpdate(TKey, Func<TKey, TArg, TValue>, Func<TKey, TValue, TArg, TValue>, TArg)`
+
+<a name="direction-extensions"></a>
+
+### DirectionExtensions
+
+- `TurnLeft()`
+- `TurnRight()`
+- `Turn180()`
+- `Opposite()`
 
 <a name="double-extensions"></a>
 
@@ -165,6 +235,7 @@ Helper methods to interpolate 2D points
 
 - `ForEach()`
 - `IsNullOrEmpty()`
+- `IntersectAll()`
 
 <a name="int-extensions"></a>
 
@@ -179,13 +250,17 @@ Helper methods to interpolate 2D points
 
 - `Clamp<T>(T, T)`
 
-<a name="string-extensions"></a>
-
 ### StringExtensions
 
 - `IsEmpty()`
+- `IsWhiteSpace()`
 - `HasWhiteSpaces()`
 - `Truncate(int)`
+- `ReverseString()`
+- `ToBitArray(char = '1')`
+- `ToBoolEnumerable(char = '1')`
+- `RemoveBlanksAndMakeInvariant()`
+- `IsPalindrome()`
 
 <a name="sheeptools-moq"></a>
 
@@ -229,7 +304,7 @@ Depends on [XUnit](https://xunit.net/).
 
 - `DoesNotThrow(Action)`
 - `DoesNotThrow(Func<object)`
-- `DoesNotThrow(Func<Task>)`
+- `DoesNotThrowAsync(Func<Task>)`
 
 [azuredevopslogo]: https://dev.azure.com/eduherminio/SheepTools/_apis/build/status/eduherminio.SheepTools?branchName=master
 [azuredevopslink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=1&branchName=master
