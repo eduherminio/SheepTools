@@ -324,8 +324,8 @@ Depends on [XUnit](https://xunit.net/).
 [apimundolink-xunit]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools.XUnit/versions/latest?tab=types
 [coveragelogo]: https://img.shields.io/azure-devops/coverage/eduherminio/Sheeptools/8/main
 [coveragelink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=8&branchName=main
-[sonarqubelink]: https://sonarcloud.io/dashboard?id=SheepTools
-[sonarqualitylogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=alert_status
-[sonarvulnerabilitieslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=vulnerabilities
-[sonarbugslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=bugs
-[sonarcodesmellslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=code_smells
+[sonarqubelink]: https://sonarcloud.io/dashboard?id=eduherminio_SheepTools
+[sonarqualitylogo]: https://sonarcloud.io/api/project_badges/measure?project=eduherminio_SheepTools&metric=alert_status
+[sonarvulnerabilitieslogo]: https://sonarcloud.io/api/project_badges/measure?project=eduherminio_SheepTools&metric=vulnerabilities
+[sonarbugslogo]: https://sonarcloud.io/api/project_badges/measure?project=eduherminio_SheepTools&metric=bugs
+[sonarcodesmellslogo]: https://sonarcloud.io/api/project_badges/measure?project=eduherminio_SheepTools&metric=code_smells
