@@ -306,8 +306,8 @@ Depends on [XUnit](https://xunit.net/).
 - `DoesNotThrow(Func<object)`
 - `DoesNotThrowAsync(Func<Task>)`
 
-[azuredevopslogo]: https://dev.azure.com/eduherminio/SheepTools/_apis/build/status/eduherminio.SheepTools?branchName=master
-[azuredevopslink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=1&branchName=master
+[azuredevopslogo]: https://dev.azure.com/eduherminio/SheepTools/_apis/build/status/eduherminio.SheepTools?branchName=main
+[azuredevopslink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=1&branchName=main
 [githubactionslogo]: https://github.com/eduherminio/SheepTools/workflows/CI/badge.svg
 [githubactionslink]: https://github.com/eduherminio/SheepTools/actions?query=workflow%3ACI
 [nugetlogo]: https://img.shields.io/nuget/v/SheepTools.svg?style=flat-square&label=nuget
@@ -322,8 +322,8 @@ Depends on [XUnit](https://xunit.net/).
 [apimundolink-moq]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools.Moq/versions/latest?tab=types
 [apimundologo-xunit]: https://img.shields.io/badge/SheepTools.XUnit%20API-Apimundo-728199.svg
 [apimundolink-xunit]: https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/SheepTools.XUnit/versions/latest?tab=types
-[coveragelogo]: https://img.shields.io/azure-devops/coverage/eduherminio/Sheeptools/8/master
-[coveragelink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=8&branchName=master
+[coveragelogo]: https://img.shields.io/azure-devops/coverage/eduherminio/Sheeptools/8/main
+[coveragelink]: https://dev.azure.com/eduherminio/SheepTools/_build/latest?definitionId=8&branchName=main
 [sonarqubelink]: https://sonarcloud.io/dashboard?id=SheepTools
 [sonarqualitylogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=alert_status
 [sonarvulnerabilitieslogo]: https://sonarcloud.io/api/project_badges/measure?project=SheepTools&metric=vulnerabilities
