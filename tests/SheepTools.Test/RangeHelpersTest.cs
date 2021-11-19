@@ -1,21 +1,18 @@
-﻿using SheepTools.Helpers;
-using System.Linq;
-using Xunit;
+﻿using Xunit;
 
-namespace SheepTools.Test
+namespace SheepTools.Test;
+
+public class RangeHelpersTest
 {
-    public class RangeHelpersTest
+    [Fact]
+    public void GenerateRangeTest()
     {
-        [Fact]
-        public void GenerateRangeTest()
-        {
-            const int min = -50;
-            const int max = +27;
+        const int min = -50;
+        const int max = +27;
 
-            var result = RangeHelpers.GenerateRange(min, max);
+        var result = RangeHelpers.GenerateRange(min, max);
 
-            Assert.Equal(min, result.First());
-            Assert.Equal(max, result.Last());
-        }
+        Assert.Equal(min, result.First());
+        Assert.Equal(max, result.Last());
     }
 }
