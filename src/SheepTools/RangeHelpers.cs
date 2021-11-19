@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿namespace SheepTools;
 
-namespace SheepTools
+public static class RangeHelpers
 {
-    public static class RangeHelpers
+    /// <summary>
+    /// [minValue, maxValue]
+    /// </summary>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
+    public static IEnumerable<int> GenerateRange(int minValue, int maxValue)
     {
-        /// <summary>
-        /// [minValue, maxValue]
-        /// </summary>
-        /// <param name="minValue"></param>
-        /// <param name="maxValue"></param>
-        /// <returns></returns>
-        public static IEnumerable<int> GenerateRange(int minValue, int maxValue)
-        {
-            return Enumerable.Range(minValue, maxValue - minValue + 1);
-        }
+        return Enumerable.Range(minValue, maxValue - minValue + 1);
     }
 }

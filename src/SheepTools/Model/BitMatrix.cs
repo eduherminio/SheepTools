@@ -1,95 +1,91 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Text;
 
-namespace SheepTools.Model
+namespace SheepTools.Model;
+
+public class BitMatrix
 {
-    public class BitMatrix
+    public List<BitArray> Content { get; set; }
+
+    public BitMatrix(List<BitArray> content)
     {
-        public List<BitArray> Content { get; set; }
+        Content = content;
+    }
 
-        public BitMatrix(List<BitArray> content)
+    public virtual BitMatrix RotateClockwise()
+    {
+        var length = Content.Count;
+        var result = new List<BitArray>(length);
+
+        for (int i = 0; i < length; ++i)
         {
-            Content = content;
+            result.Add(new BitArray(
+                Content.Select(arr => arr[i])
+                .Reverse()
+                .ToArray()));
         }
 
-        public virtual BitMatrix RotateClockwise()
-        {
-            var length = Content.Count;
-            var result = new List<BitArray>(length);
+        return new BitMatrix(result);
+    }
 
-            for (int i = 0; i < length; ++i)
+    public virtual BitMatrix RotateAnticlockwise()
+    {
+        var length = Content[0].Count;
+        var result = new List<BitArray>(length);
+
+        for (int i = 0; i < length; ++i)
+        {
+            result.Add(new BitArray(
+                Content.Select(arr => arr[length - i - 1])
+                .ToArray()));
+        }
+
+        return new BitMatrix(result);
+    }
+
+    public virtual BitMatrix Rotate180()
+    {
+        return FlipUpsideDown().FlipLeftRight();
+    }
+
+    public virtual BitMatrix FlipUpsideDown()
+    {
+        return new BitMatrix(Enumerable.Reverse(Content).ToList());
+    }
+
+    public virtual BitMatrix FlipLeftRight()
+    {
+        var length = Content[0].Count;
+
+        return new BitMatrix(Content.ConvertAll(original =>
+        {
+            int mid = length / 2;
+            var newRow = new BitArray(original);
+            for (int i = 0; i < mid; ++i)
             {
-                result.Add(new BitArray(
-                    Content.Select(arr => arr[i])
-                    .Reverse()
-                    .ToArray()));
+                newRow[i] = original[length - i - 1];
+                newRow[length - i - 1] = original[i];
             }
 
-            return new BitMatrix(result);
-        }
+            return newRow;
+        }));
+    }
 
-        public virtual BitMatrix RotateAnticlockwise()
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+
+        foreach (var item in Content)
         {
-            var length = Content[0].Count;
-            var result = new List<BitArray>(length);
-
-            for (int i = 0; i < length; ++i)
+            foreach (var bit in item)
             {
-                result.Add(new BitArray(
-                    Content.Select(arr => arr[length - i - 1])
-                    .ToArray()));
+                sb.Append((bool)bit ? "1" : "0");
             }
 
-            return new BitMatrix(result);
-        }
-
-        public virtual BitMatrix Rotate180()
-        {
-            return FlipUpsideDown().FlipLeftRight();
-        }
-
-        public virtual BitMatrix FlipUpsideDown()
-        {
-            return new BitMatrix(Enumerable.Reverse(Content).ToList());
-        }
-
-        public virtual BitMatrix FlipLeftRight()
-        {
-            var length = Content[0].Count;
-
-            return new BitMatrix(Content.ConvertAll(original =>
-            {
-                int mid = length / 2;
-                var newRow = new BitArray(original);
-                for (int i = 0; i < mid; ++i)
-                {
-                    newRow[i] = original[length - i - 1];
-                    newRow[length - i - 1] = original[i];
-                }
-
-                return newRow;
-            }));
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            foreach (var item in Content)
-            {
-                foreach (var bit in item)
-                {
-                    sb.Append((bool)bit ? "1" : "0");
-                }
-
-                sb.Append(Environment.NewLine);
-            }
             sb.Append(Environment.NewLine);
-
-            return sb.ToString();
         }
+        sb.Append(Environment.NewLine);
+
+        return sb.ToString();
     }
 }

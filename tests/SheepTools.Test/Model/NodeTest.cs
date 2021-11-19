@@ -1,209 +1,205 @@
 ﻿using SheepTools.Model;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Xunit;
 
-namespace SheepTools.Test.Model
+namespace SheepTools.Test.Model;
+
+public class NodeTest
 {
-    public class NodeTest
+    private record CustomNode : TreeNode<DateTime>
     {
-        private record CustomNode : TreeNode<DateTime>
+        public CustomNode(DateTime id) : base(id)
         {
-            public CustomNode(DateTime id) : base(id)
-            {
-            }
-
-            public CustomNode(DateTime id, TreeNode<DateTime> child) : base(id, child)
-            {
-            }
         }
 
-        [Fact]
-        public void ShouldNotHaveDefaultKey()
+        public CustomNode(DateTime id, TreeNode<DateTime> child) : base(id, child)
         {
-            Assert.Throws<ArgumentException>(() => new CustomNode(default));
         }
+    }
 
-        [Fact]
-        public void ShouldNotHaveItselfAsChild()
-        {
-            var customNode = new CustomNode(DateTime.Now);
+    [Fact]
+    public void ShouldNotHaveDefaultKey()
+    {
+        Assert.Throws<ArgumentException>(() => new CustomNode(default));
+    }
 
-            Assert.Throws<ArgumentException>(() => new CustomNode(customNode.Id, customNode));
-        }
+    [Fact]
+    public void ShouldNotHaveItselfAsChild()
+    {
+        var customNode = new CustomNode(DateTime.Now);
 
-        [Fact]
-        public void NodeEqual()
-        {
-            var a = new Node("#1");
-            var b = new Node("#1");
-            var c = new Node("");
-            var d = new Node("3");
+        Assert.Throws<ArgumentException>(() => new CustomNode(customNode.Id, customNode));
+    }
 
-            Assert.Equal(a, b);
-            Assert.True(a.Equals(b));
-            Assert.True(a == b);
-            Assert.NotEqual(a, c);
-            Assert.NotEqual(a, d);
-            Assert.NotEqual(c, d);
-            Assert.True(c != d);
+    [Fact]
+    public void NodeEqual()
+    {
+        var a = new Node("#1");
+        var b = new Node("#1");
+        var c = new Node("");
+        var d = new Node("3");
 
-            HashSet<Node> set = new HashSet<Node>() { a };
-            Assert.False(set.Add(b));
-            Assert.True(set.Add(c));
-            Assert.True(set.Add(d));
-        }
+        Assert.Equal(a, b);
+        Assert.True(a.Equals(b));
+        Assert.True(a == b);
+        Assert.NotEqual(a, c);
+        Assert.NotEqual(a, d);
+        Assert.NotEqual(c, d);
+        Assert.True(c != d);
 
-        [Fact]
-        public void CustomNodeEqual()
-        {
-            DateTime now = DateTime.Now;
+        HashSet<Node> set = new HashSet<Node>() { a };
+        Assert.False(set.Add(b));
+        Assert.True(set.Add(c));
+        Assert.True(set.Add(d));
+    }
 
-            CustomNode a = new CustomNode(now);
-            CustomNode b = new CustomNode(now);
-            CustomNode c = new CustomNode(DateTime.Now);
-            CustomNode d = new CustomNode(now.AddSeconds(1));
+    [Fact]
+    public void CustomNodeEqual()
+    {
+        DateTime now = DateTime.Now;
 
-            Assert.Equal(a, b);
-            Assert.True(a.Equals(b));
-            Assert.True(a == b);
-            Assert.NotEqual(a, c);
-            Assert.NotEqual(a, d);
-            Assert.NotEqual(c, d);
-            Assert.True(c != d);
+        CustomNode a = new CustomNode(now);
+        CustomNode b = new CustomNode(now);
+        CustomNode c = new CustomNode(DateTime.Now);
+        CustomNode d = new CustomNode(now.AddSeconds(1));
 
-            HashSet<CustomNode> set = new HashSet<CustomNode>() { a };
-            Assert.False(set.Add(b));
-            Assert.True(set.Add(c));
-            Assert.True(set.Add(d));
-        }
+        Assert.Equal(a, b);
+        Assert.True(a.Equals(b));
+        Assert.True(a == b);
+        Assert.NotEqual(a, c);
+        Assert.NotEqual(a, d);
+        Assert.NotEqual(c, d);
+        Assert.True(c != d);
 
-        [Fact]
-        public void DescendantsCount()
-        {
-            var d = new CustomNode(DateTime.Now);
-            var c = new CustomNode(DateTime.Now, d);
-            var b = new CustomNode(DateTime.Now, c);
-            var a = new CustomNode(DateTime.Now, b);
+        HashSet<CustomNode> set = new HashSet<CustomNode>() { a };
+        Assert.False(set.Add(b));
+        Assert.True(set.Add(c));
+        Assert.True(set.Add(d));
+    }
 
-            Assert.Equal(0, d.DescendantsCount());
-            Assert.Equal(0, d.GrandChildrenCount());
-            Assert.Equal(1, c.DescendantsCount());
-            Assert.Equal(1, c.GrandChildrenCount());
-            Assert.Equal(2, b.DescendantsCount());
-            Assert.Equal(2, b.GrandChildrenCount());
-            Assert.Equal(3, a.DescendantsCount());
-            Assert.Equal(3, a.GrandChildrenCount());
-        }
+    [Fact]
+    public void DescendantsCount()
+    {
+        var d = new CustomNode(DateTime.Now);
+        var c = new CustomNode(DateTime.Now, d);
+        var b = new CustomNode(DateTime.Now, c);
+        var a = new CustomNode(DateTime.Now, b);
 
-        /// <summary>
-        /// See https://adventofcode.com/2019/day/6, part 1
-        /// </summary>
-        [Fact]
-        public void RelationshipsCount()
-        {
-            var nodes = GenerateTestGraphWithChildren();
+        Assert.Equal(0, d.DescendantsCount());
+        Assert.Equal(0, d.GrandChildrenCount());
+        Assert.Equal(1, c.DescendantsCount());
+        Assert.Equal(1, c.GrandChildrenCount());
+        Assert.Equal(2, b.DescendantsCount());
+        Assert.Equal(2, b.GrandChildrenCount());
+        Assert.Equal(3, a.DescendantsCount());
+        Assert.Equal(3, a.GrandChildrenCount());
+    }
 
-            var com = nodes.Single(n => n.Id == "COM");
-            var result = com.RelationshipsCount();
+    /// <summary>
+    /// See https://adventofcode.com/2019/day/6, part 1
+    /// </summary>
+    [Fact]
+    public void RelationshipsCount()
+    {
+        var nodes = GenerateTestGraphWithChildren();
 
-            Assert.Equal(42, result);
-        }
+        var com = nodes.Single(n => n.Id == "COM");
+        var result = com.RelationshipsCount();
 
-        /// <summary>
-        /// See https://adventofcode.com/2019/day/6, part 2
-        /// </summary>
-        [Fact]
-        public void DistanceTo()
-        {
-            var nodes = GenerateTestGraphWithChildren();
+        Assert.Equal(42, result);
+    }
 
-            var k = nodes.Single(n => n.Id == "K");
-            var d = nodes.Single(n => n.Id == "D");
-            var i = nodes.Single(n => n.Id == "I");
+    /// <summary>
+    /// See https://adventofcode.com/2019/day/6, part 2
+    /// </summary>
+    [Fact]
+    public void DistanceTo()
+    {
+        var nodes = GenerateTestGraphWithChildren();
 
-            var result = d.DistanceTo(k, 0) + d.DistanceTo(i, 0);
+        var k = nodes.Single(n => n.Id == "K");
+        var d = nodes.Single(n => n.Id == "D");
+        var i = nodes.Single(n => n.Id == "I");
 
-            Assert.Equal(4, result);
-            Assert.Equal(4, d.DistanceTo(k, 1));
+        var result = d.DistanceTo(k, 0) + d.DistanceTo(i, 0);
 
-            Assert.Equal(int.MaxValue, k.DistanceTo(d, 0));
-            Assert.Equal(int.MaxValue, i.DistanceTo(d, 0));
-            Assert.Equal(int.MaxValue, k.DistanceTo(i, 0));
-            Assert.Equal(int.MaxValue, i.DistanceTo(k, 0));
-        }
+        Assert.Equal(4, result);
+        Assert.Equal(4, d.DistanceTo(k, 1));
 
-        [Fact]
-        public void GetCommonAncestor()
-        {
-            var nodes = GenerateTestGraphWithParent();
+        Assert.Equal(int.MaxValue, k.DistanceTo(d, 0));
+        Assert.Equal(int.MaxValue, i.DistanceTo(d, 0));
+        Assert.Equal(int.MaxValue, k.DistanceTo(i, 0));
+        Assert.Equal(int.MaxValue, i.DistanceTo(k, 0));
+    }
 
-            var d = nodes.Single(n => n.Id == "D");
-            var e = nodes.Single(n => n.Id == "E");
-            var f = nodes.Single(n => n.Id == "F");
-            var l = nodes.Single(n => n.Id == "L");
+    [Fact]
+    public void GetCommonAncestor()
+    {
+        var nodes = GenerateTestGraphWithParent();
 
-            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, d).Id);
-            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, e).Id);
-            Assert.Equal(d.Id, d.GetCommonAncestor(nodes, f).Id);
-            Assert.Equal(e.Id, f.GetCommonAncestor(nodes, l).Id);
-            Assert.Equal(e.Id, l.GetCommonAncestor(nodes, f).Id);
-        }
+        var d = nodes.Single(n => n.Id == "D");
+        var e = nodes.Single(n => n.Id == "E");
+        var f = nodes.Single(n => n.Id == "F");
+        var l = nodes.Single(n => n.Id == "L");
 
-        /// <summary>
-        /// https://adventofcode.com/2019/day/6
-        /// </summary>
-        /// <returns></returns>
-        private static ICollection<Node> GenerateTestGraphWithChildren()
-        {
-            var nodeList = new List<Node>();
+        Assert.Equal(d.Id, d.GetCommonAncestor(nodes, d).Id);
+        Assert.Equal(d.Id, d.GetCommonAncestor(nodes, e).Id);
+        Assert.Equal(d.Id, d.GetCommonAncestor(nodes, f).Id);
+        Assert.Equal(e.Id, f.GetCommonAncestor(nodes, l).Id);
+        Assert.Equal(e.Id, l.GetCommonAncestor(nodes, f).Id);
+    }
 
-            var l = new Node("L");
-            var i = new Node("I");
-            var h = new Node("H");
-            var f = new Node("F");
-            var k = new Node("K", l);
-            var j = new Node("J", k);
-            var g = new Node("G", h);
-            var e = new Node("E", new[] { f, j });
-            var d = new Node("D", new[] { e, i });
-            var c = new Node("C", d);
-            var b = new Node("B", new[] { c, g });
-            var com = new Node("COM", b);
-            b.Children.Add(g);
-            e.Children.Add(j);
-            d.Children.Add(i);
+    /// <summary>
+    /// https://adventofcode.com/2019/day/6
+    /// </summary>
+    /// <returns></returns>
+    private static ICollection<Node> GenerateTestGraphWithChildren()
+    {
+        var nodeList = new List<Node>();
 
-            nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+        var l = new Node("L");
+        var i = new Node("I");
+        var h = new Node("H");
+        var f = new Node("F");
+        var k = new Node("K", l);
+        var j = new Node("J", k);
+        var g = new Node("G", h);
+        var e = new Node("E", new[] { f, j });
+        var d = new Node("D", new[] { e, i });
+        var c = new Node("C", d);
+        var b = new Node("B", new[] { c, g });
+        var com = new Node("COM", b);
+        b.Children.Add(g);
+        e.Children.Add(j);
+        d.Children.Add(i);
 
-            return nodeList;
-        }
+        nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
 
-        /// <summary>
-        /// https://adventofcode.com/2019/day/6
-        /// </summary>
-        /// <returns></returns>
-        private static ICollection<Node> GenerateTestGraphWithParent()
-        {
-            var nodeList = new List<Node>();
+        return nodeList;
+    }
 
-            var com = new Node("COM");
-            var b = new Node(com, "B");
-            var c = new Node(b, "C");
-            var d = new Node(c, "D");
-            var e = new Node(d, "E");
-            var f = new Node(e, "F");
-            var g = new Node(b, "G");
-            var h = new Node(g, "H");
-            var i = new Node(d, "I");
-            var j = new Node(e, "J");
-            var k = new Node(j, "K");
-            var l = new Node(k, "L");
+    /// <summary>
+    /// https://adventofcode.com/2019/day/6
+    /// </summary>
+    /// <returns></returns>
+    private static ICollection<Node> GenerateTestGraphWithParent()
+    {
+        var nodeList = new List<Node>();
 
-            nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+        var com = new Node("COM");
+        var b = new Node(com, "B");
+        var c = new Node(b, "C");
+        var d = new Node(c, "D");
+        var e = new Node(d, "E");
+        var f = new Node(e, "F");
+        var g = new Node(b, "G");
+        var h = new Node(g, "H");
+        var i = new Node(d, "I");
+        var j = new Node(e, "J");
+        var k = new Node(j, "K");
+        var l = new Node(k, "L");
 
-            return nodeList;
-        }
+        nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+
+        return nodeList;
     }
 }

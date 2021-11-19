@@ -1,10 +1,9 @@
-﻿namespace SheepTools.Model
+﻿namespace SheepTools.Model;
+
+public enum Direction
 {
-    public enum Direction
-    {
-        Up,
-        Right,
-        Down,
-        Left
-    }
+    Up,
+    Right,
+    Down,
+    Left
 }
