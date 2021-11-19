@@ -79,7 +79,7 @@ public static class AssemblyExtensions
         foreach (var assemblyName in assemblies)
         {
             var candidate = Assembly.Load(assemblyName);
-            if (!(candidate is null))
+            if (candidate is not null)
             {
                 foreach (var ti in candidate.DefinedTypes)
                 {

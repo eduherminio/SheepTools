@@ -19,7 +19,7 @@ public class PointTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<Point> set = new HashSet<Point>() { a };
+        HashSet<Point> set = new() { a };
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }

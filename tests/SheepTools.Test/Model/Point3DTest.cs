@@ -9,9 +9,9 @@ public class Point3DTest
     [Fact]
     public void Equal()
     {
-        Point3D a = new Point3D(0, 0, 0);
-        Point3D b = new Point3D(0, 0, 0);
-        Point3D c = new Point3D(0, 1, 0);
+        Point3D a = new(0, 0, 0);
+        Point3D b = new(0, 0, 0);
+        Point3D c = new(0, 1, 0);
 
         Assert.Equal(a, b);
         Assert.True(a.Equals(b));
@@ -19,7 +19,7 @@ public class Point3DTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<Point3D> set = new HashSet<Point3D>() { a };
+        HashSet<Point3D> set = new() { a };
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }

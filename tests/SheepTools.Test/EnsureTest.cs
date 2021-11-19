@@ -14,7 +14,7 @@ public class EnsureTest
     public void Equal()
     {
         var date = new DateTime(1111, 1, 1);
-        DateTime otherDate(int n = 0) => new DateTime(date.Ticks + n);
+        DateTime otherDate(int n = 0) => new(date.Ticks + n);
 
         Asssert.DoesNotThrow(() => Ensure.Equal(date, otherDate()));
         Assert.Throws<ValidationException>(() => Ensure.Equal(date, otherDate(1)));
@@ -27,7 +27,7 @@ public class EnsureTest
     public void EqualsTest()
     {
         var date = new DateTime(1111, 1, 1);
-        DateTime otherDate(int n = 0) => new DateTime(date.Ticks + n);
+        DateTime otherDate(int n = 0) => new(date.Ticks + n);
 
         Asssert.DoesNotThrow(() => Ensure.Equals(date, otherDate()));
         Assert.Throws<ValidationException>(() => Ensure.Equals(date, otherDate(1)));
@@ -40,7 +40,7 @@ public class EnsureTest
     public void NotEqual()
     {
         var date = new DateTime(2222, 1, 1);
-        DateTime otherDate(int n = 0) => new DateTime(date.Ticks + n);
+        DateTime otherDate(int n = 0) => new(date.Ticks + n);
 
         Asssert.DoesNotThrow(() => Ensure.NotEqual(date, otherDate(-1)));
         Assert.Throws<ValidationException>(() => Ensure.NotEqual(date, otherDate()));
@@ -53,7 +53,7 @@ public class EnsureTest
     public void NotEquals()
     {
         var date = new DateTime(2222, 1, 1);
-        DateTime otherDate(int n = 0) => new DateTime(date.Ticks + n);
+        DateTime otherDate(int n = 0) => new(date.Ticks + n);
 
         Asssert.DoesNotThrow(() => Ensure.NotEquals(date, otherDate(-1)));
         Assert.Throws<ValidationException>(() => Ensure.NotEquals(date, otherDate()));

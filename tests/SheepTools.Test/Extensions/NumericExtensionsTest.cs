@@ -127,10 +127,10 @@ public class NumericExtensionsTest
     [Fact]
     public void ClampDateTime()
     {
-        DateTime min = new DateTime(2019, 10, 25);
-        DateTime max = new DateTime(2019, 10, 30);
+        DateTime min = new(2019, 10, 25);
+        DateTime max = new(2019, 10, 30);
 
-        Dictionary<DateTime, DateTime> numberExpectedClampedValuePair = new Dictionary<DateTime, DateTime>()
+        Dictionary<DateTime, DateTime> numberExpectedClampedValuePair = new()
         {
             [DateTime.MinValue] = min,
             [new DateTime(2019, 10, 24, 23, 0, 0)] = min,

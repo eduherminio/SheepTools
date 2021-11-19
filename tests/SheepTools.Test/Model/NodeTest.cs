@@ -46,7 +46,7 @@ public class NodeTest
         Assert.NotEqual(c, d);
         Assert.True(c != d);
 
-        HashSet<Node> set = new HashSet<Node>() { a };
+        HashSet<Node> set = new() { a };
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
         Assert.True(set.Add(d));
@@ -57,10 +57,10 @@ public class NodeTest
     {
         DateTime now = DateTime.Now;
 
-        CustomNode a = new CustomNode(now);
-        CustomNode b = new CustomNode(now);
-        CustomNode c = new CustomNode(DateTime.Now);
-        CustomNode d = new CustomNode(now.AddSeconds(1));
+        CustomNode a = new(now);
+        CustomNode b = new(now);
+        CustomNode c = new(DateTime.Now);
+        CustomNode d = new(now.AddSeconds(1));
 
         Assert.Equal(a, b);
         Assert.True(a.Equals(b));
@@ -70,7 +70,7 @@ public class NodeTest
         Assert.NotEqual(c, d);
         Assert.True(c != d);
 
-        HashSet<CustomNode> set = new HashSet<CustomNode>() { a };
+        HashSet<CustomNode> set = new() { a };
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
         Assert.True(set.Add(d));

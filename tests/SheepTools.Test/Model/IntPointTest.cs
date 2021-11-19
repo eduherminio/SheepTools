@@ -19,7 +19,7 @@ public class IntPointTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<IntPoint> set = new HashSet<IntPoint>() { a };
+        HashSet<IntPoint> set = new() { a };
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }
