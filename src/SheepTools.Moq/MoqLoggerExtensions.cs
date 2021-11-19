@@ -96,7 +96,7 @@ public static class MoqLoggerExtensions
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<TException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times,
             failMessage);
     }
@@ -109,7 +109,7 @@ public static class MoqLoggerExtensions
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                 It.IsAny<TException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times,
             failMessage);
     }
@@ -122,7 +122,7 @@ public static class MoqLoggerExtensions
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                 It.Is<TException>(e => (e != null ? e.GetHashCode() : -1) == ex.GetHashCode()),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times,
             failMessage);
     }
@@ -135,7 +135,7 @@ public static class MoqLoggerExtensions
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((object v, Type _) => v != null && v.ToString() != null && v!.ToString()!.Contains(message)),
                 It.Is<TException>(e => (e != null ? e.GetHashCode() : -1) == ex.GetHashCode()),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times,
             failMessage);
     }
