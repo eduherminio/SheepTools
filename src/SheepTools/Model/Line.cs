@@ -27,7 +27,7 @@ public record Line
         Id = id;
     }
 
-    public double CalculateY(double x)
+    public virtual double CalculateY(double x)
     {
         return Y0 + (M * (x - X0));
     }
