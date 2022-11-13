@@ -15,19 +15,19 @@ public record IntPoint
         Y = y;
     }
 
-    public double ManhattanDistance(IntPoint point)
+    public virtual double ManhattanDistance(IntPoint point)
     {
         return Math.Abs(point.X - X) + Math.Abs(point.Y - Y);
     }
 
-    public double DistanceTo(IntPoint otherPoint)
+    public virtual double DistanceTo(IntPoint otherPoint)
     {
         return Math.Sqrt(
             Math.Pow(otherPoint.X - X, 2)
             + Math.Pow(otherPoint.Y - Y, 2));
     }
 
-    public IntPoint Move(char direction, int distance = 1)
+    public virtual IntPoint Move(char direction, int distance = 1)
     {
         return direction switch
         {
@@ -39,7 +39,7 @@ public record IntPoint
         };
     }
 
-    public IntPoint Move(Direction direction, int distance = 1)
+    public virtual IntPoint Move(Direction direction, int distance = 1)
     {
         return direction switch
         {
@@ -51,7 +51,7 @@ public record IntPoint
         };
     }
 
-    public IntPoint RotateCounterclockwise(IntPoint pivot, double angle, bool isRadians = false)
+    public virtual IntPoint RotateCounterclockwise(IntPoint pivot, double angle, bool isRadians = false)
     {
         if (!isRadians)
         {
@@ -75,7 +75,7 @@ public record IntPoint
                 + (cosAngle * deltaY)));
     }
 
-    public IntPoint RotateClockwise(IntPoint pivot, double angle, bool isRadians = false)
+    public virtual IntPoint RotateClockwise(IntPoint pivot, double angle, bool isRadians = false)
     {
         if (!isRadians)
         {

@@ -84,7 +84,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
     /// Requires nodes children to be populated
     /// </summary>
     /// <returns></returns>
-    public int DescendantsCount()
+    public virtual int DescendantsCount()
     {
         return Children.Count
             + Children.Select(child => child.DescendantsCount()).Sum();
@@ -96,13 +96,13 @@ public record TreeNode<TKey> : GenericNode<TKey>
     /// Equals to <see cref="DescendantsCount()"/>
     /// </summary>
     /// <returns></returns>
-    public int GrandChildrenCount() => DescendantsCount();
+    public virtual int GrandChildrenCount() => DescendantsCount();
 
     /// <summary>
     /// Number of relationships between this node and its descendants
     /// </summary>
     /// <returns></returns>
-    public int RelationshipsCount()
+    public virtual int RelationshipsCount()
     {
         return Children.Count
                + Children.Select(child => child.DescendantsCount()).Sum()
@@ -117,7 +117,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
     /// <param name="childNode"></param>
     /// <param name="initialDistance"></param>
     /// <returns></returns>
-    public int DistanceTo(TreeNode<TKey> childNode, int initialDistance)
+    public virtual int DistanceTo(TreeNode<TKey> childNode, int initialDistance)
     {
         if (Children.Contains(childNode))
         {
@@ -144,7 +144,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
     /// <param name="otherNode"></param>
     /// <exception cref="NotFoundException"></exception>
     /// <returns></returns>
-    public TreeNode<TKey> GetCommonAncestor(IEnumerable<TreeNode<TKey>> nodes, TreeNode<TKey> otherNode)
+    public virtual TreeNode<TKey> GetCommonAncestor(IEnumerable<TreeNode<TKey>> nodes, TreeNode<TKey> otherNode)
     {
         var identifiers = new HashSet<TKey>();
 

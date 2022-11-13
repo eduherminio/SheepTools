@@ -26,7 +26,7 @@ public record Point3D
         Id = id;
     }
 
-    public double DistanceTo(Point3D otherPoint)
+    public virtual double DistanceTo(Point3D otherPoint)
     {
         return Math.Sqrt(
             Math.Pow(otherPoint.X - X, 2)

@@ -24,19 +24,19 @@ public record Point
         Y = y;
     }
 
-    public double ManhattanDistance(Point point)
+    public virtual double ManhattanDistance(Point point)
     {
         return Math.Abs(point.X - X) + Math.Abs(point.Y - Y);
     }
 
-    public double DistanceTo(Point otherPoint)
+    public virtual double DistanceTo(Point otherPoint)
     {
         return Math.Sqrt(
             Math.Pow(otherPoint.X - X, 2)
             + Math.Pow(otherPoint.Y - Y, 2));
     }
 
-    public Point Move(char direction, double distance = 1)
+    public virtual Point Move(char direction, double distance = 1)
     {
         return direction switch
         {
@@ -48,7 +48,7 @@ public record Point
         };
     }
 
-    public Point Move(Direction direction, double distance = 1)
+    public virtual Point Move(Direction direction, double distance = 1)
     {
         return direction switch
         {
@@ -60,7 +60,7 @@ public record Point
         };
     }
 
-    public Point RotateCounterclockwise(Point pivot, double angle, bool isRadians = false)
+    public virtual Point RotateCounterclockwise(Point pivot, double angle, bool isRadians = false)
     {
         if (!isRadians)
         {
@@ -82,7 +82,7 @@ public record Point
                 + (cosAngle * deltaY));
     }
 
-    public Point RotateClockwise(Point pivot, double angle, bool isRadians = false)
+    public virtual Point RotateClockwise(Point pivot, double angle, bool isRadians = false)
     {
         if (!isRadians)
         {
@@ -104,7 +104,7 @@ public record Point
                 + (cosAngle * deltaY));
     }
 
-    public Point CalculateClosestManhattanPoint(ICollection<Point> candidatePoints)
+    public virtual Point CalculateClosestManhattanPoint(ICollection<Point> candidatePoints)
     {
         Dictionary<Point, double> pointDistanceDictionary = new();
 
@@ -122,7 +122,7 @@ public record Point
     /// </summary>
     /// <param name="candidatePoints"></param>
     /// <returns></returns>
-    public Point? CalculateClosestManhattanPointNotTied(ICollection<Point> candidatePoints)
+    public virtual Point? CalculateClosestManhattanPointNotTied(ICollection<Point> candidatePoints)
     {
         Dictionary<Point, double> pointDistanceDictionary = new();
 
