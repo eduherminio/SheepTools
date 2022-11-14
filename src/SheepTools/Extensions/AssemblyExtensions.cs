@@ -23,13 +23,8 @@ public static class AssemblyExtensions
     /// <returns></returns>
     public static IEnumerable<Type> GetTypes<TAttribute>(this Assembly? assembly)
     {
-        foreach (Type type in assembly?.GetTypes() ?? Array.Empty<Type>())
-        {
-            if (type.IsDefined(typeof(TAttribute), true))
-            {
-                yield return type;
-            }
-        }
+        return (assembly?.GetTypes() ?? Array.Empty<Type>())
+            .Where(type => type.IsDefined(typeof(TAttribute), true));
     }
 
     /// <summary>
@@ -52,16 +47,10 @@ public static class AssemblyExtensions
     public static IEnumerable<Tuple<Type, TAttribute>> GetTypesAndAttributes<TAttribute>(this Assembly? assembly)
         where TAttribute : Attribute
     {
-        foreach (Type type in assembly?.GetTypes() ?? Array.Empty<Type>())
-        {
-            if (type.IsDefined(typeof(TAttribute), true))
-            {
-                foreach (TAttribute attribute in type.GetCustomAttributes<TAttribute>())
-                {
-                    yield return Tuple.Create(type, attribute);
-                }
-            }
-        }
+        return (assembly?.GetTypes() ?? Array.Empty<Type>())
+            .Where(type => type.IsDefined(typeof(TAttribute), true))
+            .SelectMany(type => type.GetCustomAttributes<TAttribute>()
+            .Select(attribute => Tuple.Create(type, attribute)));
     }
 
     /// <summary>
@@ -76,20 +65,16 @@ public static class AssemblyExtensions
         IList<AssemblyName> assemblies = new List<AssemblyName>();
         assemblies.AddRange(Assembly.GetCallingAssembly().GetReferencedAssemblies());
         assemblies.Add(Assembly.GetCallingAssembly().GetName());
-        foreach (var assemblyName in assemblies)
+        foreach (var candidate in from assemblyName in assemblies
+                                  let candidate = Assembly.Load(assemblyName)
+                                  where candidate is not null
+                                  from ti in candidate.DefinedTypes
+                                  where ti.ImplementedInterfaces.Contains(typeof(TInterface))
+                                  select candidate)
         {
-            var candidate = Assembly.Load(assemblyName);
-            if (candidate is not null)
-            {
-                foreach (var ti in candidate.DefinedTypes)
-                {
-                    if (ti.ImplementedInterfaces.Contains(typeof(TInterface)))
-                    {
-                        validAssemblies.Add(candidate.GetName().Name ?? candidate.GetName().FullName);
-                    }
-                }
-            }
+            validAssemblies.Add(candidate.GetName().Name ?? candidate.GetName().FullName);
         }
+
         return validAssemblies;
     }
 }
