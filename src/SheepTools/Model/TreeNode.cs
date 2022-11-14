@@ -132,7 +132,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
 
             return existingDistance == int.MaxValue
                 ? int.MaxValue
-                : ++existingDistance;
+                : existingDistance + 1;
         }
     }
 
