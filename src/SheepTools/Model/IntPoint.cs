@@ -20,6 +20,16 @@ public record IntPoint
         return Math.Abs(point.X - X) + Math.Abs(point.Y - Y);
     }
 
+    public virtual int ChebyshevDistance(IntPoint otherPoint)
+    {
+        var xDelta = Math.Abs(X - otherPoint.X);
+        var yDelta = Math.Abs(Y - otherPoint.Y);
+
+        return xDelta >= yDelta
+            ? xDelta
+            : yDelta;
+    }
+
     public virtual double DistanceTo(IntPoint otherPoint)
     {
         return Math.Sqrt(
@@ -31,11 +41,11 @@ public record IntPoint
     {
         return direction switch
         {
-            '>' => this with { X = X + distance },
-            '<' => this with { X = X - distance },
-            '^' => this with { Y = Y + distance },
-            'v' => this with { Y = Y - distance },
-            _ => throw new ArgumentException("Supported directions: >, <, ^, v")
+            '>' or 'R' or 'r' => this with { X = X + distance },
+            '<' or 'L' or 'l' => this with { X = X - distance },
+            '^' or 'U' or 'u' => this with { Y = Y + distance },
+            'v' or 'D' or 'd' => this with { Y = Y - distance },
+            _ => throw new ArgumentException("Supported directions: >, R, r; < L, l; ^, U, u; v, D, d")
         };
     }
 
