@@ -36,6 +36,16 @@ public static class Vector2Extensions
         return Math.Abs(otherVector.X - vector.X) + Math.Abs(otherVector.Y - vector.Y);
     }
 
+    public static double ChebyshevDistance(this Vector2 vector, Vector2 otherVector)
+    {
+        var xDelta = Math.Abs(vector.X - otherVector.X);
+        var yDelta = Math.Abs(vector.Y - otherVector.Y);
+
+        return xDelta >= yDelta
+            ? xDelta
+            : yDelta;
+    }
+
     public static Point RotateCounterclockwise(this Vector2 vector, Vector2 pivot, double angle, bool isRadians = false)
     {
         if (!isRadians)

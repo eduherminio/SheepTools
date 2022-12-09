@@ -58,6 +58,28 @@ public class Vector2ExtensionsTest
         Assert.Equal(2, distanceAC);
     }
 
+    [Fact]
+    public void ChebyshevDistance()
+    {
+        var a = new Vector2(0, 0);
+        var b = new Vector2(0, 1);
+        var c = new Vector2(1, 1);
+        var d = new Vector2(1, 2);
+        var e = new Vector2(2, 2);
+
+        var distanceAB = a.ChebyshevDistance(b);
+        Assert.Equal(1, distanceAB);
+
+        var distanceAC = a.ChebyshevDistance(c);
+        Assert.Equal(1, distanceAC);
+
+        var distanceAD = a.ChebyshevDistance(d);
+        Assert.Equal(2, distanceAD);
+
+        var distanceAE = a.ChebyshevDistance(e);
+        Assert.Equal(2, distanceAE);
+    }
+
     [Theory]
     [InlineData('^', 'v', '<', '>')]
     public void MoveChar(char up, char down, char left, char right)
