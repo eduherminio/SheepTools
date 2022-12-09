@@ -31,6 +31,7 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
   - [Point](#point)
   - [IntPoint](#intpoint)
+  - [IntPointWithValue](#intpointwithvalue)
   - [Point3D](#point3d)
   - [Line](#line)
   - [BitMatrix](#bitmatrix)
@@ -52,13 +53,15 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
   - [IntExtensions](#int-extensions)
   - [NumericExtensions](#numeric-extensions)
   - [StringExtensions](#string-extensions)
+  - [StopwatchExtensions](#stopwatch-extensions)
+  - [Vector2Extensions](#vector2-extensions)
 
 - [SheepTools.Moq](#sheeptools-moq)
 
   - [MoqLoggerExtensions](#moq-logger-extensions)
   - [MoqGenericLoggerExtensions](#moq-genericlogger-extensions)
 
-- [SheepTools.XUnit](#paragraph2)
+- [SheepTools.XUnit](#sheeptools-xunit)
 
   - [Asssert](#asssert)
 
@@ -83,7 +86,13 @@ I'm more than happy to accept suggestions, comments, or addition proposals.
 
 ### IntPoint
 
-Slim 2D Point class, using ints and without and optional `string` Id
+Slim 2D Point class, using ints and without an optional `string` Value
+
+<a name="point3d"></a>
+
+### IntPointWithValue
+
+Slim 2D Point class, using ints and with and optional `string` Id
 
 <a name="point3d"></a>
 
@@ -250,6 +259,15 @@ Helper methods to interpolate 2D points
 
 - `Clamp<T>(T, T)`
 
+<a name="stopwatch-extensions"></a>
+
+### StopwatchExtensions
+
+- `ElapsedMilliseconds()`
+- `ToFriendlyString()`
+
+<a name="string-extensions"></a>
+
 ### StringExtensions
 
 - `IsEmpty()`
@@ -261,6 +279,19 @@ Helper methods to interpolate 2D points
 - `ToBoolEnumerable(char = '1')`
 - `RemoveBlanksAndMakeInvariant()`
 - `IsPalindrome()`
+
+<a name="vector2-extensions"></a>
+
+### Vector2Extensions
+
+- `Move(Direction, int)`
+- `Move(char, int)`
+- `DistanceTo()`
+- `ManhattanDistance()`
+- `ChebyshevDistance()`
+- `RotateCounterclockwise()`
+- `RotateClockwise()`
+- `ToFriendlyString()`
 
 <a name="sheeptools-moq"></a>
 
