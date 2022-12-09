@@ -27,7 +27,7 @@ public class Point3DTest
     [Fact]
     public void ToStringTest()
     {
-        var p = new Point3D("Id", 0, 0, 0);
+        var p = new Point3D("Id", 0, 1, 2);
 
         Assert.Equal($"[{p.X}, {p.Y}, {p.Z}]", p.ToString());
         Assert.Equal("Id", p.Id);

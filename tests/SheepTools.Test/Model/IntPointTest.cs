@@ -27,7 +27,7 @@ public class IntPointTest
     [Fact]
     public void ToStringTest()
     {
-        var p = new IntPoint(0, 0);
+        var p = new IntPoint(0, 1);
 
         Assert.Equal($"[{p.X}, {p.Y}]", p.ToString());
     }
@@ -58,29 +58,52 @@ public class IntPointTest
     }
 
     [Fact]
-    public void MoveChar()
+    public void ChebyshevDistance()
+    {
+        var a = new IntPoint(0, 0);
+        var b = new IntPoint(0, 1);
+        var c = new IntPoint(1, 1);
+        var d = new IntPoint(1, 2);
+        var e = new IntPoint(2, 2);
+
+        var distanceAB = a.ChebyshevDistance(b);
+        Assert.Equal(1, distanceAB);
+
+        var distanceAC = a.ChebyshevDistance(c);
+        Assert.Equal(1, distanceAC);
+
+        var distanceAD = a.ChebyshevDistance(d);
+        Assert.Equal(2, distanceAD);
+
+        var distanceAE = a.ChebyshevDistance(e);
+        Assert.Equal(2, distanceAE);
+    }
+
+    [Theory]
+    [InlineData('^', 'v', '<', '>')]
+    public void MoveChar(char up, char down, char left, char right)
     {
         var startPoint = new IntPoint(0, 0);
 
-        var newPoint = startPoint.Move('^', 2);
+        var newPoint = startPoint.Move(up, 2);
         Assert.Equal(0, startPoint.X);
         Assert.Equal(0, startPoint.Y);
         Assert.Equal(0, newPoint.X);
         Assert.Equal(2, newPoint.Y);
 
-        newPoint = startPoint.Move('v');
+        newPoint = startPoint.Move(down);
         Assert.Equal(0, startPoint.X);
         Assert.Equal(0, startPoint.Y);
         Assert.Equal(0, newPoint.X);
         Assert.Equal(-1, newPoint.Y);
 
-        newPoint = startPoint.Move('<', -2);
+        newPoint = startPoint.Move(left, -2);
         Assert.Equal(0, startPoint.X);
         Assert.Equal(0, startPoint.Y);
         Assert.Equal(2, newPoint.X);
         Assert.Equal(0, newPoint.Y);
 
-        newPoint = startPoint.Move('>', -3);
+        newPoint = startPoint.Move(right, -3);
         Assert.Equal(0, startPoint.X);
         Assert.Equal(0, startPoint.Y);
         Assert.Equal(-3, newPoint.X);
