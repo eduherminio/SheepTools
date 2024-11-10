@@ -16,24 +16,24 @@ internal sealed class FooAttribute : Attribute
     }
 }
 
-internal interface IScopedBar { }
+internal interface IScopedBar;
 
 [Foo(typeof(IScopedBar), ServiceLifetime.Scoped)]
-internal class ScopedBar : IScopedBar { }
+internal class ScopedBar : IScopedBar;
 
-internal interface ITransientBar { }
+internal interface ITransientBar;
 
 [Foo(typeof(ITransientBar), ServiceLifetime.Transient)]
-internal class TransientBar : ITransientBar { }
+internal class TransientBar : ITransientBar;
 
-internal interface ISingletonBar { }
+internal interface ISingletonBar;
 
-internal interface IYetAnotherInterface { }
+internal interface IYetAnotherInterface;
 
 [Foo(typeof(ISingletonBar), ServiceLifetime.Singleton)]
 [Foo(typeof(IYetAnotherInterface), ServiceLifetime.Scoped)]
-internal class SingletonBar : ISingletonBar, IYetAnotherInterface { }
+internal class SingletonBar : ISingletonBar, IYetAnotherInterface;
 
-internal interface IAssemblyExtensionTestInterface { }
-internal interface IAssemblyExtensionTestInterfaceNotImplemented { }
-internal class AssemblyExtensionTest : IAssemblyExtensionTestInterface { }
+internal interface IAssemblyExtensionTestInterface;
+internal interface IAssemblyExtensionTestInterfaceNotImplemented;
+internal class AssemblyExtensionTest : IAssemblyExtensionTestInterface;

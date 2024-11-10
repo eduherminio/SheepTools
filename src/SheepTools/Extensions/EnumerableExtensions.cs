@@ -42,7 +42,7 @@ public static class EnumerableExtensions
                 hashSet.IntersectWith(enumerable);
             }
         }
-        return hashSet ?? new HashSet<T>();
+        return hashSet ?? [];
     }
 
     public static HashSet<char> IntersectAll(this IEnumerable<string> enumerableOfStrings)

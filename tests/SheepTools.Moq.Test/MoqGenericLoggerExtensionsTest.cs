@@ -94,6 +94,8 @@ public class MoqGenericLoggerExtensionsTest
     }
 }
 
+#pragma warning disable CA2254 // Template should be a static expression
+
 public class FixtureServiceGenericLogger
 {
     private readonly ILogger _logger;
@@ -113,3 +115,5 @@ public class FixtureServiceGenericLogger
         _logger.Log(level, e, message);
     }
 }
+
+#pragma warning restore CA2254 // Template should be a static expression

@@ -20,7 +20,7 @@ public class Vector2ExtensionsTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<Vector2> set = new() { a };
+        HashSet<Vector2> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }

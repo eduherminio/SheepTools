@@ -27,7 +27,7 @@ public class AsssertTest
     {
         var list = new List<int> { 2 };
 
-        await Asssert.DoesNotThrowAsync(() => Task.FromResult(list.Count)).ConfigureAwait(false);
-        await Assert.ThrowsAsync<Xunit.Sdk.NullException>(() => Asssert.DoesNotThrowAsync(() => Task.FromResult(list[3]))).ConfigureAwait(false);
+        await Asssert.DoesNotThrowAsync(() => Task.FromResult(list.Count));
+        await Assert.ThrowsAsync<Xunit.Sdk.NullException>(() => Asssert.DoesNotThrowAsync(() => Task.FromResult(list[3])));
     }
 }

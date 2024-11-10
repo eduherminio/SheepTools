@@ -26,7 +26,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
     /// <inheritdoc/>
     public TreeNode(TKey id) : base(id)
     {
-        Children = new HashSet<TreeNode<TKey>>();
+        Children = [];
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
             throw new ArgumentException("A node cannot be its own child");
         }
 
-        Children = new HashSet<TreeNode<TKey>> { child };
+        Children = [child];
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
 
         Parent = parent;
         ParentId = parent.Id;
-        Children = new HashSet<TreeNode<TKey>>();
+        Children = [];
     }
 
     /// <summary>
@@ -105,8 +105,8 @@ public record TreeNode<TKey> : GenericNode<TKey>
     public virtual int RelationshipsCount()
     {
         return Children.Count
-               + Children.Select(child => child.DescendantsCount()).Sum()
-               + Children.Select(child => child.RelationshipsCount()).Sum();
+               + Children.Sum(child => child.DescendantsCount())
+               + Children.Sum(child => child.RelationshipsCount());
     }
 
     /// <summary>
@@ -181,9 +181,7 @@ public record TreeNode<TKey> : GenericNode<TKey>
 
     public override bool Equals(TreeNode<TKey>? other) => base.Equals(other);
 
-#pragma warning disable RCS1132 // Remove redundant overriding member. - https://github.com/JosefPihrt/Roslynator/issues/744
     public override int GetHashCode() => base.GetHashCode();
-#pragma warning restore RCS1132 // Remove redundant overriding member.
 
     #endregion
 }

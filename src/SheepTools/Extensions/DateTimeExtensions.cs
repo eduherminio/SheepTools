@@ -27,7 +27,7 @@ public static class DateTimeExtensions
     /// <returns></returns>
     public static double MillisecondsFromEpoch(this DateTime dateTime)
     {
-        return (dateTime - new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds;
+        return (dateTime - DateTime.UnixEpoch).TotalMilliseconds;
     }
 
     /// <summary>

@@ -19,7 +19,7 @@ public class Point3DTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<Point3D> set = new() { a };
+        HashSet<Point3D> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }

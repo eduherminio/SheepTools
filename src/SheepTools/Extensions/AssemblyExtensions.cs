@@ -23,7 +23,7 @@ public static class AssemblyExtensions
     /// <returns></returns>
     public static IEnumerable<Type> GetTypes<TAttribute>(this Assembly? assembly)
     {
-        return (assembly?.GetTypes() ?? Array.Empty<Type>())
+        return (assembly?.GetTypes() ?? [])
             .Where(type => type.IsDefined(typeof(TAttribute), true));
     }
 
@@ -47,7 +47,7 @@ public static class AssemblyExtensions
     public static IEnumerable<Tuple<Type, TAttribute>> GetTypesAndAttributes<TAttribute>(this Assembly? assembly)
         where TAttribute : Attribute
     {
-        return (assembly?.GetTypes() ?? Array.Empty<Type>())
+        return (assembly?.GetTypes() ?? [])
             .Where(type => type.IsDefined(typeof(TAttribute), true))
             .SelectMany(type => type.GetCustomAttributes<TAttribute>()
             .Select(attribute => Tuple.Create(type, attribute)));
@@ -61,10 +61,12 @@ public static class AssemblyExtensions
     /// <returns>string Collection</returns>
     public static IEnumerable<string> GetAssemblies<TInterface>()
     {
-        IList<string> validAssemblies = new List<string>();
-        IList<AssemblyName> assemblies = new List<AssemblyName>();
-        assemblies.AddRange(Assembly.GetCallingAssembly().GetReferencedAssemblies());
-        assemblies.Add(Assembly.GetCallingAssembly().GetName());
+        IList<string> validAssemblies = [];
+        IList<AssemblyName> assemblies =
+        [
+            .. Assembly.GetCallingAssembly().GetReferencedAssemblies(),
+            Assembly.GetCallingAssembly().GetName(),
+        ];
         foreach (var candidate in from assemblyName in assemblies
                                   let candidate = Assembly.Load(assemblyName)
                                   where candidate is not null

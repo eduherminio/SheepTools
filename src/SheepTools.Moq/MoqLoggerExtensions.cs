@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿#pragma warning disable RCS1036 // Remove unnecessary blank line
+
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace SheepTools.Moq;
@@ -142,3 +144,5 @@ public static class MoqLoggerExtensions
 
     #endregion
 }
+
+#pragma warning restore RCS1036 // Remove unnecessary blank line

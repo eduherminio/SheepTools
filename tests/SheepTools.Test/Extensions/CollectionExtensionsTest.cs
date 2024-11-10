@@ -17,14 +17,14 @@ public class CollectionExtensionsTest
         existingCollection.AddRange(itemsToAdd);
 
         // Assert
-        Assert.Equal(initialCollection.Concat(itemsToAdd).ToList(), existingCollection);
+        Assert.Equal([.. initialCollection, .. itemsToAdd], [.. existingCollection]);
     }
 
     [Fact]
     public void AddRangeList()
     {
         // Arrange
-        ICollection<int> existingCollection = new List<int> { 1, 2, 3 };
+        ICollection<int> existingCollection = [1, 2, 3];
         var initialCollection = existingCollection.ToList();
         var itemsToAdd = new List<int> { 4, 5, 6 };
 
@@ -32,14 +32,14 @@ public class CollectionExtensionsTest
         existingCollection.AddRange(itemsToAdd);
 
         // Assert
-        Assert.Equal(initialCollection.Concat(itemsToAdd).ToList(), existingCollection);
+        Assert.Equal([.. initialCollection, .. itemsToAdd], existingCollection);
     }
 
     [Fact]
     public void RemoveAllList()
     {
         // Arrange
-        ICollection<int> existingList = new List<int> { 1, 2, 3, 4, 5, 6 };
+        ICollection<int> existingList = [1, 2, 3, 4, 5, 6];
         var initialList = existingList.ToList();
         var evens = existingList.Where(n => n % 2 == 0).ToList();
 
@@ -62,6 +62,6 @@ public class CollectionExtensionsTest
         existingCollection.RemoveAll(n => n % 2 == 0);
 
         // Assert
-        Assert.Equal(initialCollection.Except(evens).ToList(), existingCollection);
+        Assert.Equal(initialCollection.Except(evens).ToList(), [.. existingCollection]);
     }
 }
