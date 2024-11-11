@@ -18,7 +18,7 @@ public class IntPointWithValueTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<IntPointWithValue<string>> set = new() { a };
+        HashSet<IntPointWithValue<string>> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }

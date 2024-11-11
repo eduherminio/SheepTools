@@ -16,8 +16,8 @@ public class DateTimeExtensionsTest
     [Fact]
     public void IsAfter()
     {
-        var octoberRevolution = new DateTime(1917, 10, 25);
-        var frenchRevolution = new DateTime(1789, 5, 5);
+        var octoberRevolution = new DateTime(1917, 10, 25, 0, 0, 0, DateTimeKind.Unspecified);
+        var frenchRevolution = new DateTime(1789, 5, 5, 0, 0, 0, DateTimeKind.Unspecified);
 
         Assert.True(octoberRevolution.IsBetter(frenchRevolution));
     }
@@ -25,10 +25,10 @@ public class DateTimeExtensionsTest
     [Fact]
     public void GetMillisecondsFromEpoch()
     {
-        var epoch = new DateTime(1970, 1, 1, 0, 0, 0);
+        var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
         Assert.Equal(0, epoch.MillisecondsFromEpoch());
 
-        var epochPlusOneHour = new DateTime(1970, 1, 1, 1, 0, 0);
+        var epochPlusOneHour = new DateTime(1970, 1, 1, 1, 0, 0, DateTimeKind.Unspecified);
         Assert.Equal(3600 * 1_000, epochPlusOneHour.MillisecondsFromEpoch());
     }
 

@@ -31,7 +31,7 @@ public static class StringHelpers
     /// <returns></returns>
     public static bool HasWhiteSpaces(this string? str)
     {
-        return str?.Contains(" ") == true;
+        return str?.Contains(' ') == true;
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public static class StringHelpers
     public static string? Truncate(this string? str, int maxLength)
     {
         return (str?.Length > maxLength)
-            ? str.Substring(0, maxLength)
+            ? str[..maxLength]
             : str;
     }
 

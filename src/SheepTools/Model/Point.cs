@@ -116,7 +116,7 @@ public record Point
 
     public virtual Point CalculateClosestManhattanPoint(ICollection<Point> candidatePoints)
     {
-        Dictionary<Point, double> pointDistanceDictionary = new();
+        Dictionary<Point, double> pointDistanceDictionary = [];
 
         foreach (Point point in candidatePoints)
         {
@@ -134,7 +134,7 @@ public record Point
     /// <returns></returns>
     public virtual Point? CalculateClosestManhattanPointNotTied(ICollection<Point> candidatePoints)
     {
-        Dictionary<Point, double> pointDistanceDictionary = new();
+        Dictionary<Point, double> pointDistanceDictionary = [];
 
         foreach (Point point in candidatePoints)
         {

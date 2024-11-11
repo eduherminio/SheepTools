@@ -13,7 +13,7 @@ public class EnumerableExtensionsTest
     {
         // Arrange
         var mock = new Mock<EnumerableExtensionsTest>();
-        IEnumerable<EnumerableExtensionsTest> list = new List<EnumerableExtensionsTest> { mock.Object, mock.Object, mock.Object };
+        IEnumerable<EnumerableExtensionsTest> list = [mock.Object, mock.Object, mock.Object];
 
         // Act
         list.ForEach(str => str.Foo());
@@ -54,9 +54,9 @@ public class EnumerableExtensionsTest
     {
         var listOfListsOfChars = new List<List<char>>
             {
-                new List<char> { 'a', 'b', 'c' },
-                new List<char> { 'a', 'a', 'c' },
-                new List<char> { 'a' }
+                new() { 'a', 'b', 'c' },
+                new() { 'a', 'a', 'c' },
+                new() { 'a' }
             };
         var charIntersection = listOfListsOfChars.IntersectAll();
         Assert.Single(charIntersection);
@@ -64,8 +64,8 @@ public class EnumerableExtensionsTest
 
         var listOfListsOfInt = new List<List<int>>
             {
-                new List<int> { 1 },
-                new List<int> { 2 },
+                new() { 1 },
+                new() { 2 },
             };
         var intIntersection = listOfListsOfInt.IntersectAll();
         Assert.Empty(intIntersection);

@@ -20,7 +20,7 @@ public class PointTest
         Assert.True(a == b);
         Assert.True(a != c);
 
-        HashSet<Point> set = new() { a };
+        HashSet<Point> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
     }
@@ -190,7 +190,7 @@ public class PointTest
         var d = new Point(1, 2);
         var e = new Point(-2, 1);
 
-        var result = a.CalculateClosestManhattanPoint(new[] { b, c, d, e });
+        var result = a.CalculateClosestManhattanPoint([b, c, d, e]);
 
         Assert.Equal(b, result);
     }
@@ -205,7 +205,7 @@ public class PointTest
         var e = new Point(-2, 1);
         var f = new Point(1, 1);
 
-        var result = a.CalculateClosestManhattanPointNotTied(new[] { b, c, d, e, f });
+        var result = a.CalculateClosestManhattanPointNotTied([b, c, d, e, f]);
 
         Assert.Null(result);
     }

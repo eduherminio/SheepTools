@@ -9,17 +9,19 @@ public class BitArrayComparerTest
     [Fact]
     public void BitArrayComparer()
     {
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
         var set = new HashSet<BitArray>
             {
-                new BitArray(new[] { true, false }),
-                new BitArray(new[] { false, true }),
+                new(new[] { true, false }),
+                new(new[] { false, true }),
             };
 
         var otherSet = new HashSet<BitArray>
             {
-                new BitArray(new[] { true, false }),
-                new BitArray(new[] { false, true }),
+                new(new[] { true, false }),
+                new(new[] { false, true }),
             };
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
         // Without the comparer
         Assert.NotEqual(set, otherSet);

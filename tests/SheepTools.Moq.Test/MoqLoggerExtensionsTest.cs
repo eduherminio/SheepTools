@@ -94,6 +94,8 @@ public class MoqLoggerExtensionsTest
     }
 }
 
+#pragma warning disable CA2254 // Template should be a static expression
+
 internal class FixtureService
 {
     private readonly ILogger _logger;
@@ -113,3 +115,5 @@ internal class FixtureService
         _logger.Log(level, e, message);
     }
 }
+
+#pragma warning restore CA2254 // Template should be a static expression

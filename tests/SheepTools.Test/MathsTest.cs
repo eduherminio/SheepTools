@@ -23,7 +23,7 @@ public class MathsTest
     [InlineData(new ulong[] { 240, 492, 768 }, 157440)]
     public void LeastCommonMultipleEnumerable(ulong[] input, ulong result)
     {
-        Assert.Equal(result, Maths.LeastCommonMultiple(input));
+        Assert.Equal(result, input.LeastCommonMultiple());
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class MathsTest
     {
         Assert.Throws<ArgumentException>(() => Maths.LeastCommonMultiple(0, 0));
         Assert.Throws<ArgumentException>(() => Maths.LeastCommonMultiple(3, 0));
-        Assert.Throws<ArgumentException>(() => Maths.LeastCommonMultiple(new ulong[] { 0, 3 }));
+        Assert.Throws<ArgumentException>(() => Maths.LeastCommonMultiple([0, 3]));
     }
 
     [Theory]
@@ -51,7 +51,7 @@ public class MathsTest
     [InlineData(new ulong[] { 240, 492, 768 }, 12)]
     public void GreatestCommonDivisorEnumerable(ulong[] input, ulong result)
     {
-        Assert.Equal(result, Maths.GreatestCommonDivisor(input));
+        Assert.Equal(result, input.GreatestCommonDivisor());
     }
 
     [Fact]
@@ -59,6 +59,6 @@ public class MathsTest
     {
         Assert.Throws<ArgumentException>(() => Maths.GreatestCommonDivisor(0, 3));
         Assert.Throws<ArgumentException>(() => Maths.GreatestCommonDivisor(3, 0));
-        Assert.Throws<ArgumentException>(() => Maths.GreatestCommonDivisor(new ulong[] { 0, 3 }));
+        Assert.Throws<ArgumentException>(() => Maths.GreatestCommonDivisor([0, 3]));
     }
 }

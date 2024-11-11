@@ -46,7 +46,7 @@ public class NodeTest
         Assert.NotEqual(c, d);
         Assert.True(c != d);
 
-        HashSet<Node> set = new() { a };
+        HashSet<Node> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
         Assert.True(set.Add(d));
@@ -70,7 +70,7 @@ public class NodeTest
         Assert.NotEqual(c, d);
         Assert.True(c != d);
 
-        HashSet<CustomNode> set = new() { a };
+        HashSet<CustomNode> set = [a];
         Assert.False(set.Add(b));
         Assert.True(set.Add(c));
         Assert.True(set.Add(d));
@@ -79,10 +79,10 @@ public class NodeTest
     [Fact]
     public void DescendantsCount()
     {
-        var d = new CustomNode(DateTime.Now);
-        var c = new CustomNode(DateTime.Now, d);
-        var b = new CustomNode(DateTime.Now, c);
-        var a = new CustomNode(DateTime.Now, b);
+        var d = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(5)));
+        var c = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(4)), d);
+        var b = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(3)), c);
+        var a = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(2)), b);
 
         Assert.Equal(0, d.DescendantsCount());
         Assert.Equal(0, d.GrandChildrenCount());
@@ -152,7 +152,7 @@ public class NodeTest
     /// https://adventofcode.com/2019/day/6
     /// </summary>
     /// <returns></returns>
-    private static ICollection<Node> GenerateTestGraphWithChildren()
+    private static List<Node> GenerateTestGraphWithChildren()
     {
         var nodeList = new List<Node>();
 
@@ -163,16 +163,16 @@ public class NodeTest
         var k = new Node("K", l);
         var j = new Node("J", k);
         var g = new Node("G", h);
-        var e = new Node("E", new[] { f, j });
-        var d = new Node("D", new[] { e, i });
+        var e = new Node("E", [f, j]);
+        var d = new Node("D", [e, i]);
         var c = new Node("C", d);
-        var b = new Node("B", new[] { c, g });
+        var b = new Node("B", [c, g]);
         var com = new Node("COM", b);
         b.Children.Add(g);
         e.Children.Add(j);
         d.Children.Add(i);
 
-        nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+        nodeList.AddRange([com, b, c, d, e, f, g, h, i, j, k, l]);
 
         return nodeList;
     }
@@ -181,7 +181,7 @@ public class NodeTest
     /// https://adventofcode.com/2019/day/6
     /// </summary>
     /// <returns></returns>
-    private static ICollection<Node> GenerateTestGraphWithParent()
+    private static List<Node> GenerateTestGraphWithParent()
     {
         var nodeList = new List<Node>();
 
@@ -198,7 +198,7 @@ public class NodeTest
         var k = new Node(j, "K");
         var l = new Node(k, "L");
 
-        nodeList.AddRange(new[] { com, b, c, d, e, f, g, h, i, j, k, l });
+        nodeList.AddRange([com, b, c, d, e, f, g, h, i, j, k, l]);
 
         return nodeList;
     }

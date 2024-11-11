@@ -1,5 +1,6 @@
-﻿using SheepTools.Model;
-using System.Collections;
+﻿#pragma warning disable CA1861 // Avoid constant arrays as arguments
+
+using SheepTools.Model;
 using Xunit;
 
 namespace SheepTools.Test.Model;
@@ -70,38 +71,38 @@ public class BitMatrixTest
     {
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, true, false }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, true, true }),
-                    new BitArray( new [] { false, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, true, false }),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, true, true }),
+                    new( new [] { false, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true }),
-                    new BitArray( new [] { true, true, true }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, true, false })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true }),
+                    new( new [] { true, true, true }),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, true, false })
+                ])
         };
 
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, true, false }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { false, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, true, false }),
+                    new( new [] { false, false, false }),
+                    new( new [] { false, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, true, false })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true }),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, true, false })
+                ])
         };
     }
 
@@ -109,38 +110,38 @@ public class BitMatrixTest
     {
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, true, false }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, true }),
-                    new BitArray( new [] { true , false, false })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, true, false }),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, true }),
+                    new( new [] { true , false, false })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, true, true}),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, true }),
-                    new BitArray( new [] { false, false, true })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, true, true}),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, true }),
+                    new( new [] { false, false, true })
+                ])
         };
 
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, true, false, false }),
-                    new BitArray( new [] { false, false, true, false }),
-                    new BitArray( new [] { false, true, true, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, true, false, false }),
+                    new( new [] { false, false, true, false }),
+                    new( new [] { false, true, true, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true, true }),
-                    new BitArray( new [] { false, true, false, false }),
-                    new BitArray( new [] { true, true, true, false })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true, true }),
+                    new( new [] { false, true, false, false }),
+                    new( new [] { true, true, true, false })
+                ])
         };
     }
 
@@ -148,38 +149,38 @@ public class BitMatrixTest
     {
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, true }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { false, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, false, true }),
+                    new( new [] { false, false, false }),
+                    new( new [] { false, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true}),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, true })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true}),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, true })
+                ])
         };
 
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, true, false }),
-                    new BitArray( new [] { false, true, false, true}),
-                    new BitArray( new [] { false, false, true, true }),
-                    new BitArray( new [] { true, true, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, false, true, false }),
+                    new( new [] { false, true, false, true}),
+                    new( new [] { false, false, true, true }),
+                    new( new [] { true, true, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, false, true }),
-                    new BitArray( new [] { true, false, true, false }),
-                    new BitArray( new [] { false, true, false, true }),
-                    new BitArray( new [] { true, true, true, false })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { true, false, false, true }),
+                    new( new [] { true, false, true, false }),
+                    new( new [] { false, true, false, true }),
+                    new( new [] { true, true, true, false })
+                ])
         };
     }
 
@@ -187,38 +188,38 @@ public class BitMatrixTest
     {
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true}),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true}),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, true }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { false, false, true })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { true, false, true }),
+                    new( new [] { false, false, false }),
+                    new( new [] { false, false, true })
+                ])
         };
 
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, false, true }),
-                    new BitArray( new [] { true, false, true, false }),
-                    new BitArray( new [] { false, true, false, true }),
-                    new BitArray( new [] { true, true, true, false })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, false, false, true }),
+                    new( new [] { true, false, true, false }),
+                    new( new [] { false, true, false, true }),
+                    new( new [] { true, true, true, false })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, true, false }),
-                    new BitArray( new [] { false, true, false, true}),
-                    new BitArray( new [] { false, false, true, true }),
-                    new BitArray( new [] { true, true, false, true })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { true, false, true, false }),
+                    new( new [] { false, true, false, true}),
+                    new( new [] { false, false, true, true }),
+                    new( new [] { true, true, false, true })
+                ])
         };
     }
 
@@ -226,38 +227,40 @@ public class BitMatrixTest
     {
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, false, true}),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, true })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { false, false, true}),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, true })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, true }),
-                    new BitArray( new [] { false, false, false }),
-                    new BitArray( new [] { true, false, false })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { true, false, true }),
+                    new( new [] { false, false, false }),
+                    new( new [] { true, false, false })
+                ])
         };
 
         yield return new object[]
         {
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { true, false, false, false }),
-                    new BitArray( new [] { true, false, true, false }),
-                    new BitArray( new [] { false, true, false, true }),
-                    new BitArray( new [] { true, true, true, false })
-                }),
+                new BitMatrix(
+                [
+                    new( new [] { true, false, false, false }),
+                    new( new [] { true, false, true, false }),
+                    new( new [] { false, true, false, true }),
+                    new( new [] { true, true, true, false })
+                ]),
 
-                new BitMatrix(new List<BitArray>
-                {
-                    new BitArray( new [] { false, true, true, true}),
-                    new BitArray( new [] { true, false, true, false}),
-                    new BitArray( new [] { false, true, false, true }),
-                    new BitArray( new [] { false, false, false, true })
-                })
+                new BitMatrix(
+                [
+                    new( new [] { false, true, true, true}),
+                    new( new [] { true, false, true, false}),
+                    new( new [] { false, true, false, true }),
+                    new( new [] { false, false, false, true })
+                ])
         };
     }
 }
+
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
