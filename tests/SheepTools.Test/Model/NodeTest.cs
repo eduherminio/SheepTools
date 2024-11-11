@@ -79,10 +79,10 @@ public class NodeTest
     [Fact]
     public void DescendantsCount()
     {
-        var d = new CustomNode(DateTime.Now);
-        var c = new CustomNode(DateTime.Now, d);
-        var b = new CustomNode(DateTime.Now, c);
-        var a = new CustomNode(DateTime.Now, b);
+        var d = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(5)));
+        var c = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(4)), d);
+        var b = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(3)), c);
+        var a = new CustomNode(DateTime.Now.Subtract(TimeSpan.FromHours(2)), b);
 
         Assert.Equal(0, d.DescendantsCount());
         Assert.Equal(0, d.GrandChildrenCount());
